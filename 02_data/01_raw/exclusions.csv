@@ -1,0 +1,9 @@
+session_number,date,list,reason
+118,19/04/2019,1-4,admitted providing random input
+191,24/04/2019,1-1,named most words in English and has a fast completion time
+194,24/04/2019,1-1,"single letter submissions on writing task, very fast times between trials"
+210,24/04/2019,4-4,duplicate submission (other ID is session 189)
+218,25/04/2019,3-1,potentially remove due to inaudible spoken input
+264,26/04/2019,2-3,restarted several times (saw 3 versions) but still finished
+343,03/04/2019,4-5,tapped mic to progress during testing; did not give proper responses
+353,05/05/2019,3-6,exceptionally fast submission time (~35 minutes)
