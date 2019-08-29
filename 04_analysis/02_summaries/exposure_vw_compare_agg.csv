@@ -1,0 +1,5 @@
+variety_exposure,word_type,CI,ROPE_low,ROPE_high,ROPE_Percentage,ROPE_Equivalence,HDI_low,HDI_high
+Variety Match,Contrastive - Non-Contrastive,90,-0.02,0.02,18.085,Undecided,0.005,0.061
+Variety Mismatch,Contrastive - Non-Contrastive,90,-0.02,0.02,31.714,Undecided,0,0.052
+Variety Mismatch Social,Contrastive - Non-Contrastive,90,-0.02,0.02,4.691,Undecided,0.015,0.063
+Dialect Literacy,Contrastive - Non-Contrastive,90,-0.02,0.02,0,Rejected,0.032,0.08

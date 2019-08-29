@@ -1,0 +1,73 @@
+task,variety_exposure,word_type,.value,.lower,.upper,.width,.point,.interval
+Reading,Variety Match,Non-Contrastive,0.211,0.164,0.265,0.95,mean,qi
+Reading,Variety Match,Contrastive,0.22,0.171,0.277,0.95,mean,qi
+Reading,Variety Match,Novel,0.258,0.201,0.322,0.95,mean,qi
+Reading,Variety Mismatch,Non-Contrastive,0.207,0.16,0.261,0.95,mean,qi
+Reading,Variety Mismatch,Contrastive,0.245,0.193,0.305,0.95,mean,qi
+Reading,Variety Mismatch,Novel,0.271,0.21,0.339,0.95,mean,qi
+Reading,Variety Mismatch Social,Non-Contrastive,0.228,0.18,0.285,0.95,mean,qi
+Reading,Variety Mismatch Social,Contrastive,0.282,0.226,0.345,0.95,mean,qi
+Reading,Variety Mismatch Social,Novel,0.284,0.218,0.357,0.95,mean,qi
+Reading,Dialect Literacy,Non-Contrastive,0.208,0.158,0.266,0.95,mean,qi
+Reading,Dialect Literacy,Contrastive,0.305,0.241,0.374,0.95,mean,qi
+Reading,Dialect Literacy,Novel,0.292,0.23,0.359,0.95,mean,qi
+Spelling,Variety Match,Non-Contrastive,0.302,0.245,0.367,0.95,mean,qi
+Spelling,Variety Match,Contrastive,0.313,0.255,0.379,0.95,mean,qi
+Spelling,Variety Match,Novel,0.285,0.227,0.349,0.95,mean,qi
+Spelling,Variety Mismatch,Non-Contrastive,0.31,0.251,0.376,0.95,mean,qi
+Spelling,Variety Mismatch,Contrastive,0.304,0.245,0.369,0.95,mean,qi
+Spelling,Variety Mismatch,Novel,0.309,0.247,0.379,0.95,mean,qi
+Spelling,Variety Mismatch Social,Non-Contrastive,0.343,0.283,0.41,0.95,mean,qi
+Spelling,Variety Mismatch Social,Contrastive,0.346,0.284,0.414,0.95,mean,qi
+Spelling,Variety Mismatch Social,Novel,0.331,0.268,0.398,0.95,mean,qi
+Spelling,Dialect Literacy,Non-Contrastive,0.312,0.25,0.377,0.95,mean,qi
+Spelling,Dialect Literacy,Contrastive,0.38,0.31,0.451,0.95,mean,qi
+Spelling,Dialect Literacy,Novel,0.338,0.27,0.408,0.95,mean,qi
+Reading,Variety Match,Non-Contrastive,0.211,0.171,0.256,0.9,mean,qi
+Reading,Variety Match,Contrastive,0.22,0.178,0.266,0.9,mean,qi
+Reading,Variety Match,Novel,0.258,0.209,0.31,0.9,mean,qi
+Reading,Variety Mismatch,Non-Contrastive,0.207,0.167,0.251,0.9,mean,qi
+Reading,Variety Mismatch,Contrastive,0.245,0.2,0.295,0.9,mean,qi
+Reading,Variety Mismatch,Novel,0.271,0.219,0.327,0.9,mean,qi
+Reading,Variety Mismatch Social,Non-Contrastive,0.228,0.186,0.276,0.9,mean,qi
+Reading,Variety Mismatch Social,Contrastive,0.282,0.234,0.334,0.9,mean,qi
+Reading,Variety Mismatch Social,Novel,0.284,0.228,0.345,0.9,mean,qi
+Reading,Dialect Literacy,Non-Contrastive,0.208,0.165,0.255,0.9,mean,qi
+Reading,Dialect Literacy,Contrastive,0.305,0.251,0.363,0.9,mean,qi
+Reading,Dialect Literacy,Novel,0.292,0.239,0.348,0.9,mean,qi
+Spelling,Variety Match,Non-Contrastive,0.302,0.253,0.355,0.9,mean,qi
+Spelling,Variety Match,Contrastive,0.313,0.263,0.367,0.9,mean,qi
+Spelling,Variety Match,Novel,0.285,0.236,0.338,0.9,mean,qi
+Spelling,Variety Mismatch,Non-Contrastive,0.31,0.259,0.365,0.9,mean,qi
+Spelling,Variety Mismatch,Contrastive,0.304,0.254,0.358,0.9,mean,qi
+Spelling,Variety Mismatch,Novel,0.309,0.255,0.366,0.9,mean,qi
+Spelling,Variety Mismatch Social,Non-Contrastive,0.343,0.291,0.399,0.9,mean,qi
+Spelling,Variety Mismatch Social,Contrastive,0.346,0.293,0.402,0.9,mean,qi
+Spelling,Variety Mismatch Social,Novel,0.331,0.277,0.387,0.9,mean,qi
+Spelling,Dialect Literacy,Non-Contrastive,0.312,0.26,0.367,0.9,mean,qi
+Spelling,Dialect Literacy,Contrastive,0.38,0.321,0.439,0.9,mean,qi
+Spelling,Dialect Literacy,Novel,0.338,0.281,0.396,0.9,mean,qi
+Reading,Variety Match,Non-Contrastive,0.211,0.179,0.244,0.8,mean,qi
+Reading,Variety Match,Contrastive,0.22,0.187,0.256,0.8,mean,qi
+Reading,Variety Match,Novel,0.258,0.219,0.297,0.8,mean,qi
+Reading,Variety Mismatch,Non-Contrastive,0.207,0.175,0.24,0.8,mean,qi
+Reading,Variety Mismatch,Contrastive,0.245,0.209,0.283,0.8,mean,qi
+Reading,Variety Mismatch,Novel,0.271,0.23,0.314,0.8,mean,qi
+Reading,Variety Mismatch Social,Non-Contrastive,0.228,0.194,0.265,0.8,mean,qi
+Reading,Variety Mismatch Social,Contrastive,0.282,0.243,0.322,0.8,mean,qi
+Reading,Variety Mismatch Social,Novel,0.284,0.239,0.331,0.8,mean,qi
+Reading,Dialect Literacy,Non-Contrastive,0.208,0.174,0.244,0.8,mean,qi
+Reading,Dialect Literacy,Contrastive,0.305,0.263,0.35,0.8,mean,qi
+Reading,Dialect Literacy,Novel,0.292,0.25,0.335,0.8,mean,qi
+Spelling,Variety Match,Non-Contrastive,0.302,0.263,0.343,0.8,mean,qi
+Spelling,Variety Match,Contrastive,0.313,0.274,0.355,0.8,mean,qi
+Spelling,Variety Match,Novel,0.285,0.246,0.326,0.8,mean,qi
+Spelling,Variety Mismatch,Non-Contrastive,0.31,0.27,0.353,0.8,mean,qi
+Spelling,Variety Mismatch,Contrastive,0.304,0.264,0.346,0.8,mean,qi
+Spelling,Variety Mismatch,Novel,0.309,0.266,0.353,0.8,mean,qi
+Spelling,Variety Mismatch Social,Non-Contrastive,0.343,0.302,0.387,0.8,mean,qi
+Spelling,Variety Mismatch Social,Contrastive,0.346,0.304,0.39,0.8,mean,qi
+Spelling,Variety Mismatch Social,Novel,0.331,0.288,0.375,0.8,mean,qi
+Spelling,Dialect Literacy,Non-Contrastive,0.312,0.271,0.355,0.8,mean,qi
+Spelling,Dialect Literacy,Contrastive,0.38,0.334,0.426,0.8,mean,qi
+Spelling,Dialect Literacy,Novel,0.338,0.293,0.383,0.8,mean,qi

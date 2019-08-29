@@ -1,0 +1,25 @@
+variety_exposure,word_type,.value,.lower,.upper,.width,.point,.interval
+Variety Match,Non-Contrastive,0.635,0.588,0.681,0.95,mean,qi
+Variety Match,Contrastive,0.669,0.622,0.714,0.95,mean,qi
+Variety Mismatch,Non-Contrastive,0.591,0.541,0.638,0.95,mean,qi
+Variety Mismatch,Contrastive,0.617,0.571,0.663,0.95,mean,qi
+Variety Mismatch Social,Non-Contrastive,0.621,0.573,0.666,0.95,mean,qi
+Variety Mismatch Social,Contrastive,0.66,0.615,0.702,0.95,mean,qi
+Dialect Literacy,Non-Contrastive,0.607,0.554,0.658,0.95,mean,qi
+Dialect Literacy,Contrastive,0.663,0.618,0.706,0.95,mean,qi
+Variety Match,Non-Contrastive,0.635,0.596,0.674,0.9,mean,qi
+Variety Match,Contrastive,0.669,0.63,0.707,0.9,mean,qi
+Variety Mismatch,Non-Contrastive,0.591,0.55,0.631,0.9,mean,qi
+Variety Mismatch,Contrastive,0.617,0.579,0.655,0.9,mean,qi
+Variety Mismatch Social,Non-Contrastive,0.621,0.581,0.659,0.9,mean,qi
+Variety Mismatch Social,Contrastive,0.66,0.623,0.696,0.9,mean,qi
+Dialect Literacy,Non-Contrastive,0.607,0.562,0.65,0.9,mean,qi
+Dialect Literacy,Contrastive,0.663,0.625,0.699,0.9,mean,qi
+Variety Match,Non-Contrastive,0.635,0.605,0.666,0.8,mean,qi
+Variety Match,Contrastive,0.669,0.638,0.699,0.8,mean,qi
+Variety Mismatch,Non-Contrastive,0.591,0.559,0.622,0.8,mean,qi
+Variety Mismatch,Contrastive,0.617,0.587,0.648,0.8,mean,qi
+Variety Mismatch Social,Non-Contrastive,0.621,0.59,0.651,0.8,mean,qi
+Variety Mismatch Social,Contrastive,0.66,0.631,0.688,0.8,mean,qi
+Dialect Literacy,Non-Contrastive,0.607,0.572,0.64,0.8,mean,qi
+Dialect Literacy,Contrastive,0.663,0.634,0.691,0.8,mean,qi

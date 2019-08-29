@@ -50,4 +50,15 @@ learning_data <- learning_data %>%
   ) %>%
   group_by(participant_number, task) %>%
   mutate(task_trial_id = row_number()) %>% # make trial id split by task
-  ungroup()
+  ungroup() 
+
+# add mean exposure test score for use as a covariate
+learning_data <- left_join(
+  learning_data,
+  learning_data %>% 
+    filter(block == "exposure_test") %>% 
+    group_by(participant_number) %>% 
+    summarise(mean_exposure_test_nLED = mean(lenient_nLED, na.rm = TRUE)) %>% 
+    drop_na(),
+  by = "participant_number"
+)

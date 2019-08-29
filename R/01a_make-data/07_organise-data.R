@@ -48,6 +48,7 @@ learning_data <- learning_data %>%
     secondary_coder_correct,
     secondary_coder_nLED,
     lenient_correct:stringent_nLED,
+    mean_exposure_test_nLED,
     submission_time,
     timestamp
   )

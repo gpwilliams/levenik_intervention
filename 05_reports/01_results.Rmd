@@ -1,0 +1,624 @@
+---
+title: "Results"
+author: "Glenn Williams"
+date: "14<sup>th</sup> August, 2019 (Last updated: `r format(Sys.time(), '%d<sup>th</sup> %B, %Y')`)"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: united
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r libraries, include = FALSE}
+packages <- c(
+  "tidyverse",
+  "rlang",
+  "here",
+  "brms",
+  "tidybayes",
+  "bayestestR",
+  "modelr",
+  "ggforce",
+  "ggrepel",
+  "ggridges"
+)
+
+# load packages
+lapply(packages, library, character.only = TRUE)
+
+# get citations
+citations <- purrr::map(packages, citation)
+```
+
+```{r functions, include = FALSE}
+cite_package <- function(package){
+  #' Return the name and installed version of a package as a character.
+  #' @param package A character for an installed package.
+  #' @return A character defining the \code{package} name with version number in brackets.
+  #' @examples
+  #' cite_package("tidyverse")
+  #' cite_package("lme4")
+  paste0(package, " [Version ", packageVersion(package), "]")
+}
+
+cite_packages <- function(package_string, as_string = TRUE){
+  #' Return the name and installed version of one or more installed packages passed as a character vector.
+  #' @param package A character vector of one or more installed packages.
+  #' @param as_string Logical determining whether the returned output is formatted as a string in English (TRUE) or as a list (FALSE). Defaults to TRUE.
+  #' @return A string or list of packages from \code{package_string} with version number in brackets.
+  #' @examples
+  #' cite_packages("tidyverse", as_string = TRUE)
+  #' cite_packages("tidyverse", as_string = FALSE)
+  #' cite_packages(c("tidyverse", "lme4"))
+  if(length(package_string) > 1) {
+    all_packages <- base::lapply(package_string, cite_package)
+    if(as_string == TRUE) {
+      but_last_packages <- toString(all_packages[1:length(all_packages)-1])
+      last_package <- base::toString(all_packages[length(all_packages)])
+      base::paste0(but_last_packages, ", and ", last_package)
+    } else if(as_string == FALSE){
+      all_packages
+    }
+  } else {
+    if(as_string == TRUE) {
+      base::toString(cite_package(package_string))
+    } else if(as_string == FALSE) {
+      cite_package(package_string)
+    }
+  }
+}
+
+rename_table_cols <- function(.data, .oldnames, .newnames) {
+  names(.oldnames) <- .newnames
+  
+  .data %>% 
+    dplyr::rename(!!!.oldnames)
+}
+
+table_cols_to_title <- function(.data) {
+  .data %>% 
+    dplyr::rename_all(
+      ~stringr::str_to_title(base::gsub("_", " ", .))
+    ) 
+}
+
+merge_CI_limits <- function(data, lower, upper, round = TRUE, decimals = 2) {
+  # Pastes two columns together in brackets separated by a comma
+  # Use: used to paste lower and upper CI together after tidying model with
+  #       tidy_ordinal_model()
+  # Inputs: data = data.frame with lower and upper CI bounds as columns
+  #         lower = bare (unquoted) name of lower confidence limit column name
+  #         upper = bare (unquoted) name of upper confidence limit column name
+  #         round = TRUE (default), logical indicating whether or not to round
+  #                 values in the CI columns prior to pasting (recommended)
+  #         decimals = 2 (default), integer indicating how many values to
+  #             round numbers by if rounding occurs. Ignored if round = FALSE.
+  # Returns: data.frame with merged CI levels in one column, with prior
+  #           lower and upper bound columns removed.
+  
+  # force standard evaluation; used with !! later
+  
+  if(round == TRUE) {
+    data %>% mutate("interval" = paste0(
+      "[", 
+      # formatC used to force R to keep trailing zeroes
+      formatC(round({{lower}}, decimals), format = "f", digits = decimals), 
+      ", ", 
+      formatC(round({{upper}}, decimals), format = "f", digits = decimals),
+      "]"
+    )) %>%
+      select(-{{lower}}, -{{upper}})
+  } else {
+    data %>% 
+      mutate("interval" = paste0("[", {{lower}}, ", ", {{upper}}, "]")) %>%
+      select(-{{lower}}, -{{upper}})
+  }
+}
+
+format_summary <- function(.data, .oldnames, .newnames, .lower = .lower, .upper = .upper, .drop) {
+  .data %>% 
+    dplyr::select(-{{.drop}}) %>%
+    merge_CI_limits(., {{.lower}}, {{.upper}}, decimals = 3) %>% 
+    rename_table_cols(., .oldnames, .newnames) %>%
+    table_cols_to_title(.)
+}
+
+make_rope_footer <- function(.data, .lower = "ROPE_low", .upper = "ROPE_high", .CI = "CI"){
+  paste0(
+    "ROPE range = [", 
+    .data[[.lower]][[1]],
+    ", ",
+    .data[[.upper]][[1]],
+    "]. ROPE determined at the ",
+    .data[[.CI]][[1]],
+    "% CI of the HDI."
+  )
+}
+```
+
+```{r get-file-paths, include = FALSE}
+fitted_models_dir <- list.files(
+  path = here("04_analysis", "01_models"),
+  pattern = "rds$",
+  full.names = TRUE
+)
+
+model_summaries_dir <- list.files(
+  path = here("04_analysis", "02_summaries"),
+  pattern = "csv$",
+  full.names = TRUE
+)
+
+plots_dir <- list.files(
+  path = here("03_plots"),
+  pattern = "png$",
+  full.names = TRUE
+)
+```
+
+```{r load-data, include = FALSE}
+fitted_models <- purrr::map(fitted_models_dir, read_rds) %>% 
+  purrr::map(., summary)
+
+names(fitted_models) <- fitted_models_dir %>% 
+  sub(".*/", "", .) %>% 
+  substr(., 1, nchar(.)-4)
+
+model_summaries <- purrr::map(model_summaries_dir, read_csv)
+names(model_summaries) <- model_summaries_dir %>% 
+  sub(".*/", "", .) %>% 
+  substr(., 1, nchar(.)-4)
+```
+
+```{r define-global-variables}
+summary_oldnames <- c(".value", ".width")
+summary_newnames <- c("Mean", "Width")
+summary_drop <- c(".point", ".interval") # for some reason can't be in a list.
+
+rope_oldnames <- c("ROPE_Percentage", "ROPE_Equivalence")
+rope_newnames <- c("Percentage", "Equivalence")
+rope_drop <- c("CI", "ROPE_low", "ROPE_high")
+```
+
+
+`r version$version.string` and the R-packages `r cite_packages(packages)` were used for data preparation, analysis, and presentation.
+
+# Models
+
+Bayesian distributional models were fitted using the brms R-package. These models account for the fact that nLEDs are bounded between 0 and 1, with inflated counts at these bounds, which results in a non-normal distributions. Crucially, in contrast to models fitted under the assumption of normality, these models do not make predictions outside the possible range of values. At the time of writing, distributional models of this nature are only available for hierarchical data using the brms R-package, which requires model fitting to be performed using a Bayesian framework. Additionally, Baeysian models do not suffer from the non-convergence associated with performing complex analyses under a Frequentist framework.
+
+Models were fitted to the data aggregated by subjects. This aggregation was performed to account for the restricted range of length-normalised Levenshtein edit distances (nLEDs). When attempting the fit models at the individual trial level, these models were unidentifiable, with poor posterior predictive checks and unacceptably high $\hat{R}$s for several terms. 
+
+## Zero-one Inflated Beta Distributions
+
+The models were fitted using a zero-one inflated Beta distribution, which models the data as a Beta distribution for nLEDs excluding 0 and 1, and a Bernoulli distribution for binary nLEDs of 0 and 1. Thus, predictors in the model can affect four distributional parameters: $\mu$ (mu), the mean of the nLEDs excluding 0 and 1; $\phi$ (phi), the precision of the nLEDs excluding 0 and 1; $\alpha$ (alpha; termed zoi - or zero-one inflation in brms) the probability of an nLED of 0 or 1; and $\gamma$ (gamma; termed coi - or conditional-one inflation in brms), the conditional probability of a 1 given a 0 or 1 has been observed. Larger values for these parameters are associated with (a) higher mean nLEDs in the range exluding 0 and 1, (b) tighter distributions of the nLEDs in the range excluding 0 and 1 (i.e. less variance), (c) more zero-one inflation in nLEDs, and (d) more one-inflation relative to zero-inflation in nLEDs. Predictors in this model can influence any and all distributional parameters in the model at once. For these models, a logit link is used for the $\mu$, $\alpha$, and $\gamma$ distributional parameters, and a log link is used for the $\phi$ distributional parameter.
+
+## Model Fitting
+
+### Model Specification
+
+Three models were fitted in total: (1) assessing performance across conditions during the vocabulary test prior to literacy training; (2) assessing performance across conditions during the Testing phase following literacy training; and (3) assessing performance across conditions during the Testing phase following literacy training using the vocabulary test performance as a predictor. This latter model was not pre-registered, but instead serves an exploratory purpose. The models were described as follows:
+
+- **Vocabulary Test Model**: nLEDs are predicted by population-level (fixed) effects of Variety Exposure condition and Word Type, and by group-level (random) effects of random intercepts by participant.
+- **Testing Model**: nLEDs are predicted by population-level (fixed) effects of Task, Variety Exposure condition, and Word Type, and by group-level (random) effects of random intercepts by participant.
+- **Exploratory Covariate Testing Model**: nLEDs are predicted by population-level (fixed) effects of mean nLED during the Vocabulary Test, Task, Variety Exposure condition, and Word Type, and by group-level (random) effects of random intercepts by participant.
+
+Crucially, in all models, the group-level effects (i.e. random intercepts by participant) are correlated across all distributional terms.
+
+### Model Priors
+
+Note, by default, brms restricts priors on the *SD* to be positive.
+
+Here, priors are described first by their expected distribution, and the parameters that define that distribution. For example, a prior of $\mathcal{N}(0, 1)$ describes a normal distribution with a mean of 0 and a standard deviation of 1. Similarly, a prior of $\mathcal{logistic}(0, 1)$ describes a logistic distribution with a mean of 0 and a standard deviation of 1.
+
+The following priors were used for the exposure model:
+
+- Intercept
+  - $\mu$: $\mathcal{N}(0.5, 1)$
+  - $\phi$: $\mathcal{N}(3, 1)$
+  - $\alpha$: $\mathcal{logistic}(0, 1)$
+  - $\gamma$: $\mathcal{logistic}(0, 1)$
+- Slope
+  - $\mu$: $\mathcal{N}(0, 0.2)$
+  - $\phi$: $\mathcal{N}(0, 0.5)$
+  - $\alpha$: $\mathcal{N}(0, 4)$
+  - $\gamma$: $\mathcal{N}(0, 0.2)$
+- *SD*
+  - $\mu$: $\mathcal{N}(0, 1)$
+  - $\phi$: $\mathcal{N}(0, 1)$
+  - $\alpha$: $\mathcal{N}(0, 4)$
+  - $\gamma$: $\mathcal{N}(0, 5)$
+- *SD* by Participant Number
+  - $\mu$: $\mathcal{N}(0, 1)$
+  - $\phi$: $\mathcal{N}(0, 3)$
+  - $\alpha$: $\mathcal{N}(0, 10)$
+  - $\gamma$: $\mathcal{N}(0, 10)$
+- Correlation
+  - $LKJ(2)$
+  
+Informative priors were used on the $\mu$ and $\phi$ intercept terms. Here, the $\mu$ term assumes a mean intercept centred on 0.5 with a standard deviation of 1, thus placing a relatively large prior probability on the entire range of nLEDs. The $\phi$ term further assumes that values closer to the mean are more likely than those further away from the mean. Together, these predict that nLEDs in the Beta distribution are likely to be centred on 0.5 and extreme scores (i.e. towards the bounds) are less likely than those around the mean. Both $\alpha$ and $\gamma$ terms use weakly informative, regularising priors that are centred on zero but allow for a wide range of values.
+
+For the slope terms, the priors assume no effect to small effects for each parameter in either direction. These assumptions are strongly than initially planned following our pre-registration (which used very weakly informative priors) in all instances in order to improve model fit. Here, wider standard deviations for the prior on the $\gamma$ parameter resulted in divergences during fitting. As such, this prior uses a relatively constrained standard deviation. Weakly informative regularising priors were also used for all standard deviation terms. Finally, an $LKJ(2)$ prior was used for the correlation between terms, which acts to down-weight perfect correlations (Vasishth et al., 2018 - CITATION).
+
+For both testing models, the following priors were used:
+
+- Intercept
+  - $\mu$: $\mathcal{N}(0, 5)$
+  - $\phi$: $\mathcal{N}(3, 3)$
+  - $\alpha$: $\mathcal{logistic}(0, 1)$
+  - $\gamma$: $\mathcal{logistic}(0, 1)$
+- Slope
+  - $\mu$: $\mathcal{N}(0, 0.5)$
+  - $\phi$: $\mathcal{N}(0, 1)$
+  - $\alpha$: $\mathcal{N}(0, 5)$
+  - $\gamma$: $\mathcal{N}(0, 0.5)$
+- *SD*
+  - $\mu$: $\mathcal{N}(0, 1)$
+  - $\phi$: $\mathcal{N}(0, 1)$
+  - $\alpha$: $\mathcal{N}(0, 5)$
+  - $\gamma$: $\mathcal{N}(0, 5)$
+- *SD* by Participant Number
+  - $\mu$: $\mathcal{N}(0, 1)$
+  - $\phi$: $\mathcal{N}(0, 3)$
+  - $\alpha$: $\mathcal{N}(0, 10)$
+  - $\gamma$: $\mathcal{N}(0, 10)$
+- Correlation
+  - $LKJ(2)$
+
+Due to having more observations for analyses during the testing phase, both the $\mu$ and $\phi$ intercept terms, all slope terms, the $\phi$ *SD* term, and $\phi$ *SD* by participant number terms use more weakly informative priors than the exposure model. This allows the data to have a larger impact on parameter estimates while having no impact on model convergence.
+
+In all models, the approach was to use weakly informative, regularising priors for fitting. Where models failed to converge, these priors were adjusted, typically placing less prior weight on extreme values.
+
+### Model Checks
+
+Posterior predictive checks were performed for all three models, comparing the observed posterior density against samples from the fitted model. Well fitting models show concordance between observed and sampled posterior densities. Plots for each model are displayed below. Grey lines indicate samples from the posterior, while black lines indicate the observed sample density.
+
+```{r pp-check-plots}
+knitr::include_graphics(plots_dir[str_detect(plots_dir, "pp")])
+```
+
+As can be seen from the plots, the posterior predictive checks indicate a good model fit in all instances.
+
+# Vocabulary Test Model
+
+A summary of the Vocabulary Test model is provided below. This can be used to determine model diagnostics and coefficients. To answer questions pertaining to our pre-registered hypotheses, and to generate plots for these summaries, we used draws from the posterior for different combinations of conditions using the tidybayes R-package (CITATION). Hypothesis tests are then provided in the form of Region of Practical Equivalence (ROPE) analyses from these draws using the bayestestR R-package. 
+
+```{r exposure-model-summary}
+summary(fitted_models[["exposure_model_agg"]])
+```
+
+Posterior means and 80% and 90% credible intervals are provided for different conditions in the plots below. Table summaries also provide posterior means along with credible intervals at the 80%, 90%, and 95% ranges.
+
+In all following plots and reported statistics, summaries are provided for only the overall nLEDs taking into account all distributional parameters when sampling from the posterior. Thus, we do not provide individual statistics and plots for the individual distributional terms (e.g. for zero-one inflation, or conditional-one inflation) as we did not specify any hypotheses related to these individual terms. Instead, the zero-one inflated Beta models are used purely to improve model fit and to make more accurate predictions about the overall differences in nLEDs across conditions.
+
+## Variety Exposure
+
+```{r variety-exposure-condition-plot-exposure}
+knitr::include_graphics(plots_dir[str_detect(plots_dir, "exposure_v_agg")])
+```
+
+Posterior means and credible intervals are provided in the table below.
+
+```{r variety-exposure-condition-exposure}
+format_summary(
+  model_summaries$exposure_v_agg, 
+  summary_oldnames, 
+  summary_newnames, 
+  .drop = summary_drop
+  ) %>% 
+  kableExtra::kable() %>% 
+  kableExtra::add_header_above(c(" " = 2, "Credible Interval" = 2)) %>% 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+```
+
+We evaluated equivalence in the nLEDs between variety exposure conditions by determining a region of practical equivalence (ROPE) by which any effects between the reported bounds are deemed to be practically equivalent to 0. In all instances, this is determined at the 90% credible interval (CI) bound of the highest density interval (HDI), which is typically more stable than larger bounds (CITATION: Kruschke). We report the proportion of the HDI contained within the ROPE region along with bounds of this interval. Where HDIs are entirely contained by the equivalence bounds, equivalence is accepted. Where HDIs are entirely outside the equivalence bounds, equivalence is rejected. Uncertaintainty is assigned to any HDIs that cross the equialence bounds in either (or both) directions.
+
+```{r variety-exposure-condition-ROPE-exposure}
+format_summary(
+  model_summaries$exposure_v_compare_agg, 
+  .oldnames = rope_oldnames, 
+  .newnames = rope_newnames,
+  .lower = HDI_low,
+  .upper = HDI_high,
+  .drop = rope_drop
+  ) %>% 
+  rename(Comparison = `Variety Exposure`) %>% 
+  kableExtra::kable() %>% 
+  kableExtra::add_header_above(c(" " = 1, "ROPE Coverage" = 3)) %>% 
+  kableExtra::footnote(
+    general = make_rope_footer(model_summaries$exposure_v_compare_agg)
+  ) %>% 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+```
+
+While nLEDs in the Variety Mismatch condition are generally lower than those in the Variety Match condition, 30% of the difference scores are contained by the equivalence bounds. Similarly, while nLEDs are generally higher in the two intervention conditions (Variety Mismatch Social and Dialect Literacy) when compared to the Variety Mismatch condition, around half of the difference scores are contained by the equivalence bounds. All other differences are largely undecided.
+
+## Word Type by Variety Exposure
+
+We also looked at whether there are any differences in performance for different word types across conditions during the vocabulary testing phase. 
+
+```{r variety-word-type-exposure-plot}
+knitr::include_graphics(plots_dir[str_detect(plots_dir, "exposure_vw_agg")])
+```
+
+Posterior means and credible intervals are provided in the table below.
+
+```{r variety-word-type-exposure}
+format_summary(
+  model_summaries$exposure_vw_agg, 
+  summary_oldnames, 
+  summary_newnames, 
+  .drop = summary_drop
+  ) %>% 
+  kableExtra::kable() %>% 
+  kableExtra::add_header_above(c(" " = 3, "Credible Interval" = 2)) %>% 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE) 
+```
+
+
+```{r variety-word-type-exposure-ROPE}
+format_summary(
+  model_summaries$exposure_vw_compare_agg, 
+  .oldnames = rope_oldnames, 
+  .newnames = rope_newnames,
+  .lower = HDI_low,
+  .upper = HDI_high,
+  .drop = rope_drop
+  ) %>% 
+  rename(Group = `Variety Exposure`, Comparison = `Word Type`) %>% 
+  kableExtra::kable() %>% 
+  kableExtra::add_header_above(c(" " = 2, "ROPE Coverage" = 3)) %>% 
+  kableExtra::footnote(
+    general = make_rope_footer(model_summaries$exposure_vw_compare_agg)
+  ) %>% 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+```
+
+In all instances there is some evidence that performance is better for non-contrastive words relative to contrastive words. However, equivalence between the two word types is only confidently rejected for the Dialect Literacy condition. Thus, it is likely that performance was worse for contrastive words relative to non-contrastive words in the Dialect Literacy condition in the Vocabulary Test.
+
+# Testing Phase Model
+
+A summary of the Testing Phase model is provided below. This can be used to determine model diagnostics and coefficients. As with the Vocabulary Test Model, to answer questions pertaining to our pre-registered hypotheses, and to generate plots for these summaries, we used draws from the posterior for different combinations of conditions using the tidybayes R-package (CITATION). Similarly, hypothesis tests are provided in the form of Region of Practical Equivalence (ROPE) analyses from these draws using the bayestestR R-package. 
+
+```{r testing-model-summary}
+summary(fitted_models[["testing_model_agg"]])
+```
+
+## Variety Exposure
+
+```{r variety-exposure-condition-plot-testing}
+knitr::include_graphics(plots_dir[str_detect(plots_dir, "testing_v_compare_agg")])
+```
+
+Posterior means and credible intervals are provided in the table below.
+
+```{r variety-exposure-condition-testing-ROPE}
+format_summary(
+  model_summaries$testing_v_compare_agg, 
+  .oldnames = rope_oldnames, 
+  .newnames = rope_newnames,
+  .lower = HDI_low,
+  .upper = HDI_high,
+  .drop = rope_drop
+  ) %>% 
+  rename(Comparison = `Variety Exposure`) %>% 
+  kableExtra::kable() %>% 
+  kableExtra::add_header_above(c(" " = 1, "ROPE Coverage" = 3)) %>% 
+  kableExtra::footnote(
+    general = make_rope_footer(model_summaries$testing_v_compare_agg)
+  ) %>% 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+```
+
+While the ROPE is undecided, there does not seem to be any reliable differences across the Variety Exposure conditions in regards to overall performance.
+
+## Variety Exposure for Novel Words Only
+
+```{r variety-exposure-novel-condition-plot-testing}
+knitr::include_graphics(plots_dir[str_detect(plots_dir, "testing_v_n_compare_agg")])
+```
+
+Posterior means and credible intervals are provided in the table below.
+
+```{r variety-exposure-novel-condition-testing-ROPE}
+format_summary(
+  model_summaries$testing_v_n_compare_agg, 
+  .oldnames = rope_oldnames, 
+  .newnames = rope_newnames,
+  .lower = HDI_low,
+  .upper = HDI_high,
+  .drop = rope_drop
+  ) %>% 
+  rename(Comparison = `Variety Exposure`) %>% 
+  kableExtra::kable() %>% 
+  kableExtra::add_header_above(c(" " = 1, "ROPE Coverage" = 3)) %>% 
+  kableExtra::footnote(
+    general = make_rope_footer(model_summaries$testing_v_n_compare_agg)
+  ) %>% 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+```
+
+A similar pattern appears for the novel words only as with all words.
+
+## Word Type by Variety Exposure
+
+We also looked at whether there are any differences in performance for different word types across conditions during the testing phase. 
+
+```{r task-variety-word-type-testing-plot}
+knitr::include_graphics(plots_dir[str_detect(plots_dir, "testing_tvw_agg")])
+```
+
+There appears to be some differences in word types within groups, but are these differences reliable?
+
+```{r task-variety-word-type-testing-compare-plot}
+knitr::include_graphics(plots_dir[str_detect(plots_dir, "testing_tvw_compare_agg")])
+```
+
+It seems that there is a clear effect of word type (for contrastive vs. non-contrastive words) for both tasks in the Dialect Literacy condition, and for reading only in the Variety Mismatch Social condition. Additionally, there is some evidence for an effect of word type in the Variety Mismatch condition, with only around 6% of the HDI in the the equivalence bounds. This suggests that performance is impaired for contrastive words only when participants are exposed to a dialect.
+
+Posterior means and credible intervals are provided in the table below.
+
+```{r task-variety-word-type-compare}
+format_summary(
+  model_summaries$testing_tvw_agg, 
+  summary_oldnames, 
+  summary_newnames, 
+  .drop = summary_drop
+  ) %>% 
+  kableExtra::kable() %>% 
+  kableExtra::add_header_above(c(" " = 4, "Credible Interval" = 2)) %>% 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+```
+
+We can also directly compare the differences in performance for contrastive words relative to non-contrastive words.
+
+```{r task-variety-word-type-testing-compare}
+format_summary(
+  model_summaries$testing_tvw_compare_agg, 
+  summary_oldnames, 
+  summary_newnames, 
+  .drop = summary_drop
+  ) %>% 
+  kableExtra::kable() %>% 
+  kableExtra::add_header_above(c(" " = 4, "Credible Interval" = 2)) %>% 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+```
+
+These results reflect those in the plots above. Are any differences reported here reliable?
+
+```{r task-variety-word-type-testing-ROPE}
+format_summary(
+  model_summaries$testing_tvw_compare_rope_agg, 
+  .oldnames = rope_oldnames, 
+  .newnames = rope_newnames,
+  .lower = HDI_low,
+  .upper = HDI_high,
+  .drop = rope_drop
+  ) %>% 
+  rename(Comparison = `Word Type`) %>% 
+  kableExtra::kable() %>% 
+  kableExtra::add_header_above(c(" " = 3, "ROPE Coverage" = 3)) %>% 
+  kableExtra::footnote(
+    general = make_rope_footer(model_summaries$testing_tvw_compare_rope_agg)
+  ) %>% 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+```
+
+Equivalence is confidently rejected for the reading task for the two intervention conditions (Variety Mismatch Social and Dialect Literacy). Additionally, for the reading task the majority of the HDI for the Variety Mismatch condition is outside of the ROPE. For the spelling task, equivalence is rejected for the Dialect Literacy condition. However, all other contrasts show that most of the HDI is contained by the ROPE (suggesting equivalence).
+
+Finally, we ask whether or not the contrastive effect is stronger in the Variety Mismatch Social condition relative to the Variety Mismatch condition.
+
+```{r task-variety-word-type-ms-testing-ROPE}
+format_summary(
+  model_summaries$testing_tvw_ms_compare_agg, 
+  .oldnames = rope_oldnames, 
+  .newnames = rope_newnames,
+  .lower = HDI_low,
+  .upper = HDI_high,
+  .drop = rope_drop
+  ) %>% 
+  kableExtra::kable() %>% 
+  kableExtra::add_header_above(c(" " = 3, "ROPE Coverage" = 3)) %>% 
+  kableExtra::footnote(
+    general = make_rope_footer(model_summaries$testing_tvw_ms_compare_agg)
+  ) %>% 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+```
+
+Any differences here are slight, and are mainly contained by the ROPE in both tasks. This suggests that there are no substantial differences in the magnitude of the effect between contrastive and non-contrastive words across these two conditions.
+
+# Exploratory Covariate Testing Model
+
+A summary of the Testing Phase model incorporating the mean scores in the vocabulary test as a covariate is provided below. This can be used to determine model diagnostics and coefficients. As with previous models, draws from the posterior for different combinations of conditions were taken using the tidybayes R-package (CITATION). Similarly, hypothesis tests are provided in the form of Region of Practical Equivalence (ROPE) analyses from these draws using the bayestestR R-package. Extreme caution is needed for interpreting such hypothesis tests as the following is purely exploratory.
+
+```{r testing-cov-model-summary}
+summary(fitted_models[["testing_cov_model_agg"]])
+```
+
+We first explored whether mean vocabulary test performance (in nLED) predicts testing performance, and whether or not this varies across Task, Variety Exposure condition, and Word Type. A plot of this relationship is shown below.
+
+```{r cov-variety-exposure-task-novel-plot-testing-cov}
+knitr::include_graphics(plots_dir[str_detect(plots_dir, "testing_cov_etv_n_agg")])
+```
+
+## Variety Exposure for Novel Words Only
+
+It's quite difficult to make out an overall pattern here, so instead we performed a median split based on the vocabulary test performance, and we categorised these into those with high and low nLEDs in the vocabulary test.
+
+We focused specifically on novel words to see whether any differences occur for novel word decoding. The following analyses summarise the patterns in the covariate model. 
+
+```{r cov-variety-exposure-task-novel-median-plot-testing-cov}
+knitr::include_graphics(plots_dir[str_detect(plots_dir, "testing_cov_etv_n_median_agg")])
+```
+
+It's clear from the figure that performance is generally worse in the testing phase for those with high mean nLEDs during the vocabulary test. Are there any differences if we directly compare these difference scores?
+
+```{r cov-variety-exposure-task-novel-median-compare-plot-testing-cov}
+knitr::include_graphics(plots_dir[str_detect(plots_dir, "testing_cov_median_etv_n_compare_agg")])
+```
+
+Variety Match and Mismatch seem to differ for the spelling task, while all other contrasts seem to indicate equivalent performance across conditions. Is this borne out in the data?
+
+```{r novel-variety-task-cov-testing-cov-summary-ROPE}
+format_summary(
+  model_summaries$testing_cov_median_etv_n_compare_agg, 
+  .oldnames = rope_oldnames, 
+  .newnames = rope_newnames,
+  .lower = HDI_low,
+  .upper = HDI_high,
+  .drop = rope_drop
+  ) %>% 
+  rename(`Vocab Test nLED Group` = `Exposure Test Nled Group`) %>% 
+  kableExtra::kable() %>% 
+  kableExtra::add_header_above(c(" " = 3, "ROPE Coverage" = 3)) %>% 
+  kableExtra::footnote(
+    general = make_rope_footer(model_summaries$testing_cov_median_etv_n_compare_agg)
+  ) %>% 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+```
+
+Here, there is evidence that spelling performance between those with high and low nLEDs in the vocabulary test varies between the Variety Match and Variety Mismatch conditions. Viewing the first figure, it is clear that there is a larger discrepancy in performance between those with high and low nLEDs in the vocabulary test in the Variety Mismatch condition relative to the Variety Match condition. While there is a similar trend in the other two variety conditions (i.e. Variety Mismatch Social and Dialect Literacy), there is not enough evidence here to support the claim that the differences between those with high and low nLEDs in the vocabulary test vary substantially in the Variety Mismatch Social and Dialect Literacy conditions relative to the Variety Mismatch condition.
+
+Next, we looked at whether or not contrastive words differed to non-contrastive words across the high and low nLED groups. First off, what do the nLEDs look like in these groups?
+
+```{r variety-exposure-condition-plot-testing-cov}
+knitr::include_graphics(plots_dir[str_detect(plots_dir, "testing_cov_etvw_median_agg")])
+```
+
+That's quite a lot to parse in one go, so we can instead look at the difference scores between contrastive and non-contrastive words for this same comparison.
+
+```{r variety-exposure-condition-plot-compare-testing-cov}
+knitr::include_graphics(plots_dir[str_detect(plots_dir, "testing_cov_median_etvw_compare_agg")])
+```
+
+In the Variety Mismatch condition, the difference in the reading task between the two word types seems to stem from those with low nLEDs during the vocabulary test, while the difference is consistent across groups in both of the Dialect Intervention conditions. But, any effect in spelling is only found for those with high nLEDs in the vocabulary test following the Dialect Literacy training. Does the data back this up?
+
+```{r word-type-variety-exposure-task-cov-testing-cov-summary-ROPE}
+format_summary(
+  model_summaries$testing_cov_median_etvw_compare_agg, 
+  .oldnames = rope_oldnames, 
+  .newnames = rope_newnames,
+  .lower = HDI_low,
+  .upper = HDI_high,
+  .drop = rope_drop
+  ) %>% 
+  dplyr::rename(`Vocab Test nLED Group` = `Exposure Test Nled Group`) %>% 
+  dplyr::select(
+    `Variety Exposure`, 
+    Task, 
+    `Vocab Test nLED Group`, 
+    everything()
+  ) %>% 
+  kableExtra::kable() %>% 
+  kableExtra::add_header_above(c(" " = 4, "ROPE Coverage" = 3)) %>% 
+  kableExtra::footnote(
+    general = make_rope_footer(model_summaries$testing_cov_median_etvw_compare_agg)
+  ) %>% 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+```
+
+**NOTE**: The posterior samples for the covariate models is relatively low when using the median split. Increasing the number of samples may give us more stable estimates.
