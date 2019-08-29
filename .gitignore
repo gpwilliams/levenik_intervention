@@ -13,6 +13,7 @@
 
 # produced 
 *.pdf
+04_analysis/01_models/*.rds
 
 
 # Misc
