@@ -13,7 +13,7 @@ base_plot <- ggplot(
   geom_halfeyeh(
     fill = plotting_options$fill, 
     color = plotting_options$colour,
-    point_interval = mean_qi,
+    point_interval = median_qi,
     .width = plotting_options$intervals,
     size_range = plotting_options$point_size
   ) +
@@ -100,7 +100,7 @@ plots$testing_tvw_ms_compare <- draws$testing_tvw_ms_compare %>%
   geom_halfeyeh(
     fill = plotting_options$fill, 
     color = plotting_options$colour,
-    point_interval = mean_qi,
+    point_interval = median_qi,
     .width = plotting_options$intervals,
     size_range = plotting_options$point_size
   ) +
@@ -132,7 +132,7 @@ plots$testing_cov_median_etv_n_compare <- ggplot(
   geom_halfeyeh(
     fill = plotting_options$fill, 
     color = plotting_options$colour,
-    point_interval = mean_qi,
+    point_interval = median_qi,
     .width = plotting_options$intervals,
     size_range = plotting_options$point_size
   ) +
@@ -167,7 +167,7 @@ plots$testing_cov_median_etvw_compare <- ggplot(
   geom_halfeyeh(
     fill = plotting_options$fill, 
     color = plotting_options$colour,
-    point_interval = mean_qi,
+    point_interval = median_qi,
     .width = plotting_options$intervals,
     size_range = plotting_options$point_size - 0.5
   ) +

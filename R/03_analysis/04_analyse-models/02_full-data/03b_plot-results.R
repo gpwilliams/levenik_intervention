@@ -15,7 +15,7 @@ plots$exposure_v <- ggplot(
   geom_halfeyeh(
     fill = plotting_options$fill, 
     color = plotting_options$colour,
-    point_interval = mean_qi,
+    point_interval = median_qi,
     .width = plotting_options$intervals,
     size_range = plotting_options$point_size
   ) +
@@ -40,7 +40,7 @@ plots$exposure_vw <- ggplot(
   geom_halfeyeh(
     fill = plotting_options$fill, 
     color = plotting_options$colour,
-    point_interval = mean_qi,
+    point_interval = median_qi,
     .width = plotting_options$intervals,
     size_range = plotting_options$point_size
   ) +
@@ -67,7 +67,7 @@ plots$testing_tvw <- ggplot(
   geom_halfeyeh(
     fill = plotting_options$fill, 
     color = plotting_options$colour,
-    point_interval = mean_qi,
+    point_interval = median_qi,
     .width = plotting_options$intervals,
     size_range = plotting_options$point_size - plotting_options$point_size/2
   ) +
@@ -95,7 +95,7 @@ plots$testing_tv_n <- ggplot(
   geom_halfeyeh(
     fill = plotting_options$fill, 
     color = plotting_options$colour,
-    point_interval = mean_qi,
+    point_interval = median_qi,
     .width = plotting_options$intervals,
     size_range = plotting_options$point_size
   ) +
@@ -164,7 +164,7 @@ plots$testing_cov_etv_n_median <- ggplot(
   geom_halfeyeh(
     fill = plotting_options$fill, 
     color = plotting_options$colour,
-    point_interval = mean_qi,
+    point_interval = median_qi,
     .width = plotting_options$intervals,
     size_range = plotting_options$point_size
   ) +
@@ -195,7 +195,7 @@ plots$testing_cov_etvw_median <- ggplot(
   geom_halfeyeh(
     fill = plotting_options$fill, 
     color = plotting_options$colour,
-    point_interval = mean_qi,
+    point_interval = median_qi,
     .width = plotting_options$intervals,
     size_range = plotting_options$point_size
   ) +
