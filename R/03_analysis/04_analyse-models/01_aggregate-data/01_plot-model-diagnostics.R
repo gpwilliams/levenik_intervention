@@ -32,7 +32,7 @@ plots$pp_check_exposure_agg <- pp_check(
   scale_colour_grey() +
   theme(legend.position = "none") +
   labs(
-    x = plotting_options$nLED_title,
+    x = plotting_options$nLED_title_agg,
     y = "Density",
     title = paste0(
       "Posterior Predictive Check for the Model",
@@ -74,7 +74,7 @@ plots$pp_check_testing_agg <- pp_check(
   scale_colour_grey() +
   theme(legend.position = "none") +
   labs(
-    x = plotting_options$nLED_title,
+    x = plotting_options$nLED_title_agg,
     y = "Density",
     title = paste0(
       "Posterior Predictive Check for the Model",
@@ -116,7 +116,7 @@ plots$pp_check_testing_cov_agg <- pp_check(
   scale_colour_grey() +
   theme(legend.position = "none") +
   labs(
-    x = plotting_options$nLED_title,
+    x = plotting_options$nLED_title_agg,
     y = "Density",
     title = paste0(
       "Posterior Predictive Check for the Model",

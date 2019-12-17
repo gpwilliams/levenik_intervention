@@ -25,7 +25,8 @@ plotting_options <- list(
   pp_samples = 100,
   fill = "grey", # old green: #67d4c4
   colour = "black", # old green: #006671
-  nLED_title = "Mean Lenient nLED",
+  nLED_title = "Lenient nLED",
+  nLED_title_agg = "Mean Lenient nLED",
   diff_nLED_title = "\u0394 lenient nLED",
   point_size = c(2, 3)
 )
