@@ -1,0 +1,9 @@
+task,variety_exposure,word_type,CI,ROPE_low,ROPE_high,ROPE_Percentage,ROPE_Equivalence,HDI_low,HDI_high
+Reading,Variety Match,Contrastive - Non-Contrastive,90,-0.02,0.02,57.026,Undecided,-0.035,0.056
+Reading,Variety Mismatch,Contrastive - Non-Contrastive,90,-0.02,0.02,19.774,Undecided,-0.007,0.087
+Reading,Variety Mismatch Social,Contrastive - Non-Contrastive,90,-0.02,0.02,23.884,Undecided,-0.01,0.084
+Reading,Dialect Literacy,Contrastive - Non-Contrastive,90,-0.02,0.02,0,Rejected,0.05,0.142
+Spelling,Variety Match,Contrastive - Non-Contrastive,90,-0.02,0.02,49.528,Undecided,-0.036,0.06
+Spelling,Variety Mismatch,Contrastive - Non-Contrastive,90,-0.02,0.02,56.749,Undecided,-0.05,0.047
+Spelling,Variety Mismatch Social,Contrastive - Non-Contrastive,90,-0.02,0.02,52.453,Undecided,-0.05,0.053
+Spelling,Dialect Literacy,Contrastive - Non-Contrastive,90,-0.02,0.02,6.851,Undecided,0.006,0.118

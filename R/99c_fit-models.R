@@ -4,7 +4,7 @@ library(here)
 library(brms)
 
 # which models to fit?
-models_to_fit <- "aggregate" # can also take "full" or "both"
+models_to_fit <- "full" # can take "aggregate", "full", or "both"
 
 # load functions
 r_function_list <- list.files(
@@ -42,5 +42,5 @@ if(models_to_fit == "aggregate") {
 } else{
   stop("Please specify models to fit. Stopping fitting.")
 }
-# purrr::walk(r_file_list, source)
-purrr::walk(r_file_list[1:9], source) # for testing
+purrr::walk(r_file_list, source)
+# purrr::walk(r_file_list[1:9], source) # for testing

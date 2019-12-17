@@ -7,7 +7,7 @@ model_summaries$exposure_v_compare_agg <- gmap_rope(
   data = draws$exposure_v_compare_agg, 
   draws = .value, 
   variety_exposure,
-  bounds = c(-.035, .035) # half smalled variety exposure effect in JEP:G
+  bounds = c(-.035, .035) # half smallest variety exposure effect in JEP:G
 ) %>% 
   mutate_if(is.numeric, round, summary_options$rounding)
 

@@ -11,7 +11,7 @@ for(i in seq_along(draws)) {
 names(model_summaries) <- names(draws)
 
 # testing: for novel words
-model_summaries$testing_tv_n_agg <- draws$testing_tvw_agg %>% 
+model_summaries$testing_tv_n <- draws$testing_tvw %>% 
   ungroup() %>% 
   filter(word_familiarity == "Novel") %>% 
   select(-word_type) %>% 
@@ -20,15 +20,15 @@ model_summaries$testing_tv_n_agg <- draws$testing_tvw_agg %>%
   mutate_if(is.numeric, round, summary_options$rounding)
 
 # testing cov (median split): for novel words
-model_summaries$testing_cov_median_etv_n_agg <- 
-  draws$testing_cov_median_etv_agg %>% 
+model_summaries$testing_cov_median_etv_n <- 
+  draws$testing_cov_median_etv %>% 
   filter(word_familiarity == "Novel") %>% 
   mean_qi(.value, .width = summary_options$summary_intervals) %>% 
   mutate_if(is.numeric, round, summary_options$rounding)
   
 # do for others...
-  model_summaries$testing_cov_median_etvw_agg <- 
-    draws$testing_cov_median_etv_agg %>% 
-    filter(word_familiarity != "Novel") %>% 
-    mean_qi(.value, .width = summary_options$summary_intervals) %>% 
-    mutate_if(is.numeric, round, summary_options$rounding)
+model_summaries$testing_cov_median_etvw <- 
+  draws$testing_cov_median_etv %>% 
+  filter(word_familiarity != "Novel") %>% 
+  mean_qi(.value, .width = summary_options$summary_intervals) %>% 
+  mutate_if(is.numeric, round, summary_options$rounding)

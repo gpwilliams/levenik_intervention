@@ -6,6 +6,7 @@ message("Fitting exposure model on aggregate data.")
 
 models$exposure_agg <- brm(
   formula = formulae$exposure_agg, 
+  family = "beta",
   data = all_data_agg$exposure_agg,
   prior = priors$exposure_agg,
   cores = analysis_options$cores,
@@ -31,11 +32,11 @@ models$testing_agg <- brm(
   prior = priors$testing_agg,
   cores = analysis_options$cores,
   chains = analysis_options$chains,
-  iter = analysis_options$iterations,
+  iter = analysis_options$iterations_agg,
   seed = analysis_options$rand_seed,
   control = list(
-    adapt_delta = analysis_options$testing_adapt_delta, 
-    max_treedepth = analysis_options$max_treedepth
+    adapt_delta = analysis_options$testing_adapt_delta_agg, 
+    max_treedepth = analysis_options$max_treedepth_agg
   )
 )
 
@@ -52,11 +53,11 @@ models$testing_cov_agg <- brm(
   prior = priors$testing_agg,
   cores = analysis_options$cores,
   chains = analysis_options$chains,
-  iter = analysis_options$iterations,
+  iter = analysis_options$iterations_agg,
   seed = analysis_options$rand_seed,
   control = list(
-    adapt_delta = analysis_options$testing_adapt_delta, 
-    max_treedepth = analysis_options$max_treedepth
+    adapt_delta = analysis_options$testing_adapt_delta_agg, 
+    max_treedepth = analysis_options$max_treedepth_agg
   )
 )
 

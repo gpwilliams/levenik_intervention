@@ -1,16 +1,13 @@
 # define models for Bayesian analyses using brms::brm() ----
 
 # random intercepts by subjects; shared across all terms hence ( | id_subj |)
+
+# only 5 observations at 0 or 1, thus the adjusted mean is used here.
+# adjustment factor applied to all observations.
+
 formulae$exposure_agg <- bf(
-  mean_lenient_nLED ~ variety_exposure * word_type + 
-    (1 | id_subj | participant_number),
-  phi ~ variety_exposure * word_type + 
-    (1 | id_subj | participant_number),
-  zoi ~ variety_exposure * word_type + 
-    (1 | id_subj | participant_number),
-  coi ~ variety_exposure * word_type + 
-    (1 | id_subj | participant_number),
-  family = zero_one_inflated_beta()
+  adjusted_mean_lenient_nLED ~ variety_exposure * word_type + 
+    (1 | participant_number)
 )
 
 formulae$testing_agg <- bf(

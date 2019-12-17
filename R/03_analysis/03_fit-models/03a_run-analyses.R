@@ -37,11 +37,21 @@ models$testing <- brm(
   chains = analysis_options$chains,
   iter = analysis_options$iterations,
   seed = analysis_options$rand_seed,
+  init_r = analysis_options$init_r,
   control = list(
     adapt_delta = analysis_options$testing_adapt_delta, 
     max_treedepth = analysis_options$max_treedepth
   )
 )
+
+# see this for other pp-checks: https://mjskay.github.io/tidybayes/articles/tidy-brms.html
+
+# prior problems: humps at 0.2, dips at 0.24 until further hump at 0.75/0.8.
+
+# removed controls, removed phi paramater from model.
+
+
+# quick question: can we model this without the phi component? i.e. just mean and zoi/coi?
 
 write_rds(
   models$testing, 
@@ -58,6 +68,7 @@ models$testing_cov <- brm(
   chains = analysis_options$chains,
   iter = analysis_options$iterations,
   seed = analysis_options$rand_seed,
+  init_r = analysis_options$init_r,
   control = list(
     adapt_delta = analysis_options$testing_adapt_delta, 
     max_treedepth = analysis_options$max_treedepth
