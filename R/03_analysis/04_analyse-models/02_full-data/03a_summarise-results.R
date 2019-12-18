@@ -10,15 +10,6 @@ for(i in seq_along(draws)) {
 }
 names(model_summaries) <- names(draws)
 
-# testing: for novel words
-model_summaries$testing_tv_n <- draws$testing_tvw %>% 
-  ungroup() %>% 
-  filter(word_familiarity == "Novel") %>% 
-  select(-word_type) %>% 
-  group_by(task, variety_exposure) %>% 
-  median_qi(.value, .width = summary_options$summary_intervals) %>% 
-  mutate_if(is.numeric, round, summary_options$rounding)
-
 # testing cov (median split): for novel words
 model_summaries$testing_cov_median_etv_n <- 
   draws$testing_cov_median_etv %>% 

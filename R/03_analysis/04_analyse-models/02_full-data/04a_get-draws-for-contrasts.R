@@ -22,7 +22,7 @@ draws$exposure_vw_compare <- draws$exposure_vw %>%
 
 draws$testing_v_compare <- draws$testing_tvw %>% 
   group_by(variety_exposure, .draw) %>%
-  summarise(.value = mean(.value)) %>% 
+  summarise(.value = median(.value)) %>% 
   compare_levels(
     .value, 
     by = variety_exposure,
@@ -40,7 +40,7 @@ draws$testing_v_compare <- draws$testing_tvw %>%
 draws$testing_v_n_compare <- draws$testing_tvw %>% 
   filter(word_familiarity == "Novel") %>% 
   group_by(variety_exposure, .draw) %>%
-  summarise(.value = mean(.value)) %>% 
+  summarise(.value = median(.value)) %>% 
   compare_levels(
     .value, 
     by = variety_exposure,
@@ -82,7 +82,7 @@ draws$testing_cov_median_etv_n_compare <-
   filter(word_familiarity == "Novel") %>%
   select(-c(.chain, .iteration)) %>% 
   group_by(exposure_test_nLED_group, task, variety_exposure, .draw) %>% 
-  summarise(.value = mean(.value)) %>% 
+  summarise(.value = median(.value)) %>% 
   compare_levels(.value, by = exposure_test_nLED_group) %>% 
   compare_levels(.value, by = variety_exposure)
 
@@ -92,5 +92,5 @@ draws$testing_cov_median_etvw_compare <-
   filter(word_familiarity != "Novel") %>%
   select(-c(.chain, .iteration)) %>% 
   group_by(exposure_test_nLED_group, task, variety_exposure, word_type, .draw) %>% 
-  summarise(.value = mean(.value)) %>% 
+  summarise(.value = median(.value)) %>% 
   compare_levels(.value, by = word_type)

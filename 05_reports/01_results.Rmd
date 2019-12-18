@@ -398,6 +398,10 @@ format_summary(
 
 In all instances there is some evidence that performance is better for non-contrastive words relative to contrastive words. However, equivalence between the two word types is only confidently rejected for the Dialect Literacy condition. Thus, it is likely that performance was worse for contrastive words relative to non-contrastive words in the Dialect Literacy condition in the Vocabulary Test.
 
+
+
+
+
 # Testing Phase Model
 
 A summary of the Testing Phase model is provided below. This can be used to determine model diagnostics and coefficients. As with the Vocabulary Test Model, to answer questions pertaining to our pre-registered hypotheses, and to generate plots for these summaries, we used draws from the posterior for different combinations of conditions using the tidybayes R-package (CITATION). Similarly, hypothesis tests are provided in the form of Region of Practical Equivalence (ROPE) analyses from these draws using the bayestestR R-package. 

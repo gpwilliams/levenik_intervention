@@ -98,3 +98,4 @@ if(models_to_summarise %in% c("full", "both")) {
 r_file_list <- unique(r_file_list)
 
 purrr::walk(r_file_list, source)
+# purrr::walk(r_file_list[1:4], source) # for testing
