@@ -24,19 +24,17 @@ draws$exposure_vw <-
   mutate(word_type = fct_relevel(word_type, "Non-Contrastive")) %>% 
   group_by(variety_exposure, word_type)
 
-# variety
-draws$exposure_v <-
+# variety exposure
+
+draws$exposure_v <- 
   draws$exposure_vw %>% 
-  group_by(variety_exposure, .draw) %>%
-  summarise(
-    .value = mean(.value),
-    .
-  )
+  ungroup() %>% 
+  group_by(variety_exposure)
 
 # testing phase ----
 
-# task, variety exposure, and word type
-draws$testing_tvw <- 
+# task and variety exposure (with word type coded)
+draws$testing_tv <- 
   all_data$testing %>% 
   as.data.frame() %>% 
   data_grid(task, variety_exposure, word_type) %>% 
@@ -60,33 +58,34 @@ draws$testing_tvw <-
     word_familiarity = fct_relevel(word_familiarity, "Trained")) %>% 
   group_by(task, variety_exposure, word_type)
 
-# variety exposure
+# task and variety exposure for contrastive and non-contrastive words
 
-draws$testing_v <- draws$testing_tvw %>% 
-  group_by(variety_exposure, .draw) %>%
-  summarise(
-    .value = mean(.value),
-    .
-  )
-
-# task and variety exposure
-
-draws$testing_tv <- draws$testing_tvw %>% 
-  group_by(task, variety_exposure, .draw) %>%
-  summarise(
-    .value = mean(.value),
-    .
-  )
+draws$testing_tvw <- draws$testing_tv %>% 
+  filter(word_familiarity == "Trained") %>% 
+  ungroup() %>% 
+  mutate(word_type = factor(word_type)) %>% 
+  group_by(task, variety_exposure, word_type)
 
 # task and variety exposure for novel words only
 
-draws$testing_tv_n <- draws$testing_tvw %>%
-  filter(word_familiarity == "Novel") %>% 
-  group_by(task, variety_exposure, .draw) %>%
-  summarise(
-    .value = mean(.value),
-    .
-  ) 
+draws$testing_tv_n <- 
+  draws$testing_tv  %>% 
+  filter(word_type == "Novel") %>%
+  ungroup() %>% 
+  group_by(task, variety_exposure)
+
+# variety exposure for novel words only
+
+draws$testing_v_n <- draws$testing_tv_n %>% 
+  ungroup() %>% 
+  group_by(variety_exposure)
+
+# variety exposure
+
+draws$testing_v <- 
+  draws$testing_tv %>% 
+  ungroup() %>% 
+  group_by(variety_exposure)
 
 # testing phase with vocabulary test performance as a covariate ----
 
@@ -141,3 +140,14 @@ draws$testing_cov_median_etv <- draws$testing_cov_tvw %>%
   )) %>% 
   select(-c(mean_exposure_test_nLED)) %>% 
   group_by(exposure_test_nLED_group, task, variety_exposure, word_type)
+
+# testing cov (median split): task and variety for novel words
+draws$testing_cov_median_etv_n <- 
+  draws$testing_cov_median_etv %>% 
+  filter(word_familiarity == "Novel")
+
+# testing cov (median split): task and variety for 
+# contrastive and non-contrastive words
+draws$testing_cov_median_etvw <- 
+  draws$testing_cov_median_etv %>% 
+  filter(word_familiarity != "Novel")

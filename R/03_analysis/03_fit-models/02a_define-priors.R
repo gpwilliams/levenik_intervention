@@ -4,12 +4,12 @@
 
 # set informative priors
 priors$exposure <- c(
-  set_prior("normal(0, 5)", class = "Intercept"),
-  set_prior("normal(0, 3)", class = "Intercept", dpar = "phi"),
+  set_prior("normal(0.5, 1)", class = "Intercept"), # previously (0, 5)
+  set_prior("normal(1, 3)", class = "Intercept", dpar = "phi"), # previously (0, 3)
   set_prior("logistic(0, 1)", class = "Intercept", dpar = "zoi"),
   set_prior("logistic(0, 1)", class = "Intercept", dpar = "coi"),
   set_prior("normal(0, 0.5)", class = "b"),
-  set_prior("normal(0, 1)", class = "b", dpar = "phi"),
+  set_prior("normal(0, 0.5)", class = "b", dpar = "phi"), # previously (0, 1)
   set_prior("normal(0, 5)", class = "b", dpar = "zoi"),
   set_prior("normal(0, 0.5)", class = "b", dpar = "coi"),
   set_prior("normal(0, 1)", class = "sd"),
@@ -29,16 +29,14 @@ priors$exposure <- c(
 
 # testing priors ----
 
-# slope for b and b for coi changed from sd = 0.5 to 1
-
 priors$testing <- c(
   set_prior("normal(0, 5)", class = "Intercept"),
-  set_prior("normal(0, 3)", class = "Intercept", dpar = "phi"),
+  set_prior("normal(1, 3)", class = "Intercept", dpar = "phi"), # previously (0, 3)
   set_prior("logistic(0, 1)", class = "Intercept", dpar = "zoi"),
   set_prior("logistic(0, 1)", class = "Intercept", dpar = "coi"),
-  set_prior("normal(0, 1)", class = "b"),
-  set_prior("normal(0, 1)", class = "b", dpar = "phi"),
-  set_prior("normal(0, 5)", class = "b", dpar = "zoi"),
+  set_prior("normal(0, 0.5)", class = "b"), # previously (0, 1)
+  set_prior("normal(0, 0.5)", class = "b", dpar = "phi"), # previously (0, 1)
+  set_prior("normal(0, 1)", class = "b", dpar = "zoi"), # previously (0, 5)
   set_prior("normal(0, 1)", class = "b", dpar = "coi"),
   set_prior("normal(0, 1)", class = "sd"),
   set_prior("normal(0, 1)", class = "sd", dpar = "phi"),

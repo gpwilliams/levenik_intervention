@@ -32,9 +32,27 @@ model_summaries$testing_v_compare <- gmap_rope(
 ) %>% 
   mutate_if(is.numeric, round, summary_options$rounding)
 
+# difference in nLED by task between variety exposure conditions
+model_summaries$testing_tv_compare <- gmap_rope(
+  data = draws$testing_tv_compare, 
+  draws = .value, 
+  variety_exposure,
+  bounds = c(-.035, .035)
+) %>% 
+  mutate_if(is.numeric, round, summary_options$rounding)
+
 # difference in nLED between variety exposure conditions for novel words
 model_summaries$testing_v_n_compare <- gmap_rope(
   data = draws$testing_v_n_compare, 
+  draws = .value, 
+  variety_exposure,
+  bounds = c(-.035, .035)
+) %>% 
+  mutate_if(is.numeric, round, summary_options$rounding)
+
+# difference in nLED between variety exposure conditions by task for novel words
+model_summaries$testing_tv_n_compare <- gmap_rope(
+  data = draws$testing_tv_n_compare, 
   draws = .value, 
   variety_exposure,
   bounds = c(-.035, .035)

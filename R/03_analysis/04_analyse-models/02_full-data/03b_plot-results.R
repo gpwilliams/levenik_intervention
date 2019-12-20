@@ -22,7 +22,7 @@ plots$exposure_v <- ggplot(
   labs(
     x = plotting_options$nLED_title, 
     y = "Variety Exposure",
-    title = "Mean Lenient nLEDs by Variety Exposure in the Exposure Phase.",
+    title = "Median Lenient nLEDs by Variety Exposure in the Exposure Phase.",
     caption = plotting_options$caption
   ) +
   scale_x_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.2)) +
@@ -49,7 +49,7 @@ plots$exposure_vw <- ggplot(
     x = plotting_options$nLED_title, 
     y = "Word Type",
     title = paste0(
-      "Mean Lenient nLEDs by Variety Exposure and Word Type",
+      "Median Lenient nLEDs by Variety Exposure and Word Type",
       "\nin the Exposure Phase."
       ),
     caption = plotting_options$caption
@@ -76,7 +76,7 @@ plots$testing_tvw <- ggplot(
     x = plotting_options$nLED_title, 
     y = "Word Type",
     title = paste0(
-      "Mean Lenient nLEDs by Task, Variety Exposure,",
+      "Median Lenient nLEDs by Task, Variety Exposure,",
       "\nand Word Type in the Testing Phase."
       ),
     caption = plotting_options$caption
@@ -85,11 +85,10 @@ plots$testing_tvw <- ggplot(
   theme(axis.text.x = element_text(size = 10)) +
   coord_flip()
 
-# by task and variety exposure for novel words only
+# by task and variety exposure
 
-plots$testing_tv_n <- ggplot(
-  data = draws$testing_tvw %>% 
-    filter(word_familiarity == "Novel") %>% 
+plots$testing_tv <- ggplot(
+  data = draws$testing_tv %>% 
     escape_character(variety_exposure, pattern = " "), 
   aes(x = .value, y = variety_exposure)) +
   geom_halfeyeh(
@@ -104,9 +103,85 @@ plots$testing_tv_n <- ggplot(
     x = plotting_options$nLED_title, 
     y = "Variety Exposure",
     title = paste0(
-      "Mean Lenient nLEDs by Task and Variety Exposure",
+      "Median Lenient nLEDs by Task and Variety Exposure",
+      "\nin the Testing Phase."
+    ),
+    caption = plotting_options$caption
+  ) +
+  scale_x_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.2)) +
+  coord_flip()
+
+# by variety exposure for novel words only
+
+plots$testing_v_n <- ggplot(
+  data = draws$testing_v_n %>% 
+    escape_character(variety_exposure, pattern = " "), 
+  aes(x = .value, y = variety_exposure)) +
+  geom_halfeyeh(
+    fill = plotting_options$fill, 
+    color = plotting_options$colour,
+    point_interval = median_qi,
+    .width = plotting_options$intervals,
+    size_range = plotting_options$point_size
+  ) +
+  labs(
+    x = plotting_options$nLED_title, 
+    y = "Variety Exposure",
+    title = paste0(
+      "Median Lenient nLEDs by Task and Variety Exposure",
+      "\nfor Novel Words Only in the Testing Phase."
+    ),
+    caption = plotting_options$caption
+  ) +
+  scale_x_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.2)) +
+  coord_flip()
+
+# by task and variety exposure for novel words only
+
+plots$testing_tv_n <- ggplot(
+  data = draws$testing_tv_n %>% 
+    escape_character(variety_exposure, pattern = " "), 
+  aes(x = .value, y = variety_exposure)) +
+  geom_halfeyeh(
+    fill = plotting_options$fill, 
+    color = plotting_options$colour,
+    point_interval = median_qi,
+    .width = plotting_options$intervals,
+    size_range = plotting_options$point_size
+  ) +
+  facet_grid(.~task) +
+  labs(
+    x = plotting_options$nLED_title, 
+    y = "Variety Exposure",
+    title = paste0(
+      "Median Lenient nLEDs by Task and Variety Exposure",
       "\nfor Novel Words Only in the Testing Phase."
       ),
+    caption = plotting_options$caption
+  ) +
+  scale_x_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.2)) +
+  coord_flip()
+
+# by variety exposure
+
+plots$testing_v <- ggplot(
+  data = draws$testing_v %>% 
+    escape_character(variety_exposure, pattern = " "), 
+  aes(x = .value, y = variety_exposure)) +
+  geom_halfeyeh(
+    fill = plotting_options$fill, 
+    color = plotting_options$colour,
+    point_interval = median_qi,
+    .width = plotting_options$intervals,
+    size_range = plotting_options$point_size
+  ) +
+  labs(
+    x = plotting_options$nLED_title, 
+    y = "Variety Exposure",
+    title = paste0(
+      "Median Lenient nLEDs by Variety Exposure",
+      "\nin the Testing Phase."
+    ),
     caption = plotting_options$caption
   ) +
   scale_x_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.2)) +
@@ -126,11 +201,11 @@ plots$testing_cov_etv <- ggplot(
   facet_grid(task ~ variety_exposure) +
   guides(fill = FALSE) +
   labs(
-    x = "Mean nLED for the Vocabulary Test",
-    y = "Mean nLED during Testing",
+    x = "Median nLED for the Vocabulary Test",
+    y = "Median nLED during Testing",
     title = paste0(
-      "Mean Lenient nLEDs by Word Type in the Testing Phase",
-      "\nby Task and Variety Exposure relative to Mean Performance",
+      "Median Lenient nLEDs by Word Type in the Testing Phase",
+      "\nby Task and Variety Exposure relative to Median Performance",
       "\non the Vocabulary Test."
     ),
     caption = paste0(
@@ -156,9 +231,8 @@ plots$testing_cov_etv <- ggplot(
 
 # testing with vocab test performance for novel words (median split) ----
 
-plots$testing_cov_etv_n_median <- ggplot(
-  data = draws$testing_cov_median_etv %>% 
-    filter(word_familiarity == "Novel") %>% 
+plots$testing_cov_median_etv_n <- ggplot(
+  data = draws$testing_cov_median_etv_n %>% 
     escape_character(variety_exposure, pattern = " "), 
   aes(x = .value, y = exposure_test_nLED_group)) +
   geom_halfeyeh(
@@ -170,10 +244,10 @@ plots$testing_cov_etv_n_median <- ggplot(
   ) +
   facet_grid(task ~ variety_exposure) +
   labs(
-    x = "Mean Lenient nLED during Testing", 
+    x = "Median Lenient nLED during Testing", 
     y = "Vocabulary Test nLED",
     title = paste0(
-      "Mean Lenient nLEDs for Novel Words in the Testing Phase split by",
+      "Median Lenient nLEDs for Novel Words in the Testing Phase split by",
       "\nTask, Variety Exposure Condition, and Vocabulary Test Performance."
     ),
     caption = plotting_options$caption
@@ -184,9 +258,8 @@ plots$testing_cov_etv_n_median <- ggplot(
 
 # testing with vocab test performance by word type (median split) ----
 
-plots$testing_cov_etvw_median <- ggplot(
-  data = draws$testing_cov_median_etv %>% 
-    filter(word_familiarity != "Novel") %>% 
+plots$testing_cov_median_etvw <- ggplot(
+  data = draws$testing_cov_median_etvw %>% 
     escape_character(variety_exposure, pattern = " ") %>% 
     mutate(exposure_test_nLED_group = as.character(
       paste(exposure_test_nLED_group, "nLED")
@@ -207,10 +280,10 @@ plots$testing_cov_etvw_median <- ggplot(
       )
   ) +
   labs(
-    x = "Mean Lenient nLED during Testing", 
+    x = "Median Lenient nLED during Testing", 
     y = NULL,
     title = paste0(
-      "Mean Lenient nLEDs by Word Type in the Testing Phase split by",
+      "Median Lenient nLEDs by Word Type in the Testing Phase split by",
       "\nTask, Variety Exposure Condition, and Vocabulary Test Performance."
     ),
     caption = plotting_options$caption

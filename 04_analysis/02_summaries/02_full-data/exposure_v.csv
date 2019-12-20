@@ -1,13 +1,13 @@
 variety_exposure,.value,.lower,.upper,.width,.point,.interval
-Variety Match,0.687,0.628,0.733,0.95,median,qi
-Variety Mismatch,0.637,0.572,0.69,0.95,median,qi
-Variety Mismatch Social,0.665,0.609,0.709,0.95,median,qi
-Dialect Literacy,0.661,0.596,0.712,0.95,median,qi
-Variety Match,0.687,0.638,0.726,0.9,median,qi
-Variety Mismatch,0.637,0.583,0.682,0.9,median,qi
-Variety Mismatch Social,0.665,0.619,0.702,0.9,median,qi
-Dialect Literacy,0.661,0.608,0.705,0.9,median,qi
-Variety Match,0.687,0.65,0.718,0.8,median,qi
-Variety Mismatch,0.637,0.596,0.673,0.8,median,qi
-Variety Mismatch Social,0.665,0.63,0.694,0.8,median,qi
-Dialect Literacy,0.661,0.621,0.696,0.8,median,qi
+Variety Match,0.689,0.609,0.743,0.95,median,qi
+Variety Mismatch,0.638,0.553,0.702,0.95,median,qi
+Variety Mismatch Social,0.666,0.587,0.726,0.95,median,qi
+Dialect Literacy,0.665,0.561,0.731,0.95,median,qi
+Variety Match,0.689,0.623,0.736,0.9,median,qi
+Variety Mismatch,0.638,0.568,0.693,0.9,median,qi
+Variety Mismatch Social,0.666,0.6,0.718,0.9,median,qi
+Dialect Literacy,0.665,0.577,0.723,0.9,median,qi
+Variety Match,0.689,0.639,0.727,0.8,median,qi
+Variety Mismatch,0.638,0.585,0.682,0.8,median,qi
+Variety Mismatch Social,0.666,0.615,0.708,0.8,median,qi
+Dialect Literacy,0.665,0.598,0.713,0.8,median,qi
