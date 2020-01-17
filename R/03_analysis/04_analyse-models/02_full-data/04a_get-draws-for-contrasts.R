@@ -93,23 +93,24 @@ draws$testing_tvw_ms_compare <- draws$testing_tvw %>%
 # testing covariate comparisons ----
 
 # note, has only 20% of draws as other contrasts
+# as splitting by median means we have uneven levels otherwise
 
 # compare high vs. low performing voctest scores, and check for differences
 # between variety exposure conditions, split by task.
 draws$testing_cov_median_etv_n_compare <- 
-  draws$testing_cov_median_etv %>%
-  filter(word_familiarity == "Novel") %>%
+  draws$testing_cov_median_etv_n %>%
   select(-c(.chain, .iteration)) %>% 
-  # group_by(exposure_test_nLED_group, task, variety_exposure, .draw) %>% 
-  # summarise(.value = median(.value)) %>% 
+  group_by(exposure_test_nLED_group, task, variety_exposure, .draw) %>% 
+  summarise(.value = median(.value)) %>% 
   compare_levels(.value, by = exposure_test_nLED_group) %>% 
   compare_levels(.value, by = variety_exposure)
+
 
 # word type split by voctest group, task, and variety exposure
 draws$testing_cov_median_etvw_compare <- 
   draws$testing_cov_median_etv %>%
   filter(word_familiarity != "Novel") %>%
   select(-c(.chain, .iteration)) %>% 
-  # group_by(exposure_test_nLED_group, task, variety_exposure, word_type, .draw) %>% 
-  # summarise(.value = median(.value)) %>% 
+  group_by(exposure_test_nLED_group, task, variety_exposure, word_type, .draw) %>% 
+  summarise(.value = median(.value)) %>% 
   compare_levels(.value, by = word_type)

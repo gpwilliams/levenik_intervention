@@ -1,4 +1,4 @@
-gmap_rope <- function(data, draws, ..., ci = .90, bounds = c(-0.1, 0.1)) {
+gmap_rope <- function(data, draws, ..., ci = .90, bounds = c(-0.1, 0.1), include_pd = TRUE) {
   # Applies the ROPE function to groups of draws, usually from 
   # tidybayes::compare_levels()
   #
@@ -11,6 +11,8 @@ gmap_rope <- function(data, draws, ..., ci = .90, bounds = c(-0.1, 0.1)) {
   #       bayestestR::equivalence_test(); -0.1 and 0.1.
   #   ci = credible interval probability related to the proportion of the 
   #     HDI to use in the ROPE.
+  #   pd = whether or not to also return the probability of direction.
+  #         defaults to TRUE.
   #   ... = any bare columns named by which to group the data
   #     prior to performing the ROPE procedure.
   # Outputs:
@@ -18,7 +20,7 @@ gmap_rope <- function(data, draws, ..., ci = .90, bounds = c(-0.1, 0.1)) {
   #     ROPE bounds, percentage of distribution from CI in the ROPE,
   #     a decision criterion for accepting equivlence, and the lower and higher
   #     bounds of the HDI.
-  data %>% 
+  rope <- data %>% 
     group_by(!!!enquos(...)) %>% 
     summarise(values = list({{draws}})) %>% 
     dplyr::mutate(
@@ -33,4 +35,14 @@ gmap_rope <- function(data, draws, ..., ci = .90, bounds = c(-0.1, 0.1)) {
     ) %>% 
     dplyr::select(-values) %>% 
     tidyr::unnest(equivalence)
+  
+  pd <- data %>% 
+    group_by(!!!enquos(...)) %>% 
+    summarise(pd = p_direction(.value))
+  
+  if(include_pd == TRUE) {
+    left_join(rope, pd)
+  } else{
+    rope
+  }
 }

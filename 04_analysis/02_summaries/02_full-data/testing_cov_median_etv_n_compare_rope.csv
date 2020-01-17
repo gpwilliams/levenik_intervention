@@ -1,0 +1,13 @@
+exposure_test_nLED_group,task,variety_exposure,CI,ROPE_low,ROPE_high,ROPE_Percentage,ROPE_Equivalence,HDI_low,HDI_high,pd
+High - Low,Reading,Variety Mismatch - Variety Match,90,-0.02,0.02,31.964,Undecided,-0.086,0.115,57.9
+High - Low,Reading,Variety Mismatch Social - Variety Match,90,-0.02,0.02,24.417,Undecided,-0.135,0.075,64.4
+High - Low,Reading,Dialect Literacy - Variety Match,90,-0.02,0.02,24.639,Undecided,-0.128,0.118,53.2
+High - Low,Reading,Variety Mismatch Social - Variety Mismatch,90,-0.02,0.02,23.529,Undecided,-0.143,0.057,72.9
+High - Low,Reading,Dialect Literacy - Variety Mismatch,90,-0.02,0.02,24.306,Undecided,-0.144,0.094,59.1
+High - Low,Reading,Dialect Literacy - Variety Mismatch Social,90,-0.02,0.02,22.309,Undecided,-0.109,0.136,58.7
+High - Low,Spelling,Variety Mismatch - Variety Match,90,-0.02,0.02,24.417,Undecided,-0.095,0.156,61.3
+High - Low,Spelling,Variety Mismatch Social - Variety Match,90,-0.02,0.02,14.539,Undecided,-0.041,0.172,88.3
+High - Low,Spelling,Dialect Literacy - Variety Match,90,-0.02,0.02,18.424,Undecided,-0.145,0.133,57.4
+High - Low,Spelling,Variety Mismatch Social - Variety Mismatch,90,-0.02,0.02,18.646,Undecided,-0.084,0.193,72.8
+High - Low,Spelling,Dialect Literacy - Variety Mismatch,90,-0.02,0.02,17.98,Undecided,-0.211,0.131,64.2
+High - Low,Spelling,Dialect Literacy - Variety Mismatch Social,90,-0.02,0.02,11.876,Undecided,-0.238,0.085,78.5

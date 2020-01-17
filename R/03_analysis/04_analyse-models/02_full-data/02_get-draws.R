@@ -95,7 +95,7 @@ draws$testing_cov_tvw <-
   data_grid(
     mean_exposure_test_nLED = modelr::seq_range(
       mean_exposure_test_nLED, 
-      n = 51
+      n = 50
     ),
     task, 
     variety_exposure, 
@@ -144,7 +144,9 @@ draws$testing_cov_median_etv <- draws$testing_cov_tvw %>%
 # testing cov (median split): task and variety for novel words
 draws$testing_cov_median_etv_n <- 
   draws$testing_cov_median_etv %>% 
-  filter(word_familiarity == "Novel")
+  filter(word_familiarity == "Novel") %>% 
+  ungroup() %>% 
+  group_by(exposure_test_nLED_group, task, variety_exposure)
 
 # testing cov (median split): task and variety for 
 # contrastive and non-contrastive words

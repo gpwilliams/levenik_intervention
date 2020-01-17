@@ -1,5 +1,13 @@
-variety_exposure,word_type,CI,ROPE_low,ROPE_high,ROPE_Percentage,ROPE_Equivalence,HDI_low,HDI_high
-Variety Match,Contrastive - Non-Contrastive,90,-0.02,0.02,38.73,Undecided,-0.03,0.084
-Variety Mismatch,Contrastive - Non-Contrastive,90,-0.02,0.02,35.063,Undecided,-0.03,0.09
-Variety Mismatch Social,Contrastive - Non-Contrastive,90,-0.02,0.02,22.92,Undecided,-0.011,0.091
-Dialect Literacy,Contrastive - Non-Contrastive,90,-0.02,0.02,16.106,Undecided,-0.01,0.121
+variety_exposure,word_type,.value,.lower,.upper,.width,.point,.interval
+Variety Match,Contrastive - Non-Contrastive,0.025,-0.042,0.097,0.95,median,qi
+Variety Mismatch,Contrastive - Non-Contrastive,0.029,-0.042,0.104,0.95,median,qi
+Variety Mismatch Social,Contrastive - Non-Contrastive,0.04,-0.02,0.105,0.95,median,qi
+Dialect Literacy,Contrastive - Non-Contrastive,0.053,-0.022,0.138,0.95,median,qi
+Variety Match,Contrastive - Non-Contrastive,0.025,-0.03,0.084,0.9,median,qi
+Variety Mismatch,Contrastive - Non-Contrastive,0.029,-0.029,0.091,0.9,median,qi
+Variety Mismatch Social,Contrastive - Non-Contrastive,0.04,-0.009,0.093,0.9,median,qi
+Dialect Literacy,Contrastive - Non-Contrastive,0.053,-0.01,0.122,0.9,median,qi
+Variety Match,Contrastive - Non-Contrastive,0.025,-0.018,0.07,0.8,median,qi
+Variety Mismatch,Contrastive - Non-Contrastive,0.029,-0.016,0.076,0.8,median,qi
+Variety Mismatch Social,Contrastive - Non-Contrastive,0.04,0.002,0.08,0.8,median,qi
+Dialect Literacy,Contrastive - Non-Contrastive,0.053,0.005,0.105,0.8,median,qi
