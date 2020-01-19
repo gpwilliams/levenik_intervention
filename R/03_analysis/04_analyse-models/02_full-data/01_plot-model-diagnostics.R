@@ -4,22 +4,22 @@ plots <- list()
 
 pp_arrows <- list(
   exposure_arrows = tibble(
-    x1 = c(0.15, 0.5),
-    x2 = c(0.25, 0.4),
-    y1 = c(0.7, 0.35),
-    y2 = c(0.55, 0.7)
+    x1 = c(0.55, 0.63),
+    y1 = c(1.6, 0.3),
+    x2 = c(0.74, 0.83),
+    y2 = c(1.2, 0.65)
   ),
   testing_arrows = tibble(
     x1 = c(0.5, 0.7),
-    x2 = c(0.23, 0.6),
     y1 = c(2.1, 1.3),
+    x2 = c(0.23, 0.6),
     y2 = c(1.45, 0.7)
   ),
   testing_cov_arrows = tibble(
-    x1 = c(0.50, 0.25),
-    x2 = c(0.40, 0.38),
-    y1 = c(1.00, 0.35),
-    y2 = c(0.83, 0.70)
+    x1 = c(0.50, 0.30),    
+    y1 = c(1.20, 1.58),
+    x2 = c(0.40, 0.25),
+    y2 = c(0.94, 1.3)
   )
 )
 
@@ -41,8 +41,8 @@ plots$pp_check_exposure <- pp_check(
   ) +
   annotate(
     "text", 
-    x = 0.15, 
-    y = 0.75, 
+    x = 0.55, 
+    y = 1.7, 
     fontface = "italic", 
     label = "Posterior Sample Density", 
     size = 6
@@ -127,7 +127,7 @@ plots$pp_check_testing_cov <- pp_check(
   annotate(
     "text", 
     x = 0.50, 
-    y = 1.05, 
+    y = 1.3, 
     fontface = "italic", 
     label = "Posterior Sample Density", 
     size = 6,
@@ -135,8 +135,8 @@ plots$pp_check_testing_cov <- pp_check(
   ) +
   annotate(
     "text", 
-    x = 0.15, 
-    y = 0.3, 
+    x = 0.3, 
+    y = 1.7, 
     fontface = "italic", 
     label = "Observed Sample Density", 
     size = 6
