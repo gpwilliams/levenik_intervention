@@ -176,7 +176,7 @@ names(model_summaries) <- model_summaries_dir %>%
 
 ```{r define-global-variables}
 summary_oldnames <- c(".value", ".width")
-summary_newnames <- c("Mean", "Width")
+summary_newnames <- c("Median", "Width")
 summary_drop <- c(".point", ".interval") # for some reason can't be in a list.
 
 rope_oldnames <- c("ROPE_Percentage", "ROPE_Equivalence")
@@ -290,16 +290,21 @@ As can be seen from the plots, the posterior predictive checks indicate a genera
 
 # Vocabulary Test Model
 
-A summary of the population-level (fixed) effects for the Vocabulary Test model is provided below. This can be used to determine model diagnostics and coefficients. To answer questions pertaining to our pre-registered hypotheses, and to generate plots for these summaries, we used draws from the posterior for different combinations of conditions using the tidybayes R-package (CITATION). Hypothesis tests are then provided in the form of Region of Practical Equivalence (ROPE) analyses from these draws using the bayestestR R-package. 
+A summary of the population-level (fixed) effects for the Vocabulary Test model is provided below. This can be used to determine model diagnostics, coefficients, and estimates around these coefficients using 95% credible intervals. To answer questions pertaining to our pre-registered hypotheses, and to generate plots for these summaries, we used draws from the posterior for different combinations of conditions using the `r cite_package("tidybayes")` R-package. 
+
+In all following plots and reported statistics, summaries are provided for only the overall nLEDs taking into account all distributional parameters when sampling from the posterior. For reported results in tables, estaimtes are based on the median and credible interval around the median. The median was selected to summarise these models over the mean as this method is more robust to distributions with more than one mode. Thus, we do not provide individual statistics and plots for the individual distributional terms (e.g. for zero-one inflation, or conditional-one inflation) as we did not specify any hypotheses related to these individual terms. Instead, the zero-one inflated Beta models are used purely to improve model fit and to make more accurate predictions about the overall differences in nLEDs across conditions. Here, 90% credible intervals are used to summarise uncertainty in the estimates are more stable than wider intervals when given a limited number of draws from the posterior (Kruschke, 2014).
+
+To determine support for hypotheses using these estimates, the probability of direction $P(direction)$, or *pd*, is provided. This is defined as the proportion of the posterior that is of the same sign as the median. In previous simulations, the *pd* has been found to be linearly related to the frequentist *p*-value (Makowski et al., 2019). The *pd* therefore provides an index of the existence of an effect outlining certainty in whether an effect is positive or negative. This can be used to ultimately reject the null hypothesis, but like the frequentist *p*-value does not give a reliable estimate of evidence in support of the null hypothesis. Additional hypothesis tests are provided in the form of Region of Practical Equivalence (ROPE) analyses from these draws using the `r cite_package("bayestestR")` R-package. This defines an area around the point null that is practically equivalent to zero for assessing evidence in support of the null hypothesis (Krushke, 2014). Here, the bounds of the ROPE range are defined as half the smallest effect reported in the Williams et al. (forthcoming) parameter estimates and intervals report the 90% highest density interval (HDI) of the posterior. The HDI differs from the equal tailed intervals used for summary statistics in that values within the range are always more probable than values outside of the range, and the interval need not exclude an equal amount of the distribution towards both tails. With symmetric distributions, the two methods produce similar results.
+
+In plots, posterior medians and 80% and 90% credible intervals are provided for different conditions in the plots below. Table summaries also provide posterior medians along with 90% credible intervals.
+
+In the tables of population level (fixed) effects, $\hat{R}$ is a measure of convergence for within- and between-chain estimates, with values closer to 1 being preferable. The bulk and tail effective sample sizes give diagnostics of the number of draws which contain the same amount of information as the dependent sample (CITE STAN WEBSITE), with higher values being preferable. The tail effective sample size is determined at the 5% and 95% quantiles, while the bulk is determined at values in between these quantiles.
 
 ```{r exposure-model-summary}
 fitted_models[["exposure_model"]]$fixed %>% 
-  kableExtra::kable()
+  kableExtra::kable(digits = 3) %>% 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
 ```
-
-Posterior medians and 80% and 90% credible intervals are provided for different conditions in the plots below. Table summaries also provide posterior medians along with 90% credible intervals.
-
-In all following plots and reported statistics, summaries are provided for only the overall nLEDs taking into account all distributional parameters when sampling from the posterior. Such estaimtes are based on the median and credible interval around the median. The median was selected to summarise these models over the mean as this method is more robust to distributions with more than one mode. Thus, we do not provide individual statistics and plots for the individual distributional terms (e.g. for zero-one inflation, or conditional-one inflation) as we did not specify any hypotheses related to these individual terms. Instead, the zero-one inflated Beta models are used purely to improve model fit and to make more accurate predictions about the overall differences in nLEDs across conditions.
 
 ## Variety Exposure
 
@@ -310,7 +315,7 @@ knitr::include_graphics(c(
 ))
 ```
 
-Posterior means and credible intervals are provided in the table below.
+Posterior means and 90% credible intervals are provided in the table below.
 
 ```{r variety-exposure-condition-exposure}
 format_summary(
@@ -326,28 +331,50 @@ format_summary(
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
 ```
 
+The differences between conditions were compared using the `compare_levels()` function from the `r cite_package("tidybayes")` R-package. This allows for a direct comparison of differences between groups, which provides a more accurate and reliable method of establishing group differences than visual inspection of whether credible intervals overlap from estimates of the individual groups (Schenker & Gentleman, 2001).
+
+```{r variety-exposure-condition-exposure-compare}
+format_summary(
+  model_summaries$exposure_v_compare, 
+  summary_oldnames, 
+  summary_newnames, 
+  .drop = summary_drop
+  ) %>% 
+  filter(Width == 0.90) %>% 
+  select(-Width) %>% 
+  kableExtra::kable() %>% 
+  # kableExtra::add_header_above(c(" " = 2, "Credible Interval" = 2)) %>% 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+```
+
 We evaluated equivalence in the nLEDs between variety exposure conditions by determining a region of practical equivalence (ROPE) by which any effects between the reported bounds are deemed to be practically equivalent to 0. In all instances, this is determined at the 90% credible interval (CI) bound of the highest density interval (HDI), which is typically more stable than larger bounds (CITATION: Kruschke). We report the proportion of the HDI contained within the ROPE region along with bounds of this interval. Where HDIs are entirely contained by the equivalence bounds, equivalence is accepted. Where HDIs are entirely outside the equivalence bounds, equivalence is rejected. Uncertaintainty is assigned to any HDIs that cross the equialence bounds in either (or both) directions.
 
 ```{r variety-exposure-condition-ROPE-exposure}
 format_summary(
-  model_summaries$exposure_v_compare, 
+  model_summaries$exposure_v_compare_rope, 
   .oldnames = rope_oldnames, 
   .newnames = rope_newnames,
   .lower = HDI_low,
   .upper = HDI_high,
   .drop = rope_drop
   ) %>% 
-  mutate(Percentage = Percentage * 100) %>% 
-  rename(Comparison = `Variety Exposure`) %>% 
+  select(-Pd, everything()) %>% # Pd to last 
+  rename(
+    Comparison = `Variety Exposure`,
+    `P(direction)` = Pd
+  ) %>% 
   kableExtra::kable() %>% 
-  kableExtra::add_header_above(c(" " = 1, "ROPE Coverage" = 3)) %>% 
+  kableExtra::add_header_above(c(" " = 1, "ROPE Coverage" = 3, " " = 1)) %>% 
   kableExtra::footnote(
-    general = make_rope_footer(model_summaries$exposure_v_compare)
+    general = make_rope_footer(model_summaries$exposure_v_compare_rope)
   ) %>% 
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
 ```
 
-While nLEDs in the Variety Mismatch condition are generally lower than those in the Variety Match condition, 30% of the difference scores are contained by the equivalence bounds. Similarly, while nLEDs are generally higher in the two intervention conditions (Variety Mismatch Social and Dialect Literacy) when compared to the Variety Mismatch condition, around half of the difference scores are contained by the equivalence bounds. All other differences are largely undecided.
+While nLEDs in the Variety Mismatch condition are generally lower than those in the Variety Match condition, 30% of the difference scores are contained by the equivalence bounds, and approximately 91% of the difference is of the same sign as the median.
+
+
+Similarly, while nLEDs are generally higher in the two intervention conditions (Variety Mismatch Social and Dialect Literacy) when compared to the Variety Mismatch condition, around half of the difference scores are contained by the equivalence bounds. All other differences are largely undecided.
 
 ## Word Type by Variety Exposure
 
@@ -376,66 +403,112 @@ format_summary(
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
 ```
 
+Comparisons between levels of word type during the exposure phase are shown for each variety exposure condition below. Here, all effects span either side of 0, suggesting that there is no reliable difference between word type by variety exposure condition in the exposure phase.
+
+```{r variety-word-type-exposure-compare}
+format_summary(
+  model_summaries$exposure_vw_compare, 
+  summary_oldnames, 
+  summary_newnames, 
+  .drop = summary_drop
+  ) %>% 
+  filter(Width == 0.90) %>% 
+  select(-Width) %>%
+  kableExtra::kable() %>% 
+  # kableExtra::add_header_above(c(" " = 3, "Credible Interval" = 2)) %>% 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+```
+
+The ROPE for the effect of word type by variety exposure is provided in the table below.
 
 ```{r variety-word-type-exposure-ROPE}
 format_summary(
-  model_summaries$exposure_vw_compare, 
+  model_summaries$exposure_vw_compare_rope, 
   .oldnames = rope_oldnames, 
   .newnames = rope_newnames,
   .lower = HDI_low,
   .upper = HDI_high,
   .drop = rope_drop
   ) %>% 
-  mutate(Percentage = Percentage * 100) %>% 
-  rename(Group = `Variety Exposure`, Comparison = `Word Type`) %>% 
+  select(-Pd, everything()) %>% # Pd to last 
+  rename(Group = `Variety Exposure`, Comparison = `Word Type`, `P(direction)` = Pd) %>% 
   kableExtra::kable() %>% 
-  kableExtra::add_header_above(c(" " = 2, "ROPE Coverage" = 3)) %>% 
+  kableExtra::add_header_above(c(" " = 2, "ROPE Coverage" = 3, " " = 1)) %>%
   kableExtra::footnote(
-    general = make_rope_footer(model_summaries$exposure_vw_compare)
+    general = make_rope_footer(model_summaries$exposure_vw_compare_rope)
   ) %>% 
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
 ```
 
-In all instances there is some evidence that performance is better for non-contrastive words relative to contrastive words. However, equivalence between the two word types is only confidently rejected for the Dialect Literacy condition. Thus, it is likely that performance was worse for contrastive words relative to non-contrastive words in the Dialect Literacy condition in the Vocabulary Test.
-
-
-
-
+In all instances there is some evidence that performance is better for non-contrastive words relative to contrastive words. However, the HDI around the parameter spans zero in all instances, and only a small proportion of the HDI is contained by the ROPE range.
 
 # Testing Phase Model
 
-A summary of the Testing Phase model is provided below. This can be used to determine model diagnostics and coefficients. As with the Vocabulary Test Model, to answer questions pertaining to our pre-registered hypotheses, and to generate plots for these summaries, we used draws from the posterior for different combinations of conditions using the tidybayes R-package (CITATION). Similarly, hypothesis tests are provided in the form of Region of Practical Equivalence (ROPE) analyses from these draws using the bayestestR R-package. 
+A summary of the Testing Phase model is provided below. This can be used to determine model diagnostics and coefficients. As with the Vocabulary Test Model, to answer questions pertaining to our pre-registered hypotheses, and to generate plots for these summaries, we used draws from the posterior for different combinations of conditions. Similarly, hypothesis tests are provided in the form of ROPE analyses and *pd*. 
 
 ```{r testing-model-summary}
 fitted_models[["testing_model"]]$fixed %>% 
-  kableExtra::kable()
+  kableExtra::kable(digits = 3) %>% 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
 ```
 
 ## Variety Exposure
 
 ```{r variety-exposure-condition-plot-testing}
-knitr::include_graphics(
+knitr::include_graphics(c(
+  plots_dir[str_detect(plots_dir, "testing_v.png")],
   plots_dir[str_detect(plots_dir, "testing_v_compare.png")]
-)
+))
 ```
 
 Posterior means and credible intervals are provided in the table below.
 
-```{r variety-exposure-condition-testing-ROPE}
+```{r variety-exposure-condition-testing}
+format_summary(
+  model_summaries$testing_v, 
+  summary_oldnames, 
+  summary_newnames, 
+  .drop = summary_drop
+  ) %>% 
+  filter(Width == 0.90) %>% 
+  select(-Width) %>%
+  kableExtra::kable() %>% 
+  # kableExtra::add_header_above(c(" " = 3, "Credible Interval" = 2)) %>% 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+```
+
+```{r variety-exposure-condition-testing-compare}
 format_summary(
   model_summaries$testing_v_compare, 
+  summary_oldnames, 
+  summary_newnames, 
+  .drop = summary_drop
+  ) %>% 
+  filter(Width == 0.90) %>% 
+  select(-Width) %>%
+  kableExtra::kable() %>% 
+  # kableExtra::add_header_above(c(" " = 3, "Credible Interval" = 2)) %>% 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+```
+
+```{r variety-exposure-condition-testing-ROPE}
+format_summary(
+  model_summaries$testing_v_compare_rope, 
   .oldnames = rope_oldnames, 
   .newnames = rope_newnames,
   .lower = HDI_low,
   .upper = HDI_high,
   .drop = rope_drop
   ) %>% 
-  mutate(Percentage = Percentage * 100) %>%
-  rename(Comparison = `Variety Exposure`) %>% 
+  select(-Pd, everything()) %>% # Pd to last 
+  rename(
+    Comparison = `Variety Exposure`,
+    `P(direction)` = Pd
+  ) %>% 
   kableExtra::kable() %>% 
-  kableExtra::add_header_above(c(" " = 1, "ROPE Coverage" = 3)) %>% 
+  kableExtra::add_header_above(c(" " = 1, "ROPE Coverage" = 3, " " = 1)) %>% 
   kableExtra::footnote(
-    general = make_rope_footer(model_summaries$testing_v_compare)
+    general = make_rope_footer(model_summaries$testing_v_compare_rope)
   ) %>% 
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
 ```
@@ -445,26 +518,57 @@ While the ROPE is undecided, there does not seem to be any reliable differences 
 ## Variety Exposure for Novel Words Only
 
 ```{r variety-exposure-novel-condition-plot-testing}
-knitr::include_graphics(plots_dir[str_detect(plots_dir, "testing_v_n_compare.png")])
+knitr::include_graphics(c(
+  plots_dir[str_detect(plots_dir, "testing_v_n.png")],
+  plots_dir[str_detect(plots_dir, "testing_v_n_compare.png")]
+))
 ```
 
 Posterior means and credible intervals are provided in the table below.
 
-```{r variety-exposure-novel-condition-testing-ROPE}
+```{r variety-exposure-novel-condition-testing}
+format_summary(
+  model_summaries$testing_v_n, 
+  summary_oldnames, 
+  summary_newnames, 
+  .drop = summary_drop
+  ) %>% 
+  filter(Width == 0.90) %>% 
+  select(-Width) %>%
+  kableExtra::kable() %>% 
+  # kableExtra::add_header_above(c(" " = 3, "Credible Interval" = 2)) %>% 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+```
+
+```{r variety-exposure-novel-condition-testing_compare}
 format_summary(
   model_summaries$testing_v_n_compare, 
+  summary_oldnames, 
+  summary_newnames, 
+  .drop = summary_drop
+  ) %>% 
+  filter(Width == 0.90) %>% 
+  select(-Width) %>%
+  kableExtra::kable() %>% 
+  # kableExtra::add_header_above(c(" " = 3, "Credible Interval" = 2)) %>% 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+```
+
+```{r variety-exposure-novel-condition-testing-ROPE}
+format_summary(
+  model_summaries$testing_v_n_compare_rope, 
   .oldnames = rope_oldnames, 
   .newnames = rope_newnames,
   .lower = HDI_low,
   .upper = HDI_high,
   .drop = rope_drop
   ) %>% 
-  mutate(Percentage = Percentage * 100) %>%
+  select(-Pd, everything()) %>% 
   rename(Comparison = `Variety Exposure`) %>% 
   kableExtra::kable() %>% 
-  kableExtra::add_header_above(c(" " = 1, "ROPE Coverage" = 3)) %>% 
+  kableExtra::add_header_above(c(" " = 1, "ROPE Coverage" = 3, " " = 1)) %>% 
   kableExtra::footnote(
-    general = make_rope_footer(model_summaries$testing_v_n_compare)
+    general = make_rope_footer(model_summaries$testing_v_n_compare_rope)
   ) %>% 
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
 ```
@@ -481,8 +585,6 @@ knitr::include_graphics(c(
   plots_dir[str_detect(plots_dir, "testing_tvw_compare.png")]
 ))
 ```
-
-It seems that there is a clear effect of word type (for contrastive vs. non-contrastive words) for both tasks in the Dialect Literacy condition, and for reading only in the Variety Mismatch Social condition. Additionally, there is some evidence for an effect of word type in the Variety Mismatch condition, with only around 6% of the HDI in the the equivalence bounds. This suggests that performance is impaired for contrastive words only when participants are exposed to a dialect.
 
 Posterior means and credible intervals are provided in the table below.
 
@@ -527,34 +629,53 @@ format_summary(
   .upper = HDI_high,
   .drop = rope_drop
   ) %>% 
-  mutate(Percentage = Percentage * 100) %>% 
+  select(-Pd, everything()) %>% 
   rename(Comparison = `Word Type`) %>% 
   kableExtra::kable() %>% 
-  kableExtra::add_header_above(c(" " = 3, "ROPE Coverage" = 3)) %>% 
+  kableExtra::add_header_above(c(" " = 3, "ROPE Coverage" = 3, " " = 1)) %>% 
   kableExtra::footnote(
     general = make_rope_footer(model_summaries$testing_tvw_compare_rope)
   ) %>% 
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
 ```
 
-Equivalence is confidently rejected for the reading task for the two intervention conditions (Variety Mismatch Social and Dialect Literacy). Additionally, for the reading task the majority of the HDI for the Variety Mismatch condition is outside of the ROPE. For the spelling task, equivalence is rejected for the Dialect Literacy condition. However, all other contrasts show that most of the HDI is contained by the ROPE (suggesting equivalence).
+It seems that there is a clear effect of word type (for contrastive vs. non-contrastive words) for the reading task 
+
+
+in the Dialect Literacy condition. Additionally, there is some evidence for an effect of word type in the reading task for the Variety Mismatch Social and Variety Mismatch conditions, with only around 20% of the HDI within the the equivalence bounds, and *pd*s over 90%, indicating that around 90% of the posterior is of the median's sign. There is also some evidence for a word type effect in the spelling task in the Dialect Literacy condition, with only around 7% of the HDI within the equivalence bounds, and a *pd* of over 97%. This suggests that reading performance is impaired for contrastive words only when participants are exposed to a dialect, while spelling performance is only impaired when exposed to a dialect literacy intervention.
+
+However, all other contrasts show that a large proportion of the HDI is contained by the ROPE, which indicates that we have no strong evidence for a presence or absence of an effect of Word Type.
 
 Finally, we ask whether or not the contrastive effect is stronger in the Variety Mismatch Social condition relative to the Variety Mismatch condition.
 
-```{r task-variety-word-type-ms-testing-ROPE}
+```{r task-variety-word-type-ms-testing-compare}
 format_summary(
   model_summaries$testing_tvw_ms_compare, 
+  summary_oldnames, 
+  summary_newnames, 
+  .drop = summary_drop
+  ) %>%
+  filter(Width == 0.90) %>% 
+  select(-Width) %>%
+  kableExtra::kable() %>% 
+  # kableExtra::add_header_above(c(" " = 4, "Credible Interval" = 2)) %>% 
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+```
+
+```{r task-variety-word-type-ms-testing-ROPE}
+format_summary(
+  model_summaries$testing_tvw_ms_compare_rope, 
   .oldnames = rope_oldnames, 
   .newnames = rope_newnames,
   .lower = HDI_low,
   .upper = HDI_high,
   .drop = rope_drop
-  ) %>% 
-  mutate(Percentage = Percentage * 100) %>% 
+  ) %>%
+  select(-Pd, everything()) %>% 
   kableExtra::kable() %>% 
-  kableExtra::add_header_above(c(" " = 3, "ROPE Coverage" = 3)) %>% 
+  kableExtra::add_header_above(c(" " = 3, "ROPE Coverage" = 3, " " = 1)) %>% 
   kableExtra::footnote(
-    general = make_rope_footer(model_summaries$testing_tvw_ms_compare)
+    general = make_rope_footer(model_summaries$testing_tvw_ms_compare_rope)
   ) %>% 
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
 ```

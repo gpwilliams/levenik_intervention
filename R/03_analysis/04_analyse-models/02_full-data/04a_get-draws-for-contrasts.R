@@ -10,7 +10,7 @@
 
 # variety exposure
 
-draws$exposure_v_compare <- draws$exposure_vw %>% 
+draws$exposure_v_compare <- draws$exposure_v %>% 
   compare_levels(.value, by = variety_exposure)
 
 # word type by variety exposure
