@@ -25,6 +25,12 @@ write_rds(
   here("04_analysis", "01_models", "exposure_model.rds")
 )
 
+write_rds(
+  summary(models$exposure), 
+  here("04_analysis", "01_models", "exposure_model_summary.rds")
+)
+
+
 # testing data ----
 
 message("Fitting testing model on full data.")
@@ -44,18 +50,14 @@ models$testing <- brm(
   )
 )
 
-# see this for other pp-checks: https://mjskay.github.io/tidybayes/articles/tidy-brms.html
-
-# prior problems: humps at 0.2, dips at 0.24 until further hump at 0.75/0.8.
-
-# removed controls, removed phi paramater from model.
-
-
-# quick question: can we model this without the phi component? i.e. just mean and zoi/coi?
-
 write_rds(
   models$testing, 
   here("04_analysis", "01_models", "testing_model.rds")
+)
+
+write_rds(
+  summary(models$testing), 
+  here("04_analysis", "01_models", "testing_model_summary.rds")
 )
 
 message("Fitting testing model with covariate on full data.")
@@ -78,4 +80,9 @@ models$testing_cov <- brm(
 write_rds(
   models$testing_cov, 
   here("04_analysis", "01_models", "testing_cov_model.rds")
+)
+
+write_rds(
+  summary(models$testing_cov), 
+  here("04_analysis", "01_models", "testing_cov_model_summary.rds")
 )

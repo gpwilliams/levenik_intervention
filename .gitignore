@@ -14,7 +14,9 @@
 # produced 
 *.pdf
 04_analysis/01_models/*.rds
-
+!04_analysis/01_models/exposure_model_summary.rds
+!04_analysis/01_models/testing_model_summary.rds
+!04_analysis/01_models/testing_cov_model_summary.rds
 
 # Misc
 .dropbox

@@ -13,7 +13,7 @@ output:
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-```{r libraries, include = FALSE}
+```{r setup, include = FALSE}
 packages <- c(
   "tidyverse",
   "rlang",
@@ -30,122 +30,27 @@ packages <- c(
 # load packages
 lapply(packages, library, character.only = TRUE)
 
+# load functions
+r_function_list <- list.files(
+  path = here("R", "00_functions"), 
+  pattern = "R$",
+  full.names = TRUE
+)
+purrr::walk(r_function_list, source)
+
 # get citations
 citations <- purrr::map(packages, citation)
-```
 
-```{r functions, include = FALSE}
-cite_package <- function(package){
-  #' Return the name and installed version of a package as a character.
-  #' @param package A character for an installed package.
-  #' @return A character defining the \code{package} name with version number in brackets.
-  #' @examples
-  #' cite_package("tidyverse")
-  #' cite_package("lme4")
-  paste0(package, " [Version ", packageVersion(package), "]")
-}
+# get file paths ----
 
-cite_packages <- function(package_string, as_string = TRUE){
-  #' Return the name and installed version of one or more installed packages passed as a character vector.
-  #' @param package A character vector of one or more installed packages.
-  #' @param as_string Logical determining whether the returned output is formatted as a string in English (TRUE) or as a list (FALSE). Defaults to TRUE.
-  #' @return A string or list of packages from \code{package_string} with version number in brackets.
-  #' @examples
-  #' cite_packages("tidyverse", as_string = TRUE)
-  #' cite_packages("tidyverse", as_string = FALSE)
-  #' cite_packages(c("tidyverse", "lme4"))
-  if(length(package_string) > 1) {
-    all_packages <- base::lapply(package_string, cite_package)
-    if(as_string == TRUE) {
-      but_last_packages <- toString(all_packages[1:length(all_packages)-1])
-      last_package <- base::toString(all_packages[length(all_packages)])
-      base::paste0(but_last_packages, ", and ", last_package)
-    } else if(as_string == FALSE){
-      all_packages
-    }
-  } else {
-    if(as_string == TRUE) {
-      base::toString(cite_package(package_string))
-    } else if(as_string == FALSE) {
-      cite_package(package_string)
-    }
-  }
-}
-
-rename_table_cols <- function(.data, .oldnames, .newnames) {
-  names(.oldnames) <- .newnames
-  
-  .data %>% 
-    dplyr::rename(!!!.oldnames)
-}
-
-table_cols_to_title <- function(.data) {
-  .data %>% 
-    dplyr::rename_all(
-      ~stringr::str_to_title(base::gsub("_", " ", .))
-    ) 
-}
-
-merge_CI_limits <- function(data, lower, upper, round = TRUE, decimals = 2) {
-  # Pastes two columns together in brackets separated by a comma
-  # Use: used to paste lower and upper CI together after tidying model with
-  #       tidy_ordinal_model()
-  # Inputs: data = data.frame with lower and upper CI bounds as columns
-  #         lower = bare (unquoted) name of lower confidence limit column name
-  #         upper = bare (unquoted) name of upper confidence limit column name
-  #         round = TRUE (default), logical indicating whether or not to round
-  #                 values in the CI columns prior to pasting (recommended)
-  #         decimals = 2 (default), integer indicating how many values to
-  #             round numbers by if rounding occurs. Ignored if round = FALSE.
-  # Returns: data.frame with merged CI levels in one column, with prior
-  #           lower and upper bound columns removed.
-  
-  # force standard evaluation; used with !! later
-  
-  if(round == TRUE) {
-    data %>% mutate("interval" = paste0(
-      "[", 
-      # formatC used to force R to keep trailing zeroes
-      formatC(round({{lower}}, decimals), format = "f", digits = decimals), 
-      ", ", 
-      formatC(round({{upper}}, decimals), format = "f", digits = decimals),
-      "]"
-    )) %>%
-      select(-{{lower}}, -{{upper}})
-  } else {
-    data %>% 
-      mutate("interval" = paste0("[", {{lower}}, ", ", {{upper}}, "]")) %>%
-      select(-{{lower}}, -{{upper}})
-  }
-}
-
-format_summary <- function(.data, .oldnames, .newnames, .lower = .lower, .upper = .upper, .drop) {
-  .data %>% 
-    dplyr::select(-{{.drop}}) %>%
-    merge_CI_limits(., {{.lower}}, {{.upper}}, decimals = 3) %>% 
-    rename_table_cols(., .oldnames, .newnames) %>%
-    table_cols_to_title(.)
-}
-
-make_rope_footer <- function(.data, .lower = "ROPE_low", .upper = "ROPE_high", .CI = "CI"){
-  paste0(
-    "ROPE range = [", 
-    .data[[.lower]][[1]],
-    ", ",
-    .data[[.upper]][[1]],
-    "]. ROPE determined at the ",
-    .data[[.CI]][[1]],
-    "% CI of the HDI."
-  )
-}
-```
-
-```{r get-file-paths, include = FALSE}
+# get model summaries only for easy loading
 fitted_models_dir <- list.files(
   path = here("04_analysis", "01_models"),
   pattern = "rds$",
   full.names = TRUE
-)
+) %>% 
+  str_subset("summary")
+  
 
 model_summaries_dir <- list.files(
   path = here("04_analysis", "02_summaries", "02_full-data"),
@@ -158,11 +63,10 @@ plots_dir <- list.files(
   pattern = "png$",
   full.names = TRUE
 )
-```
 
-```{r load-data, include = FALSE}
-fitted_models <- purrr::map(fitted_models_dir, read_rds) %>% 
-  purrr::map(., summary)
+# load data ----
+
+fitted_models <- purrr::map(fitted_models_dir, read_rds)
 
 names(fitted_models) <- fitted_models_dir %>% 
   sub(".*/", "", .) %>% 
@@ -174,14 +78,18 @@ names(model_summaries) <- model_summaries_dir %>%
   substr(., 1, nchar(.)-4)
 ```
 
-```{r define-global-variables}
-summary_oldnames <- c(".value", ".width")
-summary_newnames <- c("Median", "Width")
-summary_drop <- c(".point", ".interval") # for some reason can't be in a list.
-
-rope_oldnames <- c("ROPE_Percentage", "ROPE_Equivalence")
-rope_newnames <- c("Percentage", "Equivalence")
-rope_drop <- c("CI", "ROPE_low", "ROPE_high")
+```{r define-renaming-variables}
+summary_oldnames <- c("Ci Interval", "Rope Interval", "Pd")
+summary_newnames <- c("Percentile Interval", "HDI Interval", "P(Direction)")
+summary_drop <- c(
+  ".width",
+  ".point",
+  ".interval",
+  "CI",
+  "ROPE_low", 
+  "ROPE_high",
+  "ROPE_Equivalence"
+) 
 ```
 
 `r version$version.string` and the R-packages `r cite_packages(packages)` were used for data preparation, analysis, and presentation.
@@ -318,7 +226,7 @@ knitr::include_graphics(c(
 Posterior means and 90% credible intervals are provided in the table below.
 
 ```{r variety-exposure-condition-exposure}
-format_summary(
+format_summary_table(
   model_summaries$exposure_v, 
   summary_oldnames, 
   summary_newnames, 
@@ -334,7 +242,7 @@ format_summary(
 The differences between conditions were compared using the `compare_levels()` function from the `r cite_package("tidybayes")` R-package. This allows for a direct comparison of differences between groups, which provides a more accurate and reliable method of establishing group differences than visual inspection of whether credible intervals overlap from estimates of the individual groups (Schenker & Gentleman, 2001).
 
 ```{r variety-exposure-condition-exposure-compare}
-format_summary(
+format_summary_table(
   model_summaries$exposure_v_compare, 
   summary_oldnames, 
   summary_newnames, 
@@ -350,7 +258,7 @@ format_summary(
 We evaluated equivalence in the nLEDs between variety exposure conditions by determining a region of practical equivalence (ROPE) by which any effects between the reported bounds are deemed to be practically equivalent to 0. In all instances, this is determined at the 90% credible interval (CI) bound of the highest density interval (HDI), which is typically more stable than larger bounds (CITATION: Kruschke). We report the proportion of the HDI contained within the ROPE region along with bounds of this interval. Where HDIs are entirely contained by the equivalence bounds, equivalence is accepted. Where HDIs are entirely outside the equivalence bounds, equivalence is rejected. Uncertaintainty is assigned to any HDIs that cross the equialence bounds in either (or both) directions.
 
 ```{r variety-exposure-condition-ROPE-exposure}
-format_summary(
+format_summary_table(
   model_summaries$exposure_v_compare_rope, 
   .oldnames = rope_oldnames, 
   .newnames = rope_newnames,
@@ -390,7 +298,7 @@ knitr::include_graphics(c(
 Posterior means and credible intervals are provided in the table below.
 
 ```{r variety-word-type-exposure}
-format_summary(
+format_summary_table(
   model_summaries$exposure_vw, 
   summary_oldnames, 
   summary_newnames, 
@@ -399,30 +307,31 @@ format_summary(
   filter(Width == 0.90) %>% 
   select(-Width) %>%
   kableExtra::kable() %>% 
-  # kableExtra::add_header_above(c(" " = 3, "Credible Interval" = 2)) %>% 
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
 ```
 
 Comparisons between levels of word type during the exposure phase are shown for each variety exposure condition below. Here, all effects span either side of 0, suggesting that there is no reliable difference between word type by variety exposure condition in the exposure phase.
 
 ```{r variety-word-type-exposure-compare}
-format_summary(
-  model_summaries$exposure_vw_compare, 
-  summary_oldnames, 
-  summary_newnames, 
-  .drop = summary_drop
-  ) %>% 
-  filter(Width == 0.90) %>% 
-  select(-Width) %>%
+report_posteriors(
+  model_summaries$exposure_vw_compare,
+  model_summaries$exposure_vw_compare_rope,
+  0.9,
+  summary_drop,
+  summary_oldnames,
+  summary_newnames
+) %>% 
   kableExtra::kable() %>% 
-  # kableExtra::add_header_above(c(" " = 3, "Credible Interval" = 2)) %>% 
+  kableExtra::footnote(
+    general = make_rope_footer(model_summaries$exposure_vw_compare_rope)
+  ) %>% 
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
 ```
 
 The ROPE for the effect of word type by variety exposure is provided in the table below.
 
 ```{r variety-word-type-exposure-ROPE}
-format_summary(
+format_summary_table(
   model_summaries$exposure_vw_compare_rope, 
   .oldnames = rope_oldnames, 
   .newnames = rope_newnames,
@@ -464,7 +373,7 @@ knitr::include_graphics(c(
 Posterior means and credible intervals are provided in the table below.
 
 ```{r variety-exposure-condition-testing}
-format_summary(
+format_summary_table(
   model_summaries$testing_v, 
   summary_oldnames, 
   summary_newnames, 
@@ -478,7 +387,7 @@ format_summary(
 ```
 
 ```{r variety-exposure-condition-testing-compare}
-format_summary(
+format_summary_table(
   model_summaries$testing_v_compare, 
   summary_oldnames, 
   summary_newnames, 
@@ -492,7 +401,7 @@ format_summary(
 ```
 
 ```{r variety-exposure-condition-testing-ROPE}
-format_summary(
+format_summary_table(
   model_summaries$testing_v_compare_rope, 
   .oldnames = rope_oldnames, 
   .newnames = rope_newnames,
@@ -527,7 +436,7 @@ knitr::include_graphics(c(
 Posterior means and credible intervals are provided in the table below.
 
 ```{r variety-exposure-novel-condition-testing}
-format_summary(
+format_summary_table(
   model_summaries$testing_v_n, 
   summary_oldnames, 
   summary_newnames, 
@@ -541,7 +450,7 @@ format_summary(
 ```
 
 ```{r variety-exposure-novel-condition-testing_compare}
-format_summary(
+format_summary_table(
   model_summaries$testing_v_n_compare, 
   summary_oldnames, 
   summary_newnames, 
@@ -555,7 +464,7 @@ format_summary(
 ```
 
 ```{r variety-exposure-novel-condition-testing-ROPE}
-format_summary(
+format_summary_table(
   model_summaries$testing_v_n_compare_rope, 
   .oldnames = rope_oldnames, 
   .newnames = rope_newnames,
@@ -589,7 +498,7 @@ knitr::include_graphics(c(
 Posterior means and credible intervals are provided in the table below.
 
 ```{r task-variety-word-type-compare}
-format_summary(
+format_summary_table(
   model_summaries$testing_tvw, 
   summary_oldnames, 
   summary_newnames, 
@@ -605,7 +514,7 @@ format_summary(
 We can also directly compare the differences in performance for contrastive words relative to non-contrastive words.
 
 ```{r task-variety-word-type-testing-compare}
-format_summary(
+format_summary_table(
   model_summaries$testing_tvw_compare, 
   summary_oldnames, 
   summary_newnames, 
@@ -621,7 +530,7 @@ format_summary(
 These results reflect those in the plots above. Are any differences reported here reliable?
 
 ```{r task-variety-word-type-testing-ROPE}
-format_summary(
+format_summary_table(
   model_summaries$testing_tvw_compare_rope, 
   .oldnames = rope_oldnames, 
   .newnames = rope_newnames,
@@ -649,7 +558,7 @@ However, all other contrasts show that a large proportion of the HDI is containe
 Finally, we ask whether or not the contrastive effect is stronger in the Variety Mismatch Social condition relative to the Variety Mismatch condition.
 
 ```{r task-variety-word-type-ms-testing-compare}
-format_summary(
+format_summary_table(
   model_summaries$testing_tvw_ms_compare, 
   summary_oldnames, 
   summary_newnames, 
@@ -663,7 +572,7 @@ format_summary(
 ```
 
 ```{r task-variety-word-type-ms-testing-ROPE}
-format_summary(
+format_summary_table(
   model_summaries$testing_tvw_ms_compare_rope, 
   .oldnames = rope_oldnames, 
   .newnames = rope_newnames,

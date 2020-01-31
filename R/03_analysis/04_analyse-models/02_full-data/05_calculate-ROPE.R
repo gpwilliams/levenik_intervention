@@ -68,7 +68,7 @@ model_summaries$testing_tvw_compare_rope <- gmap_rope(
   word_type,
   bounds = c(-.02, .02)
 ) %>% 
-mutate_if(is.numeric, round, summary_options$rounding)
+  mutate_if(is.numeric, round, summary_options$rounding)
 
 # difference in nLED for the magnitude of word type effect 
 # in mismatch vs. mismatch social variety conditions only
