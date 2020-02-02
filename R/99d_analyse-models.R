@@ -8,6 +8,9 @@ library(modelr) # for defining conditions for draws from posterior
 library(ggforce) # for arrows
 library(readr) # for reading and writing rds files
 
+# set seed for reproducibility
+set.seed(1892)
+
 # which models to summarise?
 models_to_summarise <- "full" # can take "aggregate", "full", or "both"
 models <- list()

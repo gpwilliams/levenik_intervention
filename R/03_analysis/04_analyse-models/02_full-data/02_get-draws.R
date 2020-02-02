@@ -33,8 +33,8 @@ draws$exposure_v <-
 
 # testing phase ----
 
-# task and variety exposure (with word type coded)
-draws$testing_tv <- 
+# task and variety exposure and word type (all levels)
+draws$testing_tvw_all <- 
   all_data$testing %>% 
   as.data.frame() %>% 
   data_grid(task, variety_exposure, word_type) %>% 
@@ -58,9 +58,17 @@ draws$testing_tv <-
     word_familiarity = fct_relevel(word_familiarity, "Trained")) %>% 
   group_by(task, variety_exposure, word_type)
 
+# change tv to tvw_all
+
+# task and variety exposure
+draws$testing_tv <- 
+  draws$testing_tvw_all %>% 
+  ungroup() %>% 
+  group_by(task, variety_exposure)
+
 # task and variety exposure for contrastive and non-contrastive words
 
-draws$testing_tvw <- draws$testing_tv %>% 
+draws$testing_tvw <- draws$testing_tvw_all %>% 
   filter(word_familiarity == "Trained") %>% 
   ungroup() %>% 
   mutate(word_type = factor(word_type)) %>% 
@@ -69,7 +77,7 @@ draws$testing_tvw <- draws$testing_tv %>%
 # task and variety exposure for novel words only
 
 draws$testing_tv_n <- 
-  draws$testing_tv  %>% 
+  draws$testing_tvw_all %>% 
   filter(word_type == "Novel") %>%
   ungroup() %>% 
   group_by(task, variety_exposure)
@@ -83,7 +91,7 @@ draws$testing_v_n <- draws$testing_tv_n %>%
 # variety exposure
 
 draws$testing_v <- 
-  draws$testing_tv %>% 
+  draws$testing_tvw_all %>% 
   ungroup() %>% 
   group_by(variety_exposure)
 

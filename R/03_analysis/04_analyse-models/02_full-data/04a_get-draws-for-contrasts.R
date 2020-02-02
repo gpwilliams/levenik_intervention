@@ -10,8 +10,20 @@
 
 # variety exposure
 
-draws$exposure_v_compare <- draws$exposure_v %>% 
-  compare_levels(.value, by = variety_exposure)
+draws$exposure_v_compare <- draws$exposure_vw %>% 
+  compare_levels(
+    .value, 
+    by = variety_exposure,
+    comparison = list(
+      c("Variety Match", "Variety Mismatch"), 
+      c("Variety Match", "Variety Mismatch Social"),
+      c("Variety Match", "Dialect Literacy"),
+      c("Variety Mismatch", "Variety Mismatch Social"),
+      c("Variety Mismatch", "Dialect Literacy"),
+      c("Variety Mismatch Social", "Dialect Literacy")
+    )
+  ) %>% 
+  group_by(variety_exposure)
 
 # word type by variety exposure
 
@@ -22,7 +34,7 @@ draws$exposure_vw_compare <- draws$exposure_vw %>%
 
 # overall performance by variety exposure
 
-draws$testing_v_compare <- draws$testing_tv %>% 
+draws$testing_v_compare <- draws$testing_tvw_all %>% 
   compare_levels(
     .value, 
     by = variety_exposure,
@@ -31,6 +43,7 @@ draws$testing_v_compare <- draws$testing_tv %>%
       c("Variety Match", "Variety Mismatch Social"),
       c("Variety Match", "Dialect Literacy"),
       c("Variety Mismatch", "Variety Mismatch Social"),
+      c("Variety Mismatch", "Dialect Literacy"),
       c("Variety Mismatch Social", "Dialect Literacy")
     )
   ) %>% 
@@ -38,11 +51,9 @@ draws$testing_v_compare <- draws$testing_tv %>%
 
 # variety exposure by task
 
-draws$testing_tv_compare <- draws$testing_tv %>% 
-  compare_levels(
-    .value, 
-    by = variety_exposure
-  )
+draws$testing_tv_compare <- draws$testing_tvw_all %>% 
+  compare_levels(.value, by = variety_exposure) %>% 
+  group_by(task, variety_exposure)
 
 # performance for novel words by task and variety exposure ----
 
@@ -55,6 +66,7 @@ draws$testing_tv_n_compare <- draws$testing_tv_n %>%
       c("Variety Match", "Variety Mismatch Social"),
       c("Variety Match", "Dialect Literacy"),
       c("Variety Mismatch", "Variety Mismatch Social"),
+      c("Variety Mismatch", "Dialect Literacy"),
       c("Variety Mismatch Social", "Dialect Literacy")
     )
   )
@@ -70,6 +82,7 @@ draws$testing_v_n_compare <- draws$testing_tv_n %>%
       c("Variety Match", "Variety Mismatch Social"),
       c("Variety Match", "Dialect Literacy"),
       c("Variety Mismatch", "Variety Mismatch Social"),
+      c("Variety Mismatch", "Dialect Literacy"),
       c("Variety Mismatch Social", "Dialect Literacy")
     )
   ) %>% 

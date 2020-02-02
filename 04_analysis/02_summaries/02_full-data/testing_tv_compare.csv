@@ -1,109 +1,37 @@
-task,variety_exposure,word_type,.value,.lower,.upper,.width,.point,.interval
-Reading,Variety Mismatch - Variety Match,Non-Contrastive,-0.005,-0.06,0.05,0.95,median,qi
-Reading,Variety Mismatch - Variety Match,Contrastive,0.025,-0.031,0.081,0.95,median,qi
-Reading,Variety Mismatch - Variety Match,Novel,-0.005,-0.104,0.07,0.95,median,qi
-Reading,Variety Mismatch Social - Variety Match,Non-Contrastive,0.015,-0.04,0.068,0.95,median,qi
-Reading,Variety Mismatch Social - Variety Match,Contrastive,0.043,-0.015,0.101,0.95,median,qi
-Reading,Variety Mismatch Social - Variety Match,Novel,-0.013,-0.115,0.076,0.95,median,qi
-Reading,Dialect Literacy - Variety Match,Non-Contrastive,-0.013,-0.066,0.041,0.95,median,qi
-Reading,Dialect Literacy - Variety Match,Contrastive,0.072,0.013,0.134,0.95,median,qi
-Reading,Dialect Literacy - Variety Match,Novel,0.018,-0.084,0.105,0.95,median,qi
-Reading,Variety Mismatch Social - Variety Mismatch,Non-Contrastive,0.02,-0.036,0.074,0.95,median,qi
-Reading,Variety Mismatch Social - Variety Mismatch,Contrastive,0.018,-0.041,0.077,0.95,median,qi
-Reading,Variety Mismatch Social - Variety Mismatch,Novel,-0.008,-0.082,0.078,0.95,median,qi
-Reading,Dialect Literacy - Variety Mismatch,Non-Contrastive,-0.008,-0.062,0.046,0.95,median,qi
-Reading,Dialect Literacy - Variety Mismatch,Contrastive,0.047,-0.014,0.11,0.95,median,qi
-Reading,Dialect Literacy - Variety Mismatch,Novel,0.024,-0.049,0.105,0.95,median,qi
-Reading,Dialect Literacy - Variety Mismatch Social,Non-Contrastive,-0.028,-0.081,0.027,0.95,median,qi
-Reading,Dialect Literacy - Variety Mismatch Social,Contrastive,0.029,-0.033,0.093,0.95,median,qi
-Reading,Dialect Literacy - Variety Mismatch Social,Novel,0.032,-0.058,0.116,0.95,median,qi
-Spelling,Variety Mismatch - Variety Match,Non-Contrastive,0.008,-0.054,0.071,0.95,median,qi
-Spelling,Variety Mismatch - Variety Match,Contrastive,-0.008,-0.078,0.064,0.95,median,qi
-Spelling,Variety Mismatch - Variety Match,Novel,0.017,-0.069,0.163,0.95,median,qi
-Spelling,Variety Mismatch Social - Variety Match,Non-Contrastive,0.03,-0.032,0.093,0.95,median,qi
-Spelling,Variety Mismatch Social - Variety Match,Contrastive,0.013,-0.06,0.093,0.95,median,qi
-Spelling,Variety Mismatch Social - Variety Match,Novel,0.005,-0.071,0.12,0.95,median,qi
-Spelling,Dialect Literacy - Variety Match,Non-Contrastive,-0,-0.064,0.067,0.95,median,qi
-Spelling,Dialect Literacy - Variety Match,Contrastive,0.043,-0.034,0.136,0.95,median,qi
-Spelling,Dialect Literacy - Variety Match,Novel,0.018,-0.063,0.147,0.95,median,qi
-Spelling,Variety Mismatch Social - Variety Mismatch,Non-Contrastive,0.022,-0.043,0.086,0.95,median,qi
-Spelling,Variety Mismatch Social - Variety Mismatch,Contrastive,0.021,-0.052,0.098,0.95,median,qi
-Spelling,Variety Mismatch Social - Variety Mismatch,Novel,-0.012,-0.155,0.107,0.95,median,qi
-Spelling,Dialect Literacy - Variety Mismatch,Non-Contrastive,-0.008,-0.074,0.06,0.95,median,qi
-Spelling,Dialect Literacy - Variety Mismatch,Contrastive,0.051,-0.027,0.144,0.95,median,qi
-Spelling,Dialect Literacy - Variety Mismatch,Novel,0.001,-0.147,0.135,0.95,median,qi
-Spelling,Dialect Literacy - Variety Mismatch Social,Non-Contrastive,-0.03,-0.096,0.038,0.95,median,qi
-Spelling,Dialect Literacy - Variety Mismatch Social,Contrastive,0.03,-0.056,0.123,0.95,median,qi
-Spelling,Dialect Literacy - Variety Mismatch Social,Novel,0.013,-0.109,0.145,0.95,median,qi
-Reading,Variety Mismatch - Variety Match,Non-Contrastive,-0.005,-0.051,0.041,0.9,median,qi
-Reading,Variety Mismatch - Variety Match,Contrastive,0.025,-0.022,0.072,0.9,median,qi
-Reading,Variety Mismatch - Variety Match,Novel,-0.005,-0.087,0.058,0.9,median,qi
-Reading,Variety Mismatch Social - Variety Match,Non-Contrastive,0.015,-0.031,0.059,0.9,median,qi
-Reading,Variety Mismatch Social - Variety Match,Contrastive,0.043,-0.006,0.091,0.9,median,qi
-Reading,Variety Mismatch Social - Variety Match,Novel,-0.013,-0.094,0.061,0.9,median,qi
-Reading,Dialect Literacy - Variety Match,Non-Contrastive,-0.013,-0.058,0.032,0.9,median,qi
-Reading,Dialect Literacy - Variety Match,Contrastive,0.072,0.023,0.123,0.9,median,qi
-Reading,Dialect Literacy - Variety Match,Novel,0.018,-0.064,0.091,0.9,median,qi
-Reading,Variety Mismatch Social - Variety Mismatch,Non-Contrastive,0.02,-0.027,0.065,0.9,median,qi
-Reading,Variety Mismatch Social - Variety Mismatch,Contrastive,0.018,-0.031,0.067,0.9,median,qi
-Reading,Variety Mismatch Social - Variety Mismatch,Novel,-0.008,-0.07,0.062,0.9,median,qi
-Reading,Dialect Literacy - Variety Mismatch,Non-Contrastive,-0.008,-0.053,0.038,0.9,median,qi
-Reading,Dialect Literacy - Variety Mismatch,Contrastive,0.047,-0.004,0.099,0.9,median,qi
-Reading,Dialect Literacy - Variety Mismatch,Novel,0.024,-0.037,0.091,0.9,median,qi
-Reading,Dialect Literacy - Variety Mismatch Social,Non-Contrastive,-0.028,-0.073,0.018,0.9,median,qi
-Reading,Dialect Literacy - Variety Mismatch Social,Contrastive,0.029,-0.023,0.083,0.9,median,qi
-Reading,Dialect Literacy - Variety Mismatch Social,Novel,0.032,-0.041,0.101,0.9,median,qi
-Spelling,Variety Mismatch - Variety Match,Non-Contrastive,0.008,-0.044,0.06,0.9,median,qi
-Spelling,Variety Mismatch - Variety Match,Contrastive,-0.008,-0.066,0.051,0.9,median,qi
-Spelling,Variety Mismatch - Variety Match,Novel,0.017,-0.057,0.132,0.9,median,qi
-Spelling,Variety Mismatch Social - Variety Match,Non-Contrastive,0.03,-0.022,0.082,0.9,median,qi
-Spelling,Variety Mismatch Social - Variety Match,Contrastive,0.013,-0.047,0.077,0.9,median,qi
-Spelling,Variety Mismatch Social - Variety Match,Novel,0.005,-0.059,0.094,0.9,median,qi
-Spelling,Dialect Literacy - Variety Match,Non-Contrastive,-0,-0.054,0.055,0.9,median,qi
-Spelling,Dialect Literacy - Variety Match,Contrastive,0.043,-0.022,0.119,0.9,median,qi
-Spelling,Dialect Literacy - Variety Match,Novel,0.018,-0.051,0.119,0.9,median,qi
-Spelling,Variety Mismatch Social - Variety Mismatch,Non-Contrastive,0.022,-0.031,0.075,0.9,median,qi
-Spelling,Variety Mismatch Social - Variety Mismatch,Contrastive,0.021,-0.04,0.085,0.9,median,qi
-Spelling,Variety Mismatch Social - Variety Mismatch,Novel,-0.012,-0.125,0.083,0.9,median,qi
-Spelling,Dialect Literacy - Variety Mismatch,Non-Contrastive,-0.008,-0.063,0.049,0.9,median,qi
-Spelling,Dialect Literacy - Variety Mismatch,Contrastive,0.051,-0.014,0.126,0.9,median,qi
-Spelling,Dialect Literacy - Variety Mismatch,Novel,0.001,-0.115,0.107,0.9,median,qi
-Spelling,Dialect Literacy - Variety Mismatch Social,Non-Contrastive,-0.03,-0.085,0.026,0.9,median,qi
-Spelling,Dialect Literacy - Variety Mismatch Social,Contrastive,0.03,-0.04,0.106,0.9,median,qi
-Spelling,Dialect Literacy - Variety Mismatch Social,Novel,0.013,-0.082,0.116,0.9,median,qi
-Reading,Variety Mismatch - Variety Match,Non-Contrastive,-0.005,-0.041,0.03,0.8,median,qi
-Reading,Variety Mismatch - Variety Match,Contrastive,0.025,-0.012,0.062,0.8,median,qi
-Reading,Variety Mismatch - Variety Match,Novel,-0.005,-0.065,0.045,0.8,median,qi
-Reading,Variety Mismatch Social - Variety Match,Non-Contrastive,0.015,-0.021,0.049,0.8,median,qi
-Reading,Variety Mismatch Social - Variety Match,Contrastive,0.043,0.006,0.081,0.8,median,qi
-Reading,Variety Mismatch Social - Variety Match,Novel,-0.013,-0.073,0.043,0.8,median,qi
-Reading,Dialect Literacy - Variety Match,Non-Contrastive,-0.013,-0.048,0.022,0.8,median,qi
-Reading,Dialect Literacy - Variety Match,Contrastive,0.072,0.033,0.112,0.8,median,qi
-Reading,Dialect Literacy - Variety Match,Novel,0.018,-0.043,0.074,0.8,median,qi
-Reading,Variety Mismatch Social - Variety Mismatch,Non-Contrastive,0.02,-0.016,0.055,0.8,median,qi
-Reading,Variety Mismatch Social - Variety Mismatch,Contrastive,0.018,-0.021,0.056,0.8,median,qi
-Reading,Variety Mismatch Social - Variety Mismatch,Novel,-0.008,-0.056,0.045,0.8,median,qi
-Reading,Dialect Literacy - Variety Mismatch,Non-Contrastive,-0.008,-0.043,0.028,0.8,median,qi
-Reading,Dialect Literacy - Variety Mismatch,Contrastive,0.047,0.007,0.087,0.8,median,qi
-Reading,Dialect Literacy - Variety Mismatch,Novel,0.024,-0.025,0.075,0.8,median,qi
-Reading,Dialect Literacy - Variety Mismatch Social,Non-Contrastive,-0.028,-0.063,0.008,0.8,median,qi
-Reading,Dialect Literacy - Variety Mismatch Social,Contrastive,0.029,-0.012,0.071,0.8,median,qi
-Reading,Dialect Literacy - Variety Mismatch Social,Novel,0.032,-0.024,0.085,0.8,median,qi
-Spelling,Variety Mismatch - Variety Match,Non-Contrastive,0.008,-0.032,0.048,0.8,median,qi
-Spelling,Variety Mismatch - Variety Match,Contrastive,-0.008,-0.053,0.037,0.8,median,qi
-Spelling,Variety Mismatch - Variety Match,Novel,0.017,-0.041,0.099,0.8,median,qi
-Spelling,Variety Mismatch Social - Variety Match,Non-Contrastive,0.03,-0.01,0.07,0.8,median,qi
-Spelling,Variety Mismatch Social - Variety Match,Contrastive,0.013,-0.033,0.061,0.8,median,qi
-Spelling,Variety Mismatch Social - Variety Match,Novel,0.005,-0.046,0.069,0.8,median,qi
-Spelling,Dialect Literacy - Variety Match,Non-Contrastive,-0,-0.042,0.042,0.8,median,qi
-Spelling,Dialect Literacy - Variety Match,Contrastive,0.043,-0.008,0.1,0.8,median,qi
-Spelling,Dialect Literacy - Variety Match,Novel,0.018,-0.037,0.09,0.8,median,qi
-Spelling,Variety Mismatch Social - Variety Mismatch,Non-Contrastive,0.022,-0.019,0.063,0.8,median,qi
-Spelling,Variety Mismatch Social - Variety Mismatch,Contrastive,0.021,-0.025,0.069,0.8,median,qi
-Spelling,Variety Mismatch Social - Variety Mismatch,Novel,-0.012,-0.095,0.06,0.8,median,qi
-Spelling,Dialect Literacy - Variety Mismatch,Non-Contrastive,-0.008,-0.051,0.036,0.8,median,qi
-Spelling,Dialect Literacy - Variety Mismatch,Contrastive,0.051,0.001,0.108,0.8,median,qi
-Spelling,Dialect Literacy - Variety Mismatch,Novel,0.001,-0.085,0.079,0.8,median,qi
-Spelling,Dialect Literacy - Variety Mismatch Social,Non-Contrastive,-0.03,-0.072,0.014,0.8,median,qi
-Spelling,Dialect Literacy - Variety Mismatch Social,Contrastive,0.03,-0.024,0.088,0.8,median,qi
-Spelling,Dialect Literacy - Variety Mismatch Social,Novel,0.013,-0.058,0.088,0.8,median,qi
+task,variety_exposure,.value,.lower,.upper,.width,.point,.interval
+Reading,Variety Mismatch - Variety Match,0.006,-0.076,0.072,0.95,median,qi
+Reading,Variety Mismatch Social - Variety Match,0.018,-0.082,0.089,0.95,median,qi
+Reading,Dialect Literacy - Variety Match,0.023,-0.066,0.12,0.95,median,qi
+Reading,Variety Mismatch Social - Variety Mismatch,0.012,-0.064,0.076,0.95,median,qi
+Reading,Dialect Literacy - Variety Mismatch,0.02,-0.052,0.101,0.95,median,qi
+Reading,Dialect Literacy - Variety Mismatch Social,0.01,-0.07,0.098,0.95,median,qi
+Spelling,Variety Mismatch - Variety Match,0.005,-0.069,0.114,0.95,median,qi
+Spelling,Variety Mismatch Social - Variety Match,0.018,-0.06,0.101,0.95,median,qi
+Spelling,Dialect Literacy - Variety Match,0.019,-0.059,0.128,0.95,median,qi
+Spelling,Variety Mismatch Social - Variety Mismatch,0.014,-0.107,0.096,0.95,median,qi
+Spelling,Dialect Literacy - Variety Mismatch,0.014,-0.1,0.129,0.95,median,qi
+Spelling,Dialect Literacy - Variety Mismatch Social,0.002,-0.092,0.119,0.95,median,qi
+Reading,Variety Mismatch - Variety Match,0.006,-0.059,0.062,0.9,median,qi
+Reading,Variety Mismatch Social - Variety Match,0.018,-0.061,0.078,0.9,median,qi
+Reading,Dialect Literacy - Variety Match,0.023,-0.052,0.107,0.9,median,qi
+Reading,Variety Mismatch Social - Variety Mismatch,0.012,-0.05,0.065,0.9,median,qi
+Reading,Dialect Literacy - Variety Mismatch,0.02,-0.042,0.089,0.9,median,qi
+Reading,Dialect Literacy - Variety Mismatch Social,0.01,-0.059,0.084,0.9,median,qi
+Spelling,Variety Mismatch - Variety Match,0.005,-0.057,0.086,0.9,median,qi
+Spelling,Variety Mismatch Social - Variety Match,0.018,-0.047,0.084,0.9,median,qi
+Spelling,Dialect Literacy - Variety Match,0.019,-0.047,0.106,0.9,median,qi
+Spelling,Variety Mismatch Social - Variety Mismatch,0.014,-0.078,0.08,0.9,median,qi
+Spelling,Dialect Literacy - Variety Mismatch,0.014,-0.075,0.108,0.9,median,qi
+Spelling,Dialect Literacy - Variety Mismatch Social,0.002,-0.076,0.097,0.9,median,qi
+Reading,Variety Mismatch - Variety Match,0.006,-0.042,0.05,0.8,median,qi
+Reading,Variety Mismatch Social - Variety Match,0.018,-0.04,0.065,0.8,median,qi
+Reading,Dialect Literacy - Variety Match,0.023,-0.038,0.092,0.8,median,qi
+Reading,Variety Mismatch Social - Variety Mismatch,0.012,-0.035,0.053,0.8,median,qi
+Reading,Dialect Literacy - Variety Mismatch,0.02,-0.029,0.074,0.8,median,qi
+Reading,Dialect Literacy - Variety Mismatch Social,0.01,-0.046,0.069,0.8,median,qi
+Spelling,Variety Mismatch - Variety Match,0.005,-0.043,0.061,0.8,median,qi
+Spelling,Variety Mismatch Social - Variety Match,0.018,-0.032,0.067,0.8,median,qi
+Spelling,Dialect Literacy - Variety Match,0.019,-0.033,0.084,0.8,median,qi
+Spelling,Variety Mismatch Social - Variety Mismatch,0.014,-0.05,0.065,0.8,median,qi
+Spelling,Dialect Literacy - Variety Mismatch,0.014,-0.052,0.085,0.8,median,qi
+Spelling,Dialect Literacy - Variety Mismatch Social,0.002,-0.06,0.074,0.8,median,qi
