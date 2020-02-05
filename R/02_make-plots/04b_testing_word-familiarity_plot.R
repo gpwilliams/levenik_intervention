@@ -36,7 +36,7 @@ ggplot() +
   four_panel_theme
 
 ggsave(
-  here("03_plots", "testing_word-familiarity_plot.png"), 
+  here("03_plots", "03_frequentist-style", "testing_word-familiarity_plot.png"), 
   last_plot(), 
   height = 8, 
   width = 14

@@ -36,7 +36,7 @@ ggplot() +
   two_panel_theme
 
 ggsave(
-  here("03_plots", "exposure_plot.png"), 
+  here("03_plots", "03_frequentist-style", "exposure_plot.png"), 
   last_plot(), 
   height = 8, 
   width = 14

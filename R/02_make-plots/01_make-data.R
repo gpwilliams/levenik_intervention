@@ -23,6 +23,13 @@ cleaned_data <-
     levels = c("Trained", "Untrained")
     ),
     word_type = fct_recode(word_type, Untrained = "Novel"),
+    word_type = factor( # reorder word_type
+      word_type,
+      levels = c(
+        "Non-Contrastive", 
+        "Contrastive", 
+        "Untrained"
+      )),
     task = factor(str_to_title(task), levels = c("Reading", "Spelling"))
   ) %>% 
   drop_na(lenient_nLED)

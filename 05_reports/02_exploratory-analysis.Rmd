@@ -10,10 +10,8 @@ output:
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-```
+knitr::opts_chunk$set(echo = FALSE, message = FALSE)
 
-```{r libraries, include = FALSE}
 packages <- c(
   "tidyverse",
   "rlang",
@@ -24,128 +22,34 @@ packages <- c(
   "modelr",
   "ggforce",
   "ggrepel",
-  "ggridges"
+  "ggridges",
+  "irr"
 )
 
 # load packages
 lapply(packages, library, character.only = TRUE)
 
+# load functions
+r_function_list <- list.files(
+  path = here("R", "00_functions"), 
+  pattern = "R$",
+  full.names = TRUE
+)
+purrr::walk(r_function_list, source)
+
 # get citations
 citations <- purrr::map(packages, citation)
-```
 
-```{r functions, include = FALSE}
-cite_package <- function(package){
-  #' Return the name and installed version of a package as a character.
-  #' @param package A character for an installed package.
-  #' @return A character defining the \code{package} name with version number in brackets.
-  #' @examples
-  #' cite_package("tidyverse")
-  #' cite_package("lme4")
-  paste0(package, " [Version ", packageVersion(package), "]")
-}
+# get file paths ----
 
-cite_packages <- function(package_string, as_string = TRUE){
-  #' Return the name and installed version of one or more installed packages passed as a character vector.
-  #' @param package A character vector of one or more installed packages.
-  #' @param as_string Logical determining whether the returned output is formatted as a string in English (TRUE) or as a list (FALSE). Defaults to TRUE.
-  #' @return A string or list of packages from \code{package_string} with version number in brackets.
-  #' @examples
-  #' cite_packages("tidyverse", as_string = TRUE)
-  #' cite_packages("tidyverse", as_string = FALSE)
-  #' cite_packages(c("tidyverse", "lme4"))
-  if(length(package_string) > 1) {
-    all_packages <- base::lapply(package_string, cite_package)
-    if(as_string == TRUE) {
-      but_last_packages <- toString(all_packages[1:length(all_packages)-1])
-      last_package <- base::toString(all_packages[length(all_packages)])
-      base::paste0(but_last_packages, ", and ", last_package)
-    } else if(as_string == FALSE){
-      all_packages
-    }
-  } else {
-    if(as_string == TRUE) {
-      base::toString(cite_package(package_string))
-    } else if(as_string == FALSE) {
-      cite_package(package_string)
-    }
-  }
-}
-
-rename_table_cols <- function(.data, .oldnames, .newnames) {
-  names(.oldnames) <- .newnames
-  
-  .data %>% 
-    dplyr::rename(!!!.oldnames)
-}
-
-table_cols_to_title <- function(.data) {
-  .data %>% 
-    dplyr::rename_all(
-      ~stringr::str_to_title(base::gsub("_", " ", .))
-    ) 
-}
-
-merge_CI_limits <- function(data, lower, upper, round = TRUE, decimals = 2) {
-  # Pastes two columns together in brackets separated by a comma
-  # Use: used to paste lower and upper CI together after tidying model with
-  #       tidy_ordinal_model()
-  # Inputs: data = data.frame with lower and upper CI bounds as columns
-  #         lower = bare (unquoted) name of lower confidence limit column name
-  #         upper = bare (unquoted) name of upper confidence limit column name
-  #         round = TRUE (default), logical indicating whether or not to round
-  #                 values in the CI columns prior to pasting (recommended)
-  #         decimals = 2 (default), integer indicating how many values to
-  #             round numbers by if rounding occurs. Ignored if round = FALSE.
-  # Returns: data.frame with merged CI levels in one column, with prior
-  #           lower and upper bound columns removed.
-  
-  # force standard evaluation; used with !! later
-  
-  if(round == TRUE) {
-    data %>% mutate("interval" = paste0(
-      "[", 
-      # formatC used to force R to keep trailing zeroes
-      formatC(round({{lower}}, decimals), format = "f", digits = decimals), 
-      ", ", 
-      formatC(round({{upper}}, decimals), format = "f", digits = decimals),
-      "]"
-    )) %>%
-      select(-{{lower}}, -{{upper}})
-  } else {
-    data %>% 
-      mutate("interval" = paste0("[", {{lower}}, ", ", {{upper}}, "]")) %>%
-      select(-{{lower}}, -{{upper}})
-  }
-}
-
-format_summary <- function(.data, .oldnames, .newnames, .lower = .lower, .upper = .upper, .drop) {
-  .data %>% 
-    dplyr::select(-{{.drop}}) %>%
-    merge_CI_limits(., {{.lower}}, {{.upper}}, decimals = 3) %>% 
-    rename_table_cols(., .oldnames, .newnames) %>%
-    table_cols_to_title(.)
-}
-
-make_rope_footer <- function(.data, .lower = "ROPE_low", .upper = "ROPE_high", .CI = "CI"){
-  paste0(
-    "ROPE range = [", 
-    .data[[.lower]][[1]],
-    ", ",
-    .data[[.upper]][[1]],
-    "]. ROPE determined at the ",
-    .data[[.CI]][[1]],
-    "% CI of the HDI."
-  )
-}
-```
-
-```{r get-file-paths, include = FALSE}
+# get model summaries only for easy loading
 fitted_models_dir <- list.files(
   path = here("04_analysis", "01_models"),
   pattern = "rds$",
   full.names = TRUE
-)
+) %>% 
+  str_subset("summary")
+  
 
 model_summaries_dir <- list.files(
   path = here("04_analysis", "02_summaries", "02_full-data"),
@@ -158,11 +62,10 @@ plots_dir <- list.files(
   pattern = "png$",
   full.names = TRUE
 )
-```
 
-```{r load-data, include = FALSE}
-fitted_models <- purrr::map(fitted_models_dir, read_rds) %>% 
-  purrr::map(., summary)
+# load data ----
+
+fitted_models <- purrr::map(fitted_models_dir, read_rds)
 
 names(fitted_models) <- fitted_models_dir %>% 
   sub(".*/", "", .) %>% 
@@ -174,14 +77,22 @@ names(model_summaries) <- model_summaries_dir %>%
   substr(., 1, nchar(.)-4)
 ```
 
-```{r define-global-variables}
-summary_oldnames <- c(".value", ".width")
-summary_newnames <- c("Mean", "Width")
-summary_drop <- c(".point", ".interval") # for some reason can't be in a list.
+```{r define-renaming-variables}
+summary_oldnames <- c(".value", "interval")
+summary_newnames <- c("median", "percentile interval")
+summary_drop <- c(".point", ".interval")
 
-rope_oldnames <- c("ROPE_Percentage", "ROPE_Equivalence")
-rope_newnames <- c("Percentage", "Equivalence")
-rope_drop <- c("CI", "ROPE_low", "ROPE_high")
+posterior_oldnames <- c("Ci Interval", "Rope Interval", "Pd")
+posterior_newnames <- c("Percentile Interval", "HDI Interval", "P(Direction)")
+posterior_drop <- c(
+  ".width",
+  ".point",
+  ".interval",
+  "CI",
+  "ROPE_low", 
+  "ROPE_high",
+  "ROPE_Equivalence"
+)
 ```
 
 `r version$version.string` and the R-packages `r cite_packages(packages)` were used for data preparation, analysis, and presentation.
@@ -191,23 +102,36 @@ rope_drop <- c("CI", "ROPE_low", "ROPE_high")
 A summary of the Testing Phase model incorporating the mean scores in the vocabulary test as a covariate is provided below. This can be used to determine model diagnostics and coefficients. As with previous models, draws from the posterior for different combinations of conditions were taken using the tidybayes R-package (CITATION). Similarly, hypothesis tests are provided in the form of Region of Practical Equivalence (ROPE) analyses from these draws using the bayestestR R-package. Extreme caution is needed for interpreting such hypothesis tests as the following is purely exploratory.
 
 ```{r testing-cov-model-summary, include = FALSE}
-summary(fitted_models[["testing_cov_model"]])
+summary(fitted_models[["testing_cov_model"]]$fixed)
 ```
 
 We first explored whether mean vocabulary test performance (in nLED) predicts testing performance, and whether or not this varies across Task, Variety Exposure condition, and Word Type. A plot of this relationship is shown below.
 
 ```{r cov-variety-exposure-task-novel-plot-testing-cov, include = FALSE}
-knitr::include_graphics(plots_dir[str_detect(plots_dir, "testing_cov_etv_n")])
+knitr::include_graphics(plots_dir[str_detect(plots_dir, "testing_cov_etv")])
 ```
 
-## Variety Exposure for Novel Words Only
+## Variety Exposure
 
 It's quite difficult to make out an overall pattern here, so instead we performed a median split based on the vocabulary test performance, and we categorised these into those with high and low nLEDs in the vocabulary test.
 
-We focused specifically on novel words to see whether any differences occur for novel word decoding. The following analyses summarise the patterns in the covariate model. 
+# Word Type by Task, Variety Exposure, and Exposure Test Performance
+
+```{r}
+model_summaries$testing_cov_median_etvw
+model_summaries$testing_cov_median_etvw_compare
+```
+
+
+
+
+
+## Variety Exposure for Novel Words Only
+
+We next focussed on novel words to see whether any differences occur for novel word decoding. The following analyses summarise the patterns in the covariate model. 
 
 ```{r cov-variety-exposure-task-novel-median-plot-testing-cov, include = FALSE}
-knitr::include_graphics(plots_dir[str_detect(plots_dir, "testing_cov_etv_n_median")])
+knitr::include_graphics(plots_dir[str_detect(plots_dir, "testing_cov_median_etv_n")])
 ```
 
 It's clear from the figure that performance is generally worse in the testing phase for those with high mean nLEDs during the vocabulary test. Are there any differences if we directly compare these difference scores?
@@ -217,6 +141,25 @@ knitr::include_graphics(plots_dir[str_detect(plots_dir, "testing_cov_median_etv_
 ```
 
 Variety Match and Mismatch seem to differ for the spelling task, while all other contrasts seem to indicate equivalent performance across conditions. Is this borne out in the data?
+
+
+
+How do high and low performers compare by task and variety exposure condition?
+
+Is there any difference by Varity Exposure groups for their difference scores between high and low performers?
+
+```{r}
+model_summaries$testing_cov_median_etv_n
+model_summaries$testing_cov_median_etv_n_compare
+```
+
+
+
+
+
+
+
+
 
 ```{r novel-variety-task-cov-testing-cov-summary-ROPE, include = FALSE}
 format_summary(

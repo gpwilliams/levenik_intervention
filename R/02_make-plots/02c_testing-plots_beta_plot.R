@@ -24,13 +24,6 @@ ggplot(
   scale_y_continuous(breaks = seq(0, 1, 0.2)) +
   labs(x = "Word Type", y = "Mean Normalised Levenshtein Edit Distance")
 
-ggsave(
-  here("03_plots", "testing_word_type_nLED.png"), 
-  last_plot(), 
-  height = 8, 
-  width = 14
-)
-
 # by word familiarity ----
 
 ggplot(
@@ -56,10 +49,3 @@ ggplot(
   coord_cartesian(ylim = c(0, 1)) +
   scale_y_continuous(breaks = seq(0, 1, 0.2)) +
   labs(x = "Word Familiarity", y = "Mean Normalised Levenshtein Edit Distance")
-
-ggsave(
-  here("03_plots", "testing_word_familiarity_nLED.png"), 
-  last_plot(), 
-  height = 8, 
-  width = 14
-)

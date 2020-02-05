@@ -22,7 +22,8 @@ packages <- c(
   "modelr",
   "ggforce",
   "ggrepel",
-  "ggridges"
+  "ggridges",
+  "irr"
 )
 
 # load packages
@@ -98,7 +99,7 @@ posterior_drop <- c(
 
 # Models
 
-Bayesian distributional models were fitted using the brms R-package. These models account for the fact that nLEDs are bounded between 0 and 1, with inflated counts at these bounds, which results in non-normal distributions. Crucially, in contrast to models fitted under the assumption of normality, these models do not make predictions outside the possible range of values and accurately capture the larger densities at extreme values. At the time of writing, distributional models of this nature are only available for hierarchical data using the brms R-package, which requires model fitting to be performed using a Bayesian framework. As an additional benefit, Baeysian models do not suffer from the non-convergence associated with modelling complex analyses under a Frequentist framework.
+The data were analysed using Bayesian distributional models in the brms R-package. These models account for the fact that nLEDs are bounded between 0 and 1, with inflated counts at these bounds on a trial-by-trial basis, which results in non-normal distributions. Crucially, in contrast to general linear models and linear mixed effects models these, models do not make predictions outside the possible range of values and accurately capture the larger densities at extreme values. At the time of writing, distributional models of this nature are only available for hierarchical data using the brms R-package, which requires model fitting to be performed using a Bayesian framework. As an additional benefit, Baeysian models do not suffer from the non-convergence associated with modelling complex analyses under a Frequentist framework.
 
 ## Zero-one Inflated Beta Distributions
 
@@ -217,8 +218,7 @@ fitted_models[["exposure_model_summary"]]$fixed %>%
   merge_CI_limits(., `l-95% CI`, `u-95% CI`, decimals = 3) %>%
   select(Parameter:Est.Error, interval, everything()) %>% 
   table_cols_to_title(.) %>% 
-  kableExtra::kable(digits = 3) %>% 
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+  custom_kable()
 ```
 
 ## Variety Exposure
@@ -241,8 +241,7 @@ format_summary_table(
   ) %>% 
   filter(.Width == 0.90) %>% 
   select(-.Width) %>% 
-  kableExtra::kable() %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+  custom_kable()
 ```
 
 The differences between conditions were compared using the `compare_levels()` function from the `r cite_package("tidybayes")` R-package. This allows for a direct comparison of differences between groups, which provides a more accurate and reliable method of establishing group differences than visual inspection of whether credible intervals overlap from estimates of the individual groups (Schenker & Gentleman, 2001). Here, the posterior is summarised as the median and 90% credible interval around the median. We also evaluated equivalence in the nLEDs between variety exposure conditions by determining a region of practical equivalence (ROPE) by which any effects between the reported bounds are deemed to be practically equivalent to 0. In all instances, this is determined at the 90% credible interval (CI) bound of the highest density interval (HDI). We report the proportion of the HDI contained within the ROPE region along with bounds of this interval. Where HDIs are entirely contained by the equivalence bounds, equivalence is accepted. Where HDIs are entirely outside the equivalence bounds, equivalence is rejected. Uncertainty is assigned to any HDIs that cross the equivalence bounds in either (or both) directions. Finally, the probability of direction is reported, showing the proportion of the posterior that is of the median's sign (i.e. how much of the posterior supports a positive or negative effect).
@@ -256,11 +255,7 @@ report_posteriors(
   posterior_oldnames,
   posterior_newnames
 ) %>% 
-  kableExtra::kable() %>% 
-  kableExtra::footnote(
-    general = make_rope_footer(model_summaries$exposure_v_compare_rope)
-  ) %>% 
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+  custom_kable(., add_footer = TRUE, model_summaries$exposure_v_compare_rope)
 ```
 
 While nLEDs in the Variety Mismatch condition are generally lower than those in the Variety Match condition, 30% of the difference scores are contained by the equivalence bounds, and approximately 91% of the difference is of the same sign as the median.
@@ -289,8 +284,7 @@ format_summary_table(
   ) %>% 
   filter(.Width == 0.90) %>% 
   select(-.Width) %>% 
-  kableExtra::kable() %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+  custom_kable()
 ```
 
 Comparisons between levels of word type during the exposure phase are shown for each variety exposure condition below. Here, all effects span either side of 0, suggesting that there is no reliable difference between word type by variety exposure condition in the exposure phase. In all instances there is some evidence that performance is better for non-contrastive words relative to contrastive words. However, the HDI around the parameter spans zero in all instances, and only a small proportion of the HDI is contained by the ROPE range.
@@ -304,11 +298,7 @@ report_posteriors(
   posterior_oldnames,
   posterior_newnames
 ) %>% 
-  kableExtra::kable() %>% 
-  kableExtra::footnote(
-    general = make_rope_footer(model_summaries$exposure_vw_compare_rope)
-  ) %>% 
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+  custom_kable(., add_footer = TRUE, model_summaries$exposure_vw_compare_rope)
 ```
 
 # Testing Phase Model
@@ -322,8 +312,7 @@ fitted_models[["testing_model_summary"]]$fixed %>%
   merge_CI_limits(., `l-95% CI`, `u-95% CI`, decimals = 3) %>%
   select(Parameter:Est.Error, interval, everything()) %>% 
   table_cols_to_title(.) %>% 
-  kableExtra::kable(digits = 3) %>% 
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+  custom_kable()
 ```
 
 ## Variety Exposure
@@ -346,8 +335,7 @@ format_summary_table(
   ) %>% 
   filter(.Width == 0.90) %>% 
   select(-.Width) %>% 
-  kableExtra::kable() %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+  custom_kable()
 ```
 
 ```{r variety-exposure-condition-testing-compare}
@@ -359,11 +347,7 @@ report_posteriors(
   posterior_oldnames,
   posterior_newnames
 ) %>% 
-  kableExtra::kable() %>% 
-  kableExtra::footnote(
-    general = make_rope_footer(model_summaries$testing_v_compare_rope)
-  ) %>% 
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+  custom_kable(., add_footer = TRUE, model_summaries$testing_v_compare_rope)
 ```
 
 While the ROPE is undecided, there does not seem to be any reliable differences across the Variety Exposure conditions in regards to overall performance.
@@ -388,8 +372,7 @@ format_summary_table(
   ) %>% 
   filter(.Width == 0.90) %>% 
   select(-.Width) %>% 
-  kableExtra::kable() %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+  custom_kable()
 ```
 
 ```{r variety-exposure-novel-condition-testing_compare}
@@ -401,11 +384,7 @@ report_posteriors(
   posterior_oldnames,
   posterior_newnames
 ) %>% 
-  kableExtra::kable() %>% 
-  kableExtra::footnote(
-    general = make_rope_footer(model_summaries$testing_v_n_compare_rope)
-  ) %>% 
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+  custom_kable(., add_footer = TRUE, model_summaries$testing_v_n_compare_rope)
 ```
 
 A similar pattern appears for the novel words only as with all words.
@@ -432,8 +411,7 @@ format_summary_table(
   ) %>% 
   filter(.Width == 0.90) %>% 
   select(-.Width) %>% 
-  kableExtra::kable() %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+  custom_kable()
 ```
 
 We can also directly compare the differences in performance for contrastive words relative to non-contrastive words.
@@ -447,11 +425,7 @@ report_posteriors(
   posterior_oldnames,
   posterior_newnames
 ) %>% 
-  kableExtra::kable() %>% 
-  kableExtra::footnote(
-    general = make_rope_footer(model_summaries$testing_tvw_compare_rope)
-  ) %>% 
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+  custom_kable(., add_footer = TRUE, model_summaries$testing_tvw_compare_rope)
 ```
 
 These results reflect those in the plots above. Are any differences reported here reliable? 
@@ -471,8 +445,7 @@ format_summary_table(
   ) %>% 
   filter(.Width == 0.90) %>% 
   select(-.Width) %>% 
-  kableExtra::kable() %>%
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+  custom_kable()
 ```
 
 ```{r task-variety-word-type-ms-testing-ROPE}
@@ -484,11 +457,7 @@ report_posteriors(
   posterior_oldnames,
   posterior_newnames
 ) %>% 
-  kableExtra::kable() %>% 
-  kableExtra::footnote(
-    general = make_rope_footer(model_summaries$testing_tvw_ms_compare_rope)
-  ) %>% 
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = TRUE)
+  custom_kable(., add_footer = TRUE, model_summaries$testing_tvw_ms_compare_rope)
 ```
 
 Any differences here are slight, and are mainly contained by the ROPE in both tasks. This suggests that there are no substantial differences in the magnitude of the effect between contrastive and non-contrastive words across these two conditions.

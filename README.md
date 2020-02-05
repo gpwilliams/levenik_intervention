@@ -2,6 +2,7 @@ levenik_intervention
 
 TODO
 
-- analysis: exposure_v_compare must look at overall variety rather than variety by word type
-- make p direction for the summary of means as well as for the ROPE range.
-- plots: rename, and change "pointranges show posterior mean" to "...posterior median"
+- Plots: Rename, and change "pointranges show posterior mean" to "...posterior median" (rerun analysis code)
+- Plots: Finish code for splitting frequentist style plots into the distributional parameters (zoi, coi etc.). This is in R/02_make-plots/testing_code for the time being.
+- Move direct_label.R and random_order.R to appropriate folders.
+- Document the code.

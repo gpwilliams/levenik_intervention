@@ -32,7 +32,7 @@ plotting_options <- list(
 )
 
 plotting_options$caption <- paste0(
-  "Pointranges show posterior mean \u00B1",
+  "Pointranges show posterior median \u00B1",
   plotting_options$intervals[1]*100,
   "% and ",
   plotting_options$intervals[2]*100,
