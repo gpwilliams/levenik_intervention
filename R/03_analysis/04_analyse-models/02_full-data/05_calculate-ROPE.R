@@ -36,6 +36,7 @@ model_summaries$testing_v_compare_rope <- gmap_rope(
 model_summaries$testing_tv_compare_rope <- gmap_rope(
   data = draws$testing_tv_compare, 
   draws = .value, 
+  task,
   variety_exposure,
   bounds = c(-.035, .035)
 ) %>% 
@@ -54,6 +55,7 @@ model_summaries$testing_v_n_compare_rope <- gmap_rope(
 model_summaries$testing_tv_n_compare_rope <- gmap_rope(
   data = draws$testing_tv_n_compare, 
   draws = .value, 
+  task,
   variety_exposure,
   bounds = c(-.035, .035)
 ) %>% 
@@ -76,7 +78,30 @@ model_summaries$testing_tvw_ms_compare_rope <- gmap_rope(
   data = draws$testing_tvw_ms_compare, 
   draws = .value, 
   task, 
+  variety_exposure,
   word_type,
+  bounds = c(-.02, .02)
+) %>% 
+  mutate_if(is.numeric, round, summary_options$rounding)
+
+# difference in nLED for novel words split by vocab test performance 
+# and variety exposure condition
+model_summaries$testing_cov_median_ev_n_compare <- gmap_rope(
+  data = draws$testing_cov_median_ev_n_compare, 
+  draws = .value, 
+  exposure_test_nLED_group,
+  variety_exposure,
+  bounds = c(-.02, .02)
+) %>% 
+  mutate_if(is.numeric, round, summary_options$rounding)
+
+# difference in nLED for novel words split by vocab test performance,
+# task, and variety exposure condition
+model_summaries$testing_cov_median_etv_n_compare_rope <- gmap_rope(
+  data = draws$testing_cov_median_etv_n_compare, 
+  draws = .value, 
+  exposure_test_nLED_group,
+  task, 
   variety_exposure,
   bounds = c(-.02, .02)
 ) %>% 
@@ -85,11 +110,11 @@ model_summaries$testing_tvw_ms_compare_rope <- gmap_rope(
 # difference in nLED for the magnitude of vocab test differences 
 # across variety exposure conditions in testing
 # (vocab test median split)
-model_summaries$testing_cov_median_etv_n_compare_rope <- gmap_rope(
-  data = draws$testing_cov_median_etv_n_compare, 
+model_summaries$testing_cov_median_t_ev_n_compare_rope <- gmap_rope(
+  data = draws$testing_cov_median_t_ev_n_compare, 
   draws = .value, 
-  exposure_test_nLED_group,
   task, 
+  exposure_test_nLED_group,
   variety_exposure,
   bounds = c(-.02, .02)
 ) %>% 

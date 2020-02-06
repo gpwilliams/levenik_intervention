@@ -9,14 +9,14 @@ custom_kable <- function(data, add_footer = FALSE, ...) {
   
   if(add_footer == FALSE) {
     data %>% 
-      kableExtra::kable(digits = 3) %>%
+      kableExtra::kable(digits = 3, escape = FALSE) %>%
       kableExtra::kable_styling(
         bootstrap_options = c("striped", "hover"), 
         full_width = TRUE
       )
   } else {
     data %>% 
-      kableExtra::kable(digits = 3) %>%
+      kableExtra::kable(digits = 3, escape = FALSE) %>%
       kableExtra::kable_styling(
         bootstrap_options = c("striped", "hover"), 
         full_width = TRUE

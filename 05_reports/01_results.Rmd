@@ -23,7 +23,8 @@ packages <- c(
   "ggforce",
   "ggrepel",
   "ggridges",
-  "irr"
+  "irr",
+  "kableExtra"
 )
 
 # load packages
@@ -92,6 +93,16 @@ posterior_drop <- c(
   "ROPE_low", 
   "ROPE_high",
   "ROPE_Equivalence"
+)
+
+model_replacements = c(
+  "word_type1" = "word_type",
+  "word_type2" = "word_familiarity",
+  "language_variety1" = "language_variety_1", # figure out what these are
+  "language_variety2" = "language_variety_2",
+  "language_variety3" = "language_variety_3",
+  "task1" = "task",
+  "mean_exposure_test_nLED" = "mean_vocabulary_test_nLED"
 )
 ```
 
@@ -211,14 +222,20 @@ In plots, posterior medians and 80% and 90% credible intervals are provided for 
 
 In the tables of population level (fixed) effects, $\hat{R}$ is a measure of convergence for within- and between-chain estimates, with values closer to 1 being preferable. The bulk and tail effective sample sizes give diagnostics of the number of draws which contain the same amount of information as the dependent sample (CITE STAN WEBSITE), with higher values being preferable. The tail effective sample size is determined at the 5% and 95% quantiles, while the bulk is determined at values in between these quantiles.
 
-```{r exposure-model-summary}
+```{r exposure-model-summary, results = "asis"}
 fitted_models[["exposure_model_summary"]]$fixed %>%
   as.data.frame() %>% 
   rownames_to_column(., var = "Parameter") %>% 
   merge_CI_limits(., `l-95% CI`, `u-95% CI`, decimals = 3) %>%
   select(Parameter:Est.Error, interval, everything()) %>% 
+  split_dists() %>% 
+  mutate(distribution = factor(distribution, levels = c("mu", "phi", "zoi", "coi"))) %>% 
+  arrange(distribution) %>%
+  rename_parameters(replacements = model_replacements) %>%
   table_cols_to_title(.) %>% 
-  custom_kable()
+  select(-Distribution) %>% 
+  custom_kable() %>% 
+  pack_rows(index = c("$\\mu$" = 8, "$\\phi$" = 8, "$\\alpha$" = 8, "$\\gamma$" = 8))
 ```
 
 ## Variety Exposure
@@ -311,8 +328,14 @@ fitted_models[["testing_model_summary"]]$fixed %>%
   rownames_to_column(., var = "Parameter") %>% 
   merge_CI_limits(., `l-95% CI`, `u-95% CI`, decimals = 3) %>%
   select(Parameter:Est.Error, interval, everything()) %>% 
+  split_dists() %>% 
+  mutate(distribution = factor(distribution, levels = c("mu", "phi", "zoi", "coi"))) %>% 
+  arrange(distribution) %>%
+  rename_parameters(replacements = model_replacements) %>%
   table_cols_to_title(.) %>% 
-  custom_kable()
+  select(-Distribution) %>% 
+  custom_kable() %>% 
+  pack_rows(index = c("$\\mu$" = 24, "$\\phi$" = 24, "$\\alpha$" = 24, "$\\gamma$" = 24))
 ```
 
 ## Variety Exposure
@@ -375,7 +398,7 @@ format_summary_table(
   custom_kable()
 ```
 
-```{r variety-exposure-novel-condition-testing_compare}
+```{r variety-exposure-novel-condition-testing-compare}
 report_posteriors(
   model_summaries$testing_v_n_compare,
   model_summaries$testing_v_n_compare_rope,
@@ -402,7 +425,7 @@ knitr::include_graphics(c(
 
 Posterior means and credible intervals are provided in the table below.
 
-```{r task-variety-word-type-compare}
+```{r task-variety-word-type-testing}
 format_summary_table(
   model_summaries$testing_tvw, 
   summary_oldnames, 
@@ -437,18 +460,6 @@ However, all other contrasts show that a large proportion of the HDI is containe
 Finally, we ask whether or not the contrastive effect is stronger in the Variety Mismatch Social condition relative to the Variety Mismatch condition.
 
 ```{r task-variety-word-type-ms-testing-compare}
-format_summary_table(
-  model_summaries$testing_tvw_ms_compare, 
-  summary_oldnames, 
-  summary_newnames,
-  .drop = summary_drop
-  ) %>% 
-  filter(.Width == 0.90) %>% 
-  select(-.Width) %>% 
-  custom_kable()
-```
-
-```{r task-variety-word-type-ms-testing-ROPE}
 report_posteriors(
   model_summaries$testing_tvw_ms_compare,
   model_summaries$testing_tvw_ms_compare_rope,
@@ -461,3 +472,137 @@ report_posteriors(
 ```
 
 Any differences here are slight, and are mainly contained by the ROPE in both tasks. This suggests that there are no substantial differences in the magnitude of the effect between contrastive and non-contrastive words across these two conditions.
+
+# Exploratory Covariate Testing Model
+
+A summary of the Testing Phase model incorporating the mean scores in the vocabulary test as a covariate is provided below. This can be used to determine model diagnostics and coefficients. As with previous models, draws from the posterior for different combinations of conditions were taken using the tidybayes R-package. Similarly, hypothesis tests are provided in the form of Region of Practical Equivalence (ROPE) analyses from these draws using the bayestestR R-package. Extreme caution is needed for interpreting such hypothesis tests as the following models are purely exploratory.
+
+```{r testing-cov-model-summary}
+fitted_models[["testing_cov_model_summary"]]$fixed %>%
+  as.data.frame() %>% 
+  rownames_to_column(., var = "Parameter") %>% 
+  merge_CI_limits(., `l-95% CI`, `u-95% CI`, decimals = 3) %>%
+  select(Parameter:Est.Error, interval, everything()) %>% 
+  split_dists() %>% 
+  mutate(distribution = factor(distribution, levels = c("mu", "phi", "zoi", "coi"))) %>% 
+  arrange(distribution) %>%
+  rename_parameters(replacements = model_replacements) %>%
+  table_cols_to_title(.) %>% 
+  select(-Distribution) %>% 
+  custom_kable() %>% 
+  pack_rows(index = c("$\\mu$" = 48, "$\\phi$" = 48, "$\\alpha$" = 48, "$\\gamma$" = 48))
+```
+
+We first explored whether mean vocabulary test performance (i.e. in terms of mean nLED) predicts testing performance, and whether or not this varies across Task, Variety Exposure condition, and Word Type. A plot of this relationship is shown below.
+
+```{r cov-variety-exposure-task-novel-plot-testing-cov}
+knitr::include_graphics(
+  plots_dir[str_detect(plots_dir, "testing_cov_etv.png")]
+)
+```
+
+It's quite difficult to make out an overall pattern here, so instead we performed a median split based on the vocabulary test performance, and we categorised these into participants with high and low nLEDs in the vocabulary test relative to the median score.
+
+## Word Type by Task, Variety Exposure, and Vocabulary Test Performance
+
+First, we looked at the effect of word type across participants with high and low mean nLEDs in the vocabulary testing phase split by task and variety exposure condition.
+
+```{r variety-exposure-condition-plot-testing-cov}
+knitr::include_graphics(c(
+  plots_dir[str_detect(plots_dir, "testing_cov_median_etvw.png")],
+  plots_dir[str_detect(plots_dir, "testing_cov_median_etvw_compare.png")]
+))
+```
+
+```{r cov-task-task-variety-word-type-ms-testing-cov}
+format_summary_table(
+  model_summaries$testing_cov_median_etvw, 
+  summary_oldnames, 
+  summary_newnames,
+  .drop = summary_drop
+  ) %>% 
+  filter(.Width == 0.90) %>% 
+  rename(`Exposure Test nLED Group` = `Exposure Test Nled Group`) %>% 
+  select(-.Width) %>% 
+  custom_kable()
+```
+
+There appears to be some differences across conditions here. Is this borne out in the data?
+
+```{r cov-task-task-variety-word-type-ms-testing-cov-summary}
+report_posteriors(
+  model_summaries$testing_cov_median_etvw_compare,
+  model_summaries$testing_cov_median_etvw_compare_rope,
+  0.9,
+  posterior_drop,
+  posterior_oldnames,
+  posterior_newnames
+) %>% 
+  rename(`Exposure Test nLED Group` = `Exposure Test Nled Group`) %>% 
+  custom_kable(., add_footer = TRUE, model_summaries$testing_cov_median_etvw_compare_rope)
+```
+
+There is a clear word type effect in all of the dialect intervention conditions for the reading task, but only when participants have a low mean nLED score from the vocabulary test. When participants have a high nLED in the reading task, the only consistent word type effect is in the Dialect Literacy condition. In the spelling task, there is only a consistent word type effect for the Dialect Literacy condition regardless of performance in the vocabulary testing phase. Thus, performance is only worse for contrastive words in the reading task in the three dialect conditions when performance in the vocabulary test shows that the dialect form of the language is sufficiently entrenched. Poor performance in the vocabulary testing phase indicates that the dialect form of the language is not sufficiently entrenched prior to training in the standard form of the language so that no word type effects can occur. This effect is shown in both tasks and for participants with high and low nLEDs in the vocabulary testing phase for the Dialect Literacy condition because this condition interleaves the dialect form of the language with the standard form of the language during training (rather than front-loaded prior to the vocabulary test), which allows for sufficient entrenchment of the dialect form of the language to cause a great deal of local interference in both tasks.
+
+## Variety Exposure by Task and Vocabulary Test Performance for Novel Words Only
+
+We next focussed on novel words to see whether any differences occur for novel word decoding. The following analyses summarise the patterns in the covariate model.
+
+```{r cov-variety-exposure-task-novel-median-plot-testing-cov}
+knitr::include_graphics(c(
+  plots_dir[str_detect(plots_dir, "testing_cov_median_etv_n.png")],
+  plots_dir[str_detect(plots_dir, "testing_cov_median_etv_n_compare.png")]
+))
+```
+
+It's clear from the figure that performance is generally worse in the testing phase for those with high mean nLEDs during the vocabulary test. Are there any differences if we directly compare these difference scores? There seems to be a pattern such that Variety Match and Mismatch differ for the spelling task, while all other contrasts seem to indicate equivalent performance across conditions. The following analysis looks at whether there are any differences between participants who had low and high nLEDs (relative to the median) in the vocabulary testing phase split by task and variety exposure condition.
+
+```{r novel-variety-task-cov-testing-cov}
+format_summary_table(
+  model_summaries$testing_cov_median_etv_n, 
+  summary_oldnames, 
+  summary_newnames,
+  .drop = summary_drop
+  ) %>% 
+  rename(`Exposure Test nLED Group` = `Exposure Test Nled Group`) %>% 
+  filter(.Width == 0.90) %>% 
+  select(-.Width) %>% 
+  custom_kable()
+```
+
+We explored whether there are any differences between the variety exposure conditions in terms of how much the low and high performers vary. Is there any difference by Varity Exposure groups for their difference scores between high and low performers?
+
+```{r novel-variety-task-cov-testing-cov-summary}
+report_posteriors(
+  model_summaries$testing_cov_median_etv_n_compare,
+  model_summaries$testing_cov_median_etv_n_compare_rope,
+  0.9,
+  posterior_drop,
+  posterior_oldnames,
+  posterior_newnames
+) %>% 
+  rename(`Exposure Test nLED Group` = `Exposure Test Nled Group`) %>% 
+  custom_kable(., add_footer = TRUE, model_summaries$testing_cov_median_etv_n_compare_rope)
+```
+
+Looking at differences split by task, the four variety conditions do not differ from one another in terms of differences in performance between participants with high and low mean nLEDs during the vocabulary testing phase. This suggests that there is no reliable difference in terms of novel word decoding between participants with high and low mean nLEDs in the vocabulary test across the variety exposure conditions.
+
+**TODO**: 
+
+- add in task and variety exposure for novel words to testing phase to the report.
+
+- ev_n summary needed: vocab test and variety for novel words.
+- etv_n summary needed: vocab test, task, and variety for novel words.
+
+- ev_n plots (regular and contrastive) needed
+- etv_n plots (regular and contrastive) needed
+
+- change current etv_n to t_ev_n.
+- change current etv_n to t_ev_n in the current document. This analysis is probably not needed.
+
+- regular variety exposure needed for novel words? Needs summary and plots.
+
+- work on renaming function for large tables of coefficients.
+- want it to split by mu, phi, zoi, and coi (as the greek letters)
+
+- Fix problem with "\times" not showing in tables. Probably to do with formatting of uppercase etc.

@@ -229,9 +229,64 @@ plots$testing_cov_etv <- ggplot(
     legend.box.background = element_rect(colour = "black")
   )
 
-# testing with vocab test performance for novel words (median split) ----
+# testing with vocab test performance by variety exposure for novel words (median split) ----
+
+plots$testing_cov_median_ev_n <- ggplot(
+  data = draws$testing_cov_median_etv_n %>% 
+    escape_character(variety_exposure, pattern = " "), 
+  aes(x = .value, y = exposure_test_nLED_group)) +
+  geom_halfeyeh(
+    fill = plotting_options$fill, 
+    color = plotting_options$colour,
+    point_interval = median_qi,
+    .width = plotting_options$intervals,
+    size_range = plotting_options$point_size
+  ) +
+  facet_grid(~ variety_exposure) +
+  labs(
+    x = "Median Lenient nLED during Testing", 
+    y = "Vocabulary Test nLED",
+    title = paste0(
+      "Median Lenient nLEDs for Novel Words in the Testing Phase split by",
+      "\nVariety Exposure Condition, and Vocabulary Test Performance."
+    ),
+    caption = plotting_options$caption
+  ) +
+  scale_x_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.2)) +
+  theme(axis.text.x = element_text(size = 10)) +
+  coord_flip()
+
+# testing with vocab test performance by task and variety exposure for novel words (median split) ----
 
 plots$testing_cov_median_etv_n <- ggplot(
+  data = draws$testing_cov_median_etv_n %>% 
+    escape_character(variety_exposure, pattern = " "), 
+  aes(x = .value, y = exposure_test_nLED_group)) +
+  geom_halfeyeh(
+    fill = plotting_options$fill, 
+    color = plotting_options$colour,
+    point_interval = median_qi,
+    .width = plotting_options$intervals,
+    size_range = plotting_options$point_size
+  ) +
+  facet_grid(task ~ variety_exposure) +
+  labs(
+    x = "Median Lenient nLED during Testing", 
+    y = "Vocabulary Test nLED",
+    title = paste0(
+      "Median Lenient nLEDs for Novel Words in the Testing Phase split by",
+      "\nTask, Variety Exposure Condition, and Vocabulary Test Performance."
+    ),
+    caption = plotting_options$caption
+  ) +
+  scale_x_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.2)) +
+  theme(axis.text.x = element_text(size = 10)) +
+  coord_flip()
+
+# compare high vs. low performing voctest scores, and check for differences
+# between variety exposure conditions, split by task (median split) ----
+
+plots$testing_cov_median_t_ev_n <- ggplot(
   data = draws$testing_cov_median_etv_n %>% 
     escape_character(variety_exposure, pattern = " "), 
   aes(x = .value, y = exposure_test_nLED_group)) +
