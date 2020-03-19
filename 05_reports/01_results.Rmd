@@ -606,3 +606,7 @@ Looking at differences split by task, the four variety conditions do not differ 
 - want it to split by mu, phi, zoi, and coi (as the greek letters)
 
 - Fix problem with "\times" not showing in tables. Probably to do with formatting of uppercase etc.
+
+- Plots for exploratory vocab testing need to go to nLED .80.
+- Fix names to be consistent in all plots and papers.
+- Remove titles from plots.
