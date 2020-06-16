@@ -1,0 +1,19 @@
+variety_exposure,.value,.lower,.upper,.width,.point,.interval
+No Dialect - Dialect,-0.005,-0.132,0.09,0.95,median,qi
+No Dialect - Dialect & Social,0.004,-0.101,0.097,0.95,median,qi
+No Dialect - Dialect Literacy,-0.018,-0.127,0.073,0.95,median,qi
+Dialect - Dialect & Social,0.009,-0.093,0.126,0.95,median,qi
+Dialect - Dialect Literacy,-0.015,-0.119,0.115,0.95,median,qi
+Dialect & Social - Dialect Literacy,-0.023,-0.129,0.088,0.95,median,qi
+No Dialect - Dialect,-0.005,-0.101,0.073,0.9,median,qi
+No Dialect - Dialect & Social,0.004,-0.078,0.078,0.9,median,qi
+No Dialect - Dialect Literacy,-0.018,-0.104,0.057,0.9,median,qi
+Dialect - Dialect & Social,0.009,-0.073,0.098,0.9,median,qi
+Dialect - Dialect Literacy,-0.015,-0.098,0.086,0.9,median,qi
+Dialect & Social - Dialect Literacy,-0.023,-0.107,0.065,0.9,median,qi
+No Dialect - Dialect,-0.005,-0.072,0.054,0.8,median,qi
+No Dialect - Dialect & Social,0.004,-0.057,0.06,0.8,median,qi
+No Dialect - Dialect Literacy,-0.018,-0.081,0.04,0.8,median,qi
+Dialect - Dialect & Social,0.009,-0.052,0.073,0.8,median,qi
+Dialect - Dialect Literacy,-0.015,-0.077,0.056,0.8,median,qi
+Dialect & Social - Dialect Literacy,-0.023,-0.086,0.042,0.8,median,qi

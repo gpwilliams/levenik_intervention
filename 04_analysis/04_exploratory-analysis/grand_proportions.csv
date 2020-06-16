@@ -1,0 +1,121 @@
+task,variety_exposure,word_type,lenient_coder_error_types,counts,n_subj,n,proportion
+Reading,No Dialect,Non-contrastive,Correct,600,74,1200,0.5
+Reading,No Dialect,Non-contrastive,Dialect Word Match,0,0,0,0
+Reading,No Dialect,Non-contrastive,Dialect Word Mismatch,8,7,1200,0.006666666666666667
+Reading,No Dialect,Non-contrastive,Standard Word Mismatch,50,38,1200,0.041666666666666664
+Reading,No Dialect,Non-contrastive,Other Mismatch,542,75,1200,0.45166666666666666
+Reading,No Dialect,Contrastive,Correct,566,74,1200,0.4716666666666667
+Reading,No Dialect,Contrastive,Dialect Word Match,30,23,1200,0.025
+Reading,No Dialect,Contrastive,Dialect Word Mismatch,1,1,1200,8.333333333333334e-4
+Reading,No Dialect,Contrastive,Standard Word Mismatch,55,33,1200,0.04583333333333333
+Reading,No Dialect,Contrastive,Other Mismatch,548,73,1200,0.45666666666666667
+Reading,No Dialect,Untrained,Correct,391,57,960,0.40729166666666666
+Reading,No Dialect,Untrained,Dialect Word Match,0,0,0,0
+Reading,No Dialect,Untrained,Dialect Word Mismatch,1,1,960,0.0010416666666666667
+Reading,No Dialect,Untrained,Standard Word Mismatch,14,7,960,0.014583333333333334
+Reading,No Dialect,Untrained,Other Mismatch,554,74,960,0.5770833333333333
+Reading,Dialect,Non-contrastive,Correct,594,72,1199,0.4954128440366973
+Reading,Dialect,Non-contrastive,Dialect Word Match,0,0,0,0
+Reading,Dialect,Non-contrastive,Dialect Word Mismatch,9,9,1199,0.007506255212677231
+Reading,Dialect,Non-contrastive,Standard Word Mismatch,45,27,1199,0.03753127606338615
+Reading,Dialect,Non-contrastive,Other Mismatch,551,78,1199,0.45954962468723937
+Reading,Dialect,Contrastive,Correct,487,73,1200,0.4058333333333333
+Reading,Dialect,Contrastive,Dialect Word Match,72,43,1200,0.06
+Reading,Dialect,Contrastive,Dialect Word Mismatch,9,9,1200,0.0075
+Reading,Dialect,Contrastive,Standard Word Mismatch,46,32,1200,0.03833333333333333
+Reading,Dialect,Contrastive,Other Mismatch,586,77,1200,0.48833333333333334
+Reading,Dialect,Untrained,Correct,361,63,960,0.37604166666666666
+Reading,Dialect,Untrained,Dialect Word Match,0,0,0,0
+Reading,Dialect,Untrained,Dialect Word Mismatch,2,2,960,0.0020833333333333333
+Reading,Dialect,Untrained,Standard Word Mismatch,14,11,960,0.014583333333333334
+Reading,Dialect,Untrained,Other Mismatch,583,75,960,0.6072916666666667
+Reading,Dialect & Social,Non-contrastive,Correct,541,74,1200,0.4508333333333333
+Reading,Dialect & Social,Non-contrastive,Dialect Word Match,0,0,0,0
+Reading,Dialect & Social,Non-contrastive,Dialect Word Mismatch,14,12,1200,0.011666666666666667
+Reading,Dialect & Social,Non-contrastive,Standard Word Mismatch,65,46,1200,0.05416666666666667
+Reading,Dialect & Social,Non-contrastive,Other Mismatch,580,80,1200,0.48333333333333334
+Reading,Dialect & Social,Contrastive,Correct,445,65,1199,0.3711426188490409
+Reading,Dialect & Social,Contrastive,Dialect Word Match,81,39,1199,0.06755629691409508
+Reading,Dialect & Social,Contrastive,Dialect Word Mismatch,8,7,1199,0.006672226855713094
+Reading,Dialect & Social,Contrastive,Standard Word Mismatch,52,37,1199,0.043369474562135114
+Reading,Dialect & Social,Contrastive,Other Mismatch,613,78,1199,0.5112593828190158
+Reading,Dialect & Social,Untrained,Correct,359,55,957,0.37513061650992685
+Reading,Dialect & Social,Untrained,Dialect Word Match,0,0,0,0
+Reading,Dialect & Social,Untrained,Dialect Word Mismatch,4,4,957,0.0041797283176593526
+Reading,Dialect & Social,Untrained,Standard Word Mismatch,12,9,957,0.012539184952978056
+Reading,Dialect & Social,Untrained,Other Mismatch,582,73,957,0.6081504702194357
+Reading,Dialect Literacy,Non-contrastive,Correct,605,75,1200,0.5041666666666667
+Reading,Dialect Literacy,Non-contrastive,Dialect Word Match,0,0,0,0
+Reading,Dialect Literacy,Non-contrastive,Dialect Word Mismatch,11,10,1200,0.009166666666666667
+Reading,Dialect Literacy,Non-contrastive,Standard Word Mismatch,39,29,1200,0.0325
+Reading,Dialect Literacy,Non-contrastive,Other Mismatch,545,80,1200,0.45416666666666666
+Reading,Dialect Literacy,Contrastive,Correct,397,68,1200,0.3308333333333333
+Reading,Dialect Literacy,Contrastive,Dialect Word Match,124,51,1200,0.10333333333333333
+Reading,Dialect Literacy,Contrastive,Dialect Word Mismatch,8,6,1200,0.006666666666666667
+Reading,Dialect Literacy,Contrastive,Standard Word Mismatch,48,35,1200,0.04
+Reading,Dialect Literacy,Contrastive,Other Mismatch,623,78,1200,0.5191666666666667
+Reading,Dialect Literacy,Untrained,Correct,341,55,960,0.35520833333333335
+Reading,Dialect Literacy,Untrained,Dialect Word Match,0,0,0,0
+Reading,Dialect Literacy,Untrained,Dialect Word Mismatch,3,3,960,0.003125
+Reading,Dialect Literacy,Untrained,Standard Word Mismatch,7,6,960,0.007291666666666667
+Reading,Dialect Literacy,Untrained,Other Mismatch,609,78,960,0.634375
+Spelling,No Dialect,Non-contrastive,Correct,402,59,1200,0.335
+Spelling,No Dialect,Non-contrastive,Dialect Word Match,0,0,0,0
+Spelling,No Dialect,Non-contrastive,Dialect Word Mismatch,2,2,1200,0.0016666666666666668
+Spelling,No Dialect,Non-contrastive,Standard Word Mismatch,106,48,1200,0.08833333333333333
+Spelling,No Dialect,Non-contrastive,Other Mismatch,690,79,1200,0.575
+Spelling,No Dialect,Contrastive,Correct,368,60,1200,0.30666666666666664
+Spelling,No Dialect,Contrastive,Dialect Word Match,0,0,0,0
+Spelling,No Dialect,Contrastive,Dialect Word Mismatch,37,19,1200,0.030833333333333334
+Spelling,No Dialect,Contrastive,Standard Word Mismatch,131,51,1200,0.10916666666666666
+Spelling,No Dialect,Contrastive,Other Mismatch,664,78,1200,0.5533333333333333
+Spelling,No Dialect,Untrained,Correct,314,55,960,0.32708333333333334
+Spelling,No Dialect,Untrained,Dialect Word Match,0,0,0,0
+Spelling,No Dialect,Untrained,Dialect Word Mismatch,0,0,0,0
+Spelling,No Dialect,Untrained,Standard Word Mismatch,0,0,0,0
+Spelling,No Dialect,Untrained,Other Mismatch,646,79,960,0.6729166666666667
+Spelling,Dialect,Non-contrastive,Correct,385,60,1200,0.32083333333333336
+Spelling,Dialect,Non-contrastive,Dialect Word Match,0,0,0,0
+Spelling,Dialect,Non-contrastive,Dialect Word Mismatch,7,7,1200,0.005833333333333334
+Spelling,Dialect,Non-contrastive,Standard Word Mismatch,86,40,1200,0.07166666666666667
+Spelling,Dialect,Non-contrastive,Other Mismatch,722,79,1200,0.6016666666666667
+Spelling,Dialect,Contrastive,Correct,372,58,1200,0.31
+Spelling,Dialect,Contrastive,Dialect Word Match,0,0,0,0
+Spelling,Dialect,Contrastive,Dialect Word Mismatch,33,21,1200,0.0275
+Spelling,Dialect,Contrastive,Standard Word Mismatch,128,51,1200,0.10666666666666667
+Spelling,Dialect,Contrastive,Other Mismatch,667,76,1200,0.5558333333333333
+Spelling,Dialect,Untrained,Correct,290,55,960,0.3020833333333333
+Spelling,Dialect,Untrained,Dialect Word Match,0,0,0,0
+Spelling,Dialect,Untrained,Dialect Word Mismatch,0,0,0,0
+Spelling,Dialect,Untrained,Standard Word Mismatch,0,0,0,0
+Spelling,Dialect,Untrained,Other Mismatch,670,80,960,0.6979166666666666
+Spelling,Dialect & Social,Non-contrastive,Correct,345,58,1200,0.2875
+Spelling,Dialect & Social,Non-contrastive,Dialect Word Match,0,0,0,0
+Spelling,Dialect & Social,Non-contrastive,Dialect Word Mismatch,2,2,1200,0.0016666666666666668
+Spelling,Dialect & Social,Non-contrastive,Standard Word Mismatch,99,41,1200,0.0825
+Spelling,Dialect & Social,Non-contrastive,Other Mismatch,754,77,1200,0.6283333333333333
+Spelling,Dialect & Social,Contrastive,Correct,335,52,1200,0.2791666666666667
+Spelling,Dialect & Social,Contrastive,Dialect Word Match,0,0,0,0
+Spelling,Dialect & Social,Contrastive,Dialect Word Mismatch,29,20,1200,0.024166666666666666
+Spelling,Dialect & Social,Contrastive,Standard Word Mismatch,120,46,1200,0.1
+Spelling,Dialect & Social,Contrastive,Other Mismatch,716,75,1200,0.5966666666666667
+Spelling,Dialect & Social,Untrained,Correct,283,47,960,0.2947916666666667
+Spelling,Dialect & Social,Untrained,Dialect Word Match,0,0,0,0
+Spelling,Dialect & Social,Untrained,Dialect Word Mismatch,0,0,0,0
+Spelling,Dialect & Social,Untrained,Standard Word Mismatch,2,2,960,0.0020833333333333333
+Spelling,Dialect & Social,Untrained,Other Mismatch,675,76,960,0.703125
+Spelling,Dialect Literacy,Non-contrastive,Correct,395,62,1199,0.329441201000834
+Spelling,Dialect Literacy,Non-contrastive,Dialect Word Match,0,0,0,0
+Spelling,Dialect Literacy,Non-contrastive,Dialect Word Mismatch,3,3,1199,0.0025020850708924102
+Spelling,Dialect Literacy,Non-contrastive,Standard Word Mismatch,94,40,1199,0.07839866555462886
+Spelling,Dialect Literacy,Non-contrastive,Other Mismatch,707,76,1199,0.5896580483736447
+Spelling,Dialect Literacy,Contrastive,Correct,286,56,1200,0.23833333333333334
+Spelling,Dialect Literacy,Contrastive,Dialect Word Match,0,0,0,0
+Spelling,Dialect Literacy,Contrastive,Dialect Word Mismatch,49,27,1200,0.04083333333333333
+Spelling,Dialect Literacy,Contrastive,Standard Word Mismatch,109,43,1200,0.09083333333333334
+Spelling,Dialect Literacy,Contrastive,Other Mismatch,756,76,1200,0.63
+Spelling,Dialect Literacy,Untrained,Correct,295,50,960,0.3072916666666667
+Spelling,Dialect Literacy,Untrained,Dialect Word Match,0,0,0,0
+Spelling,Dialect Literacy,Untrained,Dialect Word Mismatch,0,0,0,0
+Spelling,Dialect Literacy,Untrained,Standard Word Mismatch,0,0,0,0
+Spelling,Dialect Literacy,Untrained,Other Mismatch,665,77,960,0.6927083333333334

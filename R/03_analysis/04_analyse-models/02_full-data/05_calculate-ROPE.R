@@ -42,20 +42,20 @@ model_summaries$testing_tv_compare_rope <- gmap_rope(
 ) %>% 
   mutate_if(is.numeric, round, summary_options$rounding)
 
-# difference in nLED between variety exposure conditions for novel words
-model_summaries$testing_v_n_compare_rope <- gmap_rope(
-  data = draws$testing_v_n_compare, 
-  draws = .value, 
-  variety_exposure,
-  bounds = c(-.035, .035)
-) %>% 
-  mutate_if(is.numeric, round, summary_options$rounding)
-
 # difference in nLED between variety exposure conditions by task for novel words
 model_summaries$testing_tv_n_compare_rope <- gmap_rope(
   data = draws$testing_tv_n_compare, 
   draws = .value, 
   task,
+  variety_exposure,
+  bounds = c(-.035, .035)
+) %>% 
+  mutate_if(is.numeric, round, summary_options$rounding)
+
+# difference in nLED between variety exposure conditions for novel words
+model_summaries$testing_v_n_compare_rope <- gmap_rope(
+  data = draws$testing_v_n_compare, 
+  draws = .value, 
   variety_exposure,
   bounds = c(-.035, .035)
 ) %>% 
@@ -77,6 +77,33 @@ model_summaries$testing_tvw_compare_rope <- gmap_rope(
 model_summaries$testing_tvw_ms_compare_rope <- gmap_rope(
   data = draws$testing_tvw_ms_compare, 
   draws = .value, 
+  task, 
+  variety_exposure,
+  word_type,
+  bounds = c(-.02, .02)
+) %>% 
+  mutate_if(is.numeric, round, summary_options$rounding)
+
+# testing covariate model ----
+
+# and variety exposure split by voctest group, task
+# (vocab by median split)
+model_summaries$testing_cov_median_etv_compare_rope <- gmap_rope(
+  data = draws$testing_cov_median_etv_compare, 
+  draws = .value, 
+  exposure_test_nLED_group,
+  task, 
+  variety_exposure,
+  bounds = c(-.02, .02)
+) %>% 
+  mutate_if(is.numeric, round, summary_options$rounding)
+
+# word type split by voctest group, task, and variety exposure
+# (vocab by median split)
+model_summaries$testing_cov_median_etvw_compare_rope <- gmap_rope(
+  data = draws$testing_cov_median_etvw_compare, 
+  draws = .value, 
+  exposure_test_nLED_group,
   task, 
   variety_exposure,
   word_type,
@@ -116,19 +143,6 @@ model_summaries$testing_cov_median_t_ev_n_compare_rope <- gmap_rope(
   task, 
   exposure_test_nLED_group,
   variety_exposure,
-  bounds = c(-.02, .02)
-) %>% 
-  mutate_if(is.numeric, round, summary_options$rounding)
-
-# word type split by voctest group, task, and variety exposure
-# (vocab by median split)
-model_summaries$testing_cov_median_etvw_compare_rope <- gmap_rope(
-  data = draws$testing_cov_median_etvw_compare, 
-  draws = .value, 
-  exposure_test_nLED_group,
-  task, 
-  variety_exposure,
-  word_type,
   bounds = c(-.02, .02)
 ) %>% 
   mutate_if(is.numeric, round, summary_options$rounding)

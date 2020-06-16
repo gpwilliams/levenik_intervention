@@ -15,12 +15,12 @@ draws$exposure_v_compare <- draws$exposure_vw %>%
     .value, 
     by = variety_exposure,
     comparison = list(
-      c("Variety Match", "Variety Mismatch"), 
-      c("Variety Match", "Variety Mismatch Social"),
-      c("Variety Match", "Dialect Literacy"),
-      c("Variety Mismatch", "Variety Mismatch Social"),
-      c("Variety Mismatch", "Dialect Literacy"),
-      c("Variety Mismatch Social", "Dialect Literacy")
+      c("No Dialect", "Dialect"), 
+      c("No Dialect", "Dialect & Social"),
+      c("No Dialect", "Dialect Literacy"),
+      c("Dialect", "Dialect & Social"),
+      c("Dialect", "Dialect Literacy"),
+      c("Dialect & Social", "Dialect Literacy")
     )
   ) %>% 
   group_by(variety_exposure)
@@ -39,12 +39,12 @@ draws$testing_v_compare <- draws$testing_tvw_all %>%
     .value, 
     by = variety_exposure,
     comparison = list(
-      c("Variety Match", "Variety Mismatch"), 
-      c("Variety Match", "Variety Mismatch Social"),
-      c("Variety Match", "Dialect Literacy"),
-      c("Variety Mismatch", "Variety Mismatch Social"),
-      c("Variety Mismatch", "Dialect Literacy"),
-      c("Variety Mismatch Social", "Dialect Literacy")
+      c("No Dialect", "Dialect"), 
+      c("No Dialect", "Dialect & Social"),
+      c("No Dialect", "Dialect Literacy"),
+      c("Dialect", "Dialect & Social"),
+      c("Dialect", "Dialect Literacy"),
+      c("Dialect & Social", "Dialect Literacy")
     )
   ) %>% 
   group_by(variety_exposure)
@@ -62,12 +62,12 @@ draws$testing_tv_n_compare <- draws$testing_tv_n %>%
     .value, 
     by = variety_exposure,
     comparison = list(
-      c("Variety Match", "Variety Mismatch"), 
-      c("Variety Match", "Variety Mismatch Social"),
-      c("Variety Match", "Dialect Literacy"),
-      c("Variety Mismatch", "Variety Mismatch Social"),
-      c("Variety Mismatch", "Dialect Literacy"),
-      c("Variety Mismatch Social", "Dialect Literacy")
+      c("No Dialect", "Dialect"), 
+      c("No Dialect", "Dialect & Social"),
+      c("No Dialect", "Dialect Literacy"),
+      c("Dialect", "Dialect & Social"),
+      c("Dialect", "Dialect Literacy"),
+      c("Dialect & Social", "Dialect Literacy")
     )
   )
 
@@ -78,12 +78,12 @@ draws$testing_v_n_compare <- draws$testing_tv_n %>%
     .value, 
     by = variety_exposure,
     comparison = list(
-      c("Variety Match", "Variety Mismatch"), 
-      c("Variety Match", "Variety Mismatch Social"),
-      c("Variety Match", "Dialect Literacy"),
-      c("Variety Mismatch", "Variety Mismatch Social"),
-      c("Variety Mismatch", "Dialect Literacy"),
-      c("Variety Mismatch Social", "Dialect Literacy")
+      c("No Dialect", "Dialect"), 
+      c("No Dialect", "Dialect & Social"),
+      c("No Dialect", "Dialect Literacy"),
+      c("Dialect", "Dialect & Social"),
+      c("Dialect", "Dialect Literacy"),
+      c("Dialect & Social", "Dialect Literacy")
     )
   ) %>% 
   group_by(variety_exposure)
@@ -98,12 +98,32 @@ draws$testing_tvw_compare <- draws$testing_tvw %>%
 draws$testing_tvw_ms_compare <- draws$testing_tvw %>% 
   filter(
     word_familiarity != "Novel", 
-    variety_exposure %in% c("Variety Mismatch", "Variety Mismatch Social")
+    variety_exposure %in% c("Dialect", "Dialect & Social")
   ) %>% 
   compare_levels(.value, by = word_type) %>% 
   compare_levels(.value, by = variety_exposure)
 
 # testing covariate comparisons ----
+
+# compare vocabulary test performance split by voctest group and task
+draws$testing_cov_median_etv_compare <- 
+  draws$testing_cov_median_etv %>%
+  select(-c(.chain, .iteration)) %>% 
+  group_by(exposure_test_nLED_group, task, variety_exposure, .draw) %>% 
+  summarise(.value = median(.value)) %>% 
+  compare_levels(.value, by = variety_exposure)
+
+# compare word type split by voctest group, task, and variety exposure
+draws$testing_cov_median_etvw_compare <- 
+  draws$testing_cov_median_etv %>%
+  filter(word_familiarity != "Novel") %>%
+  select(-c(.chain, .iteration)) %>% 
+  group_by(exposure_test_nLED_group, task, variety_exposure, word_type, .draw) %>% 
+  summarise(.value = median(.value)) %>% 
+  compare_levels(.value, by = word_type)
+
+# compare vocabulary test performance for novel words
+# split by exposure test group
 
 # note, has only 20% of draws as other contrasts
 # as splitting by median means we have uneven levels otherwise
@@ -116,7 +136,7 @@ draws$testing_cov_median_ev_n_compare <-
   compare_levels(.value, by = variety_exposure)
 
 # compare vocabulary test performance for novel words split by
-# task and exposure test nLED group.
+# task and variety exposure condition.
 draws$testing_cov_median_etv_n_compare <- 
   draws$testing_cov_median_etv_n %>%
   select(-c(.chain, .iteration)) %>% 
@@ -124,8 +144,8 @@ draws$testing_cov_median_etv_n_compare <-
   summarise(.value = median(.value)) %>% 
   compare_levels(.value, by = variety_exposure)
 
-# compare high vs. low performing voctest scores, and check for differences
-# between variety exposure conditions, split by task.
+# compare high vs. low performing voctest scores for novel words, 
+# and check for differences between variety exposure conditions, split by task.
 draws$testing_cov_median_t_ev_n_compare <- 
   draws$testing_cov_median_etv_n %>%
   select(-c(.chain, .iteration)) %>% 
@@ -133,12 +153,3 @@ draws$testing_cov_median_t_ev_n_compare <-
   summarise(.value = median(.value)) %>% 
   compare_levels(.value, by = exposure_test_nLED_group) %>% 
   compare_levels(.value, by = variety_exposure)
-
-# word type split by voctest group, task, and variety exposure
-draws$testing_cov_median_etvw_compare <- 
-  draws$testing_cov_median_etv %>%
-  filter(word_familiarity != "Novel") %>%
-  select(-c(.chain, .iteration)) %>% 
-  group_by(exposure_test_nLED_group, task, variety_exposure, word_type, .draw) %>% 
-  summarise(.value = median(.value)) %>% 
-  compare_levels(.value, by = word_type)

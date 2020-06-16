@@ -1,4 +1,4 @@
-rename_parameters <- function(model_summary, col_id = Parameter, replacements = NULL) {
+rename_parameters <- function(model_summary, col_id = Parameter, replacements = NULL, exclusions = c("Nled" = "nLED")) {
   # Renames terms by collapsing strings and replacing individual
   # elements with pretty formatted elements.
   # This way, terms to replace do not need to exactly match
@@ -20,14 +20,13 @@ rename_parameters <- function(model_summary, col_id = Parameter, replacements = 
   col_names <- model_summary %>% 
     pull({{col_id}}) %>%
     str_c(collapse = "---") %>% 
-    str_replace_all(c(
-      replacements,
-      "_" = " ",
-      ":" = " : " # for LaTeX use: " $\\\\times$ "; 4 escapes properly in kableExtra
-    )) %>% 
+    str_replace_all(c(replacements, "_" = " ", ":" = " : ")) %>% 
+    # must have spaces between symbols (:) for title case to work on each word
+    str_to_title() %>% 
+    str_replace_all(c(":" = "$\\\\times$", exclusions)) %>%
     str_split(pattern = "---") %>% 
-    unlist()
+    unlist() 
   
   model_summary %>% 
-    mutate({{col_id}} := str_to_title(col_names))
+    mutate({{col_id}} := col_names)
 }

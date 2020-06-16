@@ -34,9 +34,9 @@ plots$pp_check_exposure <- pp_check(
   labs(
     x = plotting_options$nLED_title,
     y = "Density",
-    title = paste0(
+    title = paste(
       "Posterior Predictive Check for the Model",
-      " Fitted to the Exposure Phase Data."
+      "Fitted to the Vocabulary Test Data."
     )
   ) +
   annotate(
@@ -63,7 +63,8 @@ plots$pp_check_exposure <- pp_check(
     size = 0.9,
     curvature = 0.25,
     colour = c("dimgrey", "black")
-  )
+  ) + 
+  theme(plot.title = element_text(size = plotting_options$title_size))
 
 # testing ----
 
@@ -76,9 +77,9 @@ plots$pp_check_testing <- pp_check(
   labs(
     x = plotting_options$nLED_title,
     y = "Density",
-    title = paste0(
+    title = paste(
       "Posterior Predictive Check for the Model",
-      " Fitted to the Testing Phase Data."
+      "Fitted to the Testing Phase Data."
     )
   ) +
   annotate(
@@ -105,7 +106,8 @@ plots$pp_check_testing <- pp_check(
     size = 0.9,
     curvature = -0.1,
     colour = c("dimgrey", "black")
-  )
+  ) + 
+  theme(plot.title = element_text(size = plotting_options$title_size))
 
 # testing covariate ----
 
@@ -118,10 +120,10 @@ plots$pp_check_testing_cov <- pp_check(
   labs(
     x = plotting_options$nLED_title,
     y = "Density",
-    title = paste0(
+    title = paste(
       "Posterior Predictive Check for the Model",
-      " Fitted to the Testing Phase Data \nwith",
-      " Vocabulary Test as a Covariate."
+      "Fitted to the Testing Phase Data with",
+      "Vocabulary Test as a Covariate."
     )
   ) +
   annotate(
@@ -148,4 +150,5 @@ plots$pp_check_testing_cov <- pp_check(
     size = 0.9,
     curvature = -0.1,
     colour = c("dimgrey", "black")
-  )
+  ) + 
+  theme(plot.title = element_text(size = plotting_options$title_size))

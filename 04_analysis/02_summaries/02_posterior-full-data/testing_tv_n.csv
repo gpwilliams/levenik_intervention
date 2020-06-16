@@ -1,0 +1,25 @@
+task,variety_exposure,.value,.lower,.upper,.width,.point,.interval
+Reading,No Dialect,0.225,0.158,0.325,0.95,median,qi
+Reading,Dialect,0.22,0.159,0.289,0.95,median,qi
+Reading,Dialect & Social,0.212,0.146,0.3,0.95,median,qi
+Reading,Dialect Literacy,0.244,0.178,0.323,0.95,median,qi
+Spelling,No Dialect,0.274,0.213,0.336,0.95,median,qi
+Spelling,Dialect,0.29,0.208,0.438,0.95,median,qi
+Spelling,Dialect & Social,0.279,0.206,0.394,0.95,median,qi
+Spelling,Dialect Literacy,0.292,0.217,0.42,0.95,median,qi
+Reading,No Dialect,0.225,0.167,0.304,0.9,median,qi
+Reading,Dialect,0.22,0.168,0.277,0.9,median,qi
+Reading,Dialect & Social,0.212,0.156,0.283,0.9,median,qi
+Reading,Dialect Literacy,0.244,0.188,0.308,0.9,median,qi
+Spelling,No Dialect,0.274,0.223,0.325,0.9,median,qi
+Spelling,Dialect,0.29,0.22,0.405,0.9,median,qi
+Spelling,Dialect & Social,0.279,0.217,0.368,0.9,median,qi
+Spelling,Dialect Literacy,0.292,0.228,0.392,0.9,median,qi
+Reading,No Dialect,0.225,0.179,0.283,0.8,median,qi
+Reading,Dialect,0.22,0.179,0.265,0.8,median,qi
+Reading,Dialect & Social,0.212,0.167,0.265,0.8,median,qi
+Reading,Dialect Literacy,0.244,0.199,0.294,0.8,median,qi
+Spelling,No Dialect,0.274,0.234,0.314,0.8,median,qi
+Spelling,Dialect,0.29,0.234,0.373,0.8,median,qi
+Spelling,Dialect & Social,0.279,0.23,0.343,0.8,median,qi
+Spelling,Dialect Literacy,0.292,0.24,0.363,0.8,median,qi

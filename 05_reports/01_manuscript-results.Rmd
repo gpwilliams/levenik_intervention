@@ -1,0 +1,452 @@
+---
+title: "Results"
+author: "Glenn Williams"
+date: "14<sup>th</sup> August, 2019 (Last updated: `r format(Sys.time(), '%d<sup>th</sup> %B, %Y')`)"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: united
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE)
+
+packages <- c(
+  "tidyverse",
+  "rlang",
+  "here",
+  "brms",
+  "tidybayes",
+  "bayestestR",
+  "modelr",
+  "ggforce",
+  "ggrepel",
+  "ggridges",
+  "irr",
+  "kableExtra"
+)
+
+# load packages
+lapply(packages, library, character.only = TRUE)
+
+# load functions
+r_function_list <- list.files(
+  path = here("R", "00_functions"), 
+  pattern = "R$",
+  full.names = TRUE
+)
+purrr::walk(r_function_list, source)
+
+# get citations
+citations <- purrr::map(packages, citation)
+
+# get file paths ----
+
+# get model summaries only for easy loading
+fitted_models_dir <- list.files(
+  path = here("04_analysis", "01_models"),
+  pattern = "rds$",
+  full.names = TRUE
+) %>% 
+  str_subset("summary")
+  
+
+model_summaries_dir <- list.files(
+  path = here("04_analysis", "02_summaries", "02_full-data"),
+  pattern = "csv$",
+  full.names = TRUE
+)
+
+plots_dir <- list.files(
+  path = here("03_plots", "02_full-data"),
+  pattern = "png$",
+  full.names = TRUE
+)
+
+# load data ----
+
+# models
+fitted_models <- purrr::map(fitted_models_dir, read_rds)
+
+names(fitted_models) <- fitted_models_dir %>% 
+  sub(".*/", "", .) %>% 
+  substr(., 1, nchar(.)-4)
+
+model_summaries <- purrr::map(model_summaries_dir, read_csv)
+names(model_summaries) <- model_summaries_dir %>% 
+  sub(".*/", "", .) %>% 
+  substr(., 1, nchar(.)-4)
+
+# cross-coding analyses
+cross_coding <- readRDS(here(
+  "04_analysis", 
+  "03_cross-coding", 
+  "irr-results.rds"
+))
+```
+
+```{r define-renaming-variables}
+summary_oldnames <- c(".value", "interval")
+summary_newnames <- c("median", "percentile interval")
+summary_drop <- c(".point", ".interval")
+
+posterior_oldnames <- c("Ci Interval", "Rope Interval", "Pd")
+posterior_newnames <- c("Percentile Interval", "HDI Interval", "P(Direction)")
+posterior_drop <- c(
+  ".width",
+  ".point",
+  ".interval",
+  "CI",
+  "ROPE_low", 
+  "ROPE_high",
+  "ROPE_Equivalence"
+)
+
+model_replacements = c(
+  "word_type1" = "word_type",
+  "word_type2" = "word_familiarity",
+  "language_variety1" = "language_variety_1", # figure out what these are
+  "language_variety2" = "language_variety_2",
+  "language_variety3" = "language_variety_3",
+  "task1" = "task",
+  "mean_exposure_test_nLED" = "mean_vocabulary_test_nLED"
+)
+
+# note, to get plots side by side, add this to the chunk header:
+# fig.show = "hold", out.width = "50%"
+```
+
+`r version$version.string` and the R-packages `r cite_packages(packages)` were used for data preparation, analysis, and presentation.
+
+# Coding
+
+Responses from the vocabulary test (30 items) and reading responses from the testing phase (42 items) were transcribed and coded by two coders (GPW and VK) blind to each participant’s condition. The coding convention, which was based on the CPSAMPA (Marian et al., 2012) simplified notation of IPA characters is described in detail in Williams et al. (under review). For all coded oral responses as well as for all spellings, length-normalised Levenshtein edit distances (nLEDs) to the target string were computed and used as the dependent variable to assess performance. Such edit distances are computed by dividing the number of insertions, substitutions, and deletions required to transform one string (e.g. a participant's input) into another (e.g. the target word) by the larger of the two string lengths (Levenshtein, 1966). Edit distances constitute a more gradual and fine-grained performance measure than error rates that can distinguish near-matches from entirely erroneous productions. When literacy training in the Dialect Literacy condition targeted the dialect variety, dialect variants were adopted as targets for computation of nLEDs.
+
+Inter-coder reliability was computed by obtaining intra-class correlations between the two coders’ nLEDs, using the irr R-package (Gamer et al., 2019). We used a single-score, absolute agreement, two-way random effects model based on the summed nLEDs for each participant. Inter-coder reliability was `r summarise_icc(cross_coding, round = 3)`. The 95% confidence interval around the parameter estimate indicates that the ICC falls above the bound of .90, which suggests excellent reliability across coders (Koo & Li, 2016). Whenever there was a discrepancy between the coders further analyses were based on the smaller of the two nLEDs thereby adopting a lenient coding criterion justified by the rationale that a participant response should be regarded acceptable if at least one of the coders can match it to the target as closely as possible.
+
+# Modelling using Bayesian Zero-One Inflated Beta Distributions
+
+The data were analysed using Bayesian distributional models in the brms R-package. Specifically, these models assume the data are drawn from a zero-one inflated Beta distribution. This models the data as a Beta distribution for nLEDs excluding 0 and 1, and a Bernoulli distribution for nLEDs of 0 and 1. Thus, predictors in the model can affect four distributional parameters: $\mu$ (mu), the mean of the nLEDs excluding 0 and 1; $\phi$ (phi), the precision (i.e. spread) of the nLEDs excluding 0 and 1; $\alpha$ (alpha; termed zoi - or zero-one inflation in brms) the probability of an nLED of 0 or 1; and $\gamma$ (gamma; termed coi - or conditional-one inflation in brms), the conditional probability of a 1 given a 0 or 1 has been observed. Larger values for these parameters are associated with (a) higher mean nLEDs in the range exluding 0 and 1, (b) tighter distributions of the nLEDs in the range excluding 0 and 1 (i.e. less variance), (c) more zero-one inflation in nLEDs, and (d) more one-inflation given zero-inflation in nLEDs. Predictors in this model can influence any and all distributional parameters in the model at once. For these models, a logit link is used for the $\mu$, $\alpha$, and $\gamma$ distributional parameters, and a log link is used for the $\phi$ distributional parameter.
+
+These models account for the fact that nLEDs are bounded between 0 and 1, with inflated counts at these bounds on a trial-by-trial basis, and that on an individual trial the observations making up an nLED are autocorrelated. (For example, if the previous letter in a participant's input requires an insertion, substitution, or deletion, then the next letter is more likely to also require one rather than to remain unchanged.) Crucially, in contrast to general linear models and linear mixed effects models which assume a Gaussian data generation process, these models do not make predictions outside the possible range of values and accurately capture the larger densities at extreme values. This more accurately accounts for the multitude of ways in which nLEDs can be generated when compared to fitting assuming only one underlying distribution. For example, with perfect recollection nLEDs are likely to be at or near 0, with varying levels of decoding they are likely to be between 0 and 1, and with guessing they are likely to be close to or at 1.
+
+At the time of writing, distributional models of this nature are only available for hierarchical data using the brms R-package, which requires model fitting to be performed using a Bayesian framework. As an additional benefit, Bayesian models do not suffer from the non-convergence often associated with modelling complex analyses under a Frequentist framework. Given that these models return parameter estimates for the four distributional terms -- the values of which dependent on one-another -- drawing inferences from direct inspection of parameter estimates is extremely difficult (if impossible for such complex models). By using Bayesian methods, this allows for inferences to be made based on draws from the joint posterior under the conditions of interest. This not only allows for inferences to be made based on simple summaries of the the data on the nLED scale, but also allows for uncertainty surrounding all terms to be propogated into these summaries.
+
+## Model Fitting
+
+### Model Specification and Analysis
+
+Three models were fitted in total: (1) assessing performance across conditions during the vocabulary test prior to literacy training; (2) assessing performance across conditions during the testing phase following literacy training; and (3) assessing performance across conditions during the testing phase following literacy training using the vocabulary test performance as a predictor. This latter model was not pre-registered, but instead serves an exploratory purpose to determine whether or not any effect of dialect exposure is mediated by initial performance. In all models, estimates population-level and group-level effects are estimated for all distributional parameters, with group-level effects correlated across all parameters.
+
+The models were described as follows:
+
+- **Vocabulary Test Model**: nLEDs are predicted by population-level (fixed) effects of Variety Exposure condition (with four levels: Variety Match, Mismatch, Mismatch Social, and Dialect Learning) Word Type (with two levels: Contrative and Non-contrastive), and the interaction between them, and by group-level (random) effects of random intercepts and slopes of Word Type by participants, and random intercepts and slopes of Variety Exposure by item.
+
+- **Testing Model**: nLEDs are predicted by population-level (fixed) effects of Task (with two levels: Reading and Spelling), Variety Exposure condition, and Word Type and the interaction between them, and by group-level (random) effects of random intercepts and slopes of Task and Word Type by participant, and random intercepts and slopes of Variety Exposure by item. Crucially, the interaction between the group-level effects by participant did not include the interaction between them in order to reduce model complexity.
+
+- **Exploratory Covariate Testing Model**: nLEDs are predicted by population-level (fixed) effects of mean nLED during the Vocabulary Test, Task, Variety Exposure condition, Word Type, and the interaction between them, and by group-level (random) effects of random intercepts and slopes of Task and Word Type by participant, and random intercepts and slopes of mean nLED during the Vocabulary Test and Variety Exposure by items. Again, the interaction between the group-level effects by participant did not include the interaction between them in order to reduce model complexity.
+
+In all models, the approach was to use weakly informative, regularising priors for fitting. Where divergences were detected during fitting, these priors were adjusted, typically placing less prior weight on extreme values. Larely, the priors were selected to allow the posterior to be determined primarily by the data. Full details of the priors and posterior predictive checks are provided in Appendix A. Model summaries for the population-level (fixed) effects for all fitted models can be found in Appendix B. To answer questions pertaining to our pre-registered hypotheses, and to generate plots for these summaries, we used draws from the posterior for different combinations of conditions using the `r cite_package("tidybayes")` R-package. 
+
+In all following plots and reported statistics, summaries are provided for for the joint posterior of the model taking into account all distributional parameters during sampling. This provides an overall nLED for any comparison, rather than separate estimates of nLEDs between the bounds of 0 and 1 and for the extremes of 0 and 1. For reported results in tables, estimates are based on the median and credible interval around the median. The median was selected to summarise these models over the mean as this method is more robust to distributions with more than one mode. Thus, we do not provide individual statistics and plots for the individual distributional terms (e.g. for zero-one inflation, or conditional-one inflation) as we did not specify any hypotheses related to these individual terms. Instead, the zero-one inflated Beta models are used purely to improve model fit and to make more accurate predictions about the overall differences in nLEDs across conditions. Ninety percent credible intervals are used to summarise uncertainty in the estimates as these intervals are more stable than wider intervals when given a limited number of draws from the posterior (Kruschke, 2014).
+
+The differences in nLEDs between conditions were compared using the `compare_levels()` function from the `r cite_package("tidybayes")` R-package. This allows for a direct comparison of differences between groups, which provides a more accurate and reliable method of establishing group differences than visual inspection of whether credible intervals overlap from estimates of the individual groups (Schenker & Gentleman, 2001). Here, the posterior is summarised as the median and 90% credible interval around the median. 
+
+To determine support for hypotheses using these estimates, the probability of direction $P(direction)$, or *pd*, is provided as calcualted using the `r cite_package("bayestestR")` R-package. This is defined as the proportion of the posterior that is of the same sign as the median. In previous simulations, the *pd* has been found to be linearly related to the frequentist *p*-value (Makowski et al., 2019). The *pd* therefore provides an index of the existence of an effect outlining certainty in whether an effect is positive or negative. This can be used to ultimately reject the null hypothesis, but like the frequentist *p*-value does not give a reliable estimate of evidence in support of the null hypothesis. Unlike the frequentist *p*-value, a "significant" effect here is typically associated with a larger proportion of the posterior being of the same sign as the median (e.g. a *p*-value of <.05 is akin to a *pd* of >.95).
+
+Additional hypothesis tests are provided in the form of Region of Practical Equivalence (ROPE) analyses from these draws also using the `r cite_package("bayestestR")` R-package. This defines an area around the point null that is practically equivalent to zero for assessing evidence in support of the null hypothesis (Krushke, 2014). Here, the bounds of the ROPE range are defined as half the smallest effect reported in the Williams et al. (2020) parameter estimates and intervals report the 90% highest density interval (HDI) of the posterior. We report the proportion of the HDI contained within the ROPE region along with bounds of this interval. Where HDIs are entirely contained by the equivalence bounds, equivalence is accepted. Where HDIs are entirely outside the equivalence bounds, equivalence is rejected. Uncertainty is assigned to any HDIs that cross the equivalence bounds in either (or both) directions. The HDI differs from the equal tailed intervals used for summary statistics in that values within the range are always more probable than values outside of the range, and the interval need not exclude an equal amount of the distribution towards both tails. With symmetric distributions, the two methods produce similar results. For completeness, we report for 90% CIs and HDIs. 
+
+In plots, posterior medians and 80% and 90% credible intervals are provided for different conditions. Table summaries also provide posterior medians with 90% credible intervals. In the tables of population level (fixed) effects, $\hat{R}$ is a measure of convergence for within- and between-chain estimates, with values closer to 1 being preferable. The bulk and tail effective sample sizes give diagnostics of the number of draws which contain the same amount of information as the dependent sample (CITE STAN WEBSITE), with higher values being preferable. The tail effective sample size is determined at the 5% and 95% quantiles, while the bulk is determined at values in between these quantiles.
+
+# Vocabulary Test Model
+
+## Word Type by Variety Exposure
+
+We looked at whether there are any differences in performance for different word types across conditions during the vocabulary testing phase. Posterior medians with 80% and 90% credible intervals are shown for each word type within each variety exposure condition below.
+
+```{r variety-word-type-exposure-plot}
+knitr::include_graphics(plots_dir[str_detect(plots_dir, "exposure_vw.png")])
+```
+
+Posterior medians and credible intervals are provided in the table below.
+
+```{r variety-word-type-exposure}
+format_summary_table(
+  model_summaries$exposure_vw, 
+  summary_oldnames, 
+  summary_newnames,
+  .drop = summary_drop
+  ) %>% 
+  filter(.Width == 0.90) %>% 
+  select(-.Width) %>% 
+  custom_kable()
+```
+
+These results show that performance is generally poor in all variety exposure conditions in the vocabulary testing phase, with all median nLEDs at or above `r model_summaries$exposure_vw %>% filter(.width == .90) %>% pull(.value) %>% min()`. 
+
+To explore whether there are any reliable differences in performance for each word type within the variety exposure conditions, posterior draws were compared across each level of word type within the variety exposure conditions. Posterior medians with 80% and 90% credible intervals are shown for the comparison between each word type within each variety exposure condition below.
+
+```{r variety-word-type-exposure-comparison-plot}
+knitr::include_graphics(plots_dir[str_detect(plots_dir, "exposure_vw_compare.png")])
+```
+
+Posterior medians and credible intervals for this comparison are provided in the table below.
+
+```{r variety-word-type-exposure-compare}
+report_posteriors(
+  model_summaries$exposure_vw_compare,
+  model_summaries$exposure_vw_compare_rope,
+  .width = 0.9,
+  posterior_drop,
+  posterior_oldnames,
+  posterior_newnames
+) %>% 
+  custom_kable(., add_footer = TRUE, model_summaries$exposure_vw_compare_rope)
+```
+
+In all instances there is some evidence that performance is better for non-contrastive words relative to contrastive words. In the Variety Mismatch Social and Dialect Literacy conditions, the difference between these two scores has an approximately `r model_summaries$exposure_vw_compare_rope %>% filter(variety_exposure == "Dialect + Social") %>% pull(pd) %>% round(2)*100`% and `r model_summaries$exposure_vw_compare_rope %>% filter(variety_exposure == "Dialect Literacy") %>% pull(pd) %>% round(2)*100`% probability of being positive. However, the remaining two comparisons have less than 80% probability of being positive. Given that in all cases the 90% credible interval spans 0 there is insufficient evidence to rule out an effect in the opposite direction. Together, these findings suggest only weak evidence for any difference between our main measures of performance during the vocabulary testing phase prior to further training and testing.
+
+# Testing Phase Model
+
+As with the Vocabulary Test Model, to answer questions pertaining to our pre-registered hypotheses, and to generate plots for these summaries, we used draws from the posterior for different combinations of conditions. Similarly, hypothesis tests are provided in the form of ROPE and *pd*. 
+
+## Word Type by Task and Variety Exposure
+
+We tested whether there are any differences in performance for different word types across tasks for the variety exposure conditions during the testing phase. Posterior medians with 80% and 90% credible intervals are shown for each word type within each task and variety exposure condition below.
+
+```{r task-variety-word-type-testing-plot}
+knitr::include_graphics(plots_dir[str_detect(plots_dir, "testing_tvw.png")])
+```
+
+Posterior medians and credible intervals are provided in the table below.
+
+```{r task-variety-word-type-testing}
+format_summary_table(
+  model_summaries$testing_tvw, 
+  summary_oldnames, 
+  summary_newnames,
+  .drop = summary_drop
+  ) %>% 
+  filter(.Width == 0.90) %>% 
+  select(-.Width) %>% 
+  custom_kable()
+```
+
+Overall performance is better in the testing phase than the vocabulary testing phase, with the highest median nLED being `r model_summaries$testing_tvw %>% filter(.width == .90) %>% pull(.value) %>% max()`.
+
+We used the same method as in the vocabulary testing phase to directly compare performance for contrastive words relative to non-contrastive words within each task and variety exposure condition. Posterior medians with 80% and 90% credible intervals are shown for the comparison between each word type within each task and variety exposure condition below.
+
+```{r task-variety-word-type-testing-comparison-plot}
+knitr::include_graphics(plots_dir[str_detect(plots_dir, "testing_tvw_compare.png")])
+```
+
+Posterior medians and credible intervals for this comparison are provided in the table below.
+
+```{r task-variety-word-type-testing-compare}
+report_posteriors(
+  model_summaries$testing_tvw_compare,
+  model_summaries$testing_tvw_compare_rope,
+  .width = 0.9,
+  posterior_drop,
+  posterior_oldnames,
+  posterior_newnames
+) %>% 
+  custom_kable(., add_footer = TRUE, model_summaries$testing_tvw_compare_rope)
+```
+
+While nLEDs are generally higher for contrastive words for all variety exposure conditions and for both tasks, this difference is noticeably smaller in the Variety Match condition and larger in the Dialect Literacy condition. A direct comparison between each level of word type by variety exposure condition shows that the 90% credible intervals around difference scores for nLEDs contains zero in all contrasts except for the Dialect Literacy condition, in which performance is worse for contrastive words relative to non-contrastive words across both reading and spelling tasks. 
+
+Observing the pattern of results in the figure above, there is evidence that the 80% credible interval for the effect of word type does not cross zero for the Dialect and Dialect + Social conditions in the reading task. This indicates a weaker effect of word type than in the Dialect Literacy condition but in the same direction, such that performance is generally worse for contrastive words relative to non-contrastive words. Indeed, for the reading task in the Dialect and Dialect + Social conditions, *pd*s are `r model_summaries$testing_tvw_compare_rope %>% filter(task == "Reading", variety_exposure == "Dialect")  %>% pull(pd)` and `r model_summaries$testing_tvw_compare_rope %>% filter(task == "Reading", variety_exposure == "Dialect + Social")  %>% pull(pd)`, indicating that over 90% of the posterior is of the median’s sign. By comparison this effect is noticeably stronger in the Dialect Literacy condition in which the *pd* is `r model_summaries$testing_tvw_compare_rope %>% filter(task == "Reading", variety_exposure == "Dialect Literacy")  %>% pull(pd)`. For the spelling task, there is evidence of a word type effect in the Dialect Literacy condition only, in which the *pd* is `r model_summaries$testing_tvw_compare_rope %>% filter(task == "Spelling", variety_exposure == "Dialect Literacy")  %>% pull(pd)`. All other contrasts have a less than 72% probability of being the same sign as the median.
+
+Together, this suggests that there is evidence of an effect of word type by which performance is worse for contrastive words relative to non-contrastive words for the reading task in all Dialect conditions, and for the spelling task in the Dialect Literacy condition only. However, evidence for an effect of word type in the Dialect and Dialect + Social conditions is noticeably weaker than that of the Dialect Literacy condition in the reading task.
+
+## Novel Words by Task and Variety Exposure
+
+We tested whether there are any differences in performance for novel words across tasks for the variety exposure conditions during the testing phase. Posterior medians with 80% and 90% credible intervals are shown for each word type within each task and variety exposure condition below.
+
+```{r task-variety-novel-testing-plot}
+knitr::include_graphics(plots_dir[str_detect(plots_dir, "testing_tv_n.png")])
+```
+
+Posterior medians and credible intervals are provided in the table below.
+
+```{r task-variety-novel-testing}
+format_summary_table(
+  model_summaries$testing_tv_n, 
+  summary_oldnames, 
+  summary_newnames,
+  .drop = summary_drop
+  ) %>% 
+  filter(.Width == 0.90) %>% 
+  select(-.Width) %>% 
+  custom_kable()
+```
+
+Overall performance is better in the reading task than the spelling task, with maximumim median nLEDs of `r model_summaries$testing_tv_n %>% filter(task == "Reading", .width == 0.9) %>% pull(.value) %>% max()` and ` model_summaries$testing_tv_n %>% filter(task == "Spelling", .width == 0.9) %>% pull(.value) %>% max()` respectively, both of which are found in the Dialect Literacy condition. We used the same method as in previous analyses to directly compare performance for novel words across each Variety Exposure condition and within each Task. Posterior medians with 80% and 90% credible intervals are shown for the comparison for Novel Words between each Variety Exposure condition within each Task below.
+
+```{r task-variety-novel-testing-compare-plot}
+knitr::include_graphics(plots_dir[str_detect(plots_dir, "testing_tv_n_compare.png")])
+```
+
+Posterior medians and credible intervals for this comparison are provided in the table below.
+
+```{r task-variety-novel-testing-compare}
+report_posteriors(
+  model_summaries$testing_tv_n_compare,
+  model_summaries$testing_tv_n_compare_rope,
+  .width = 0.9,
+  posterior_drop,
+  posterior_oldnames,
+  posterior_newnames
+) %>% 
+  custom_kable(., add_footer = TRUE, model_summaries$testing_tv_n_compare_rope)
+```
+
+There are no reliable differences in nLEDs for Novel Words across Variety Exposure conditions within each task. Here, all 90% credible intervals span both sides of zero and all *pd*s are less than or equal to `r max(model_summaries$testing_tv_n_compare_rope$pd)`. This suggests that there are no reliable differences across conditions in how novel words are decoded across each task. This indicates that exposure to a dialect (in any of these forms) does not have a negative impact on novel word decoding, even when compared to the no dialect condition.
+
+# Exploratory Covariate Testing Model
+
+As with previous models, draws from the posterior for different combinations of conditions were taken using the tidybayes R-package. Similarly, hypothesis tests are provided in the form of Region of Practical Equivalence (ROPE) analyses from these draws using the bayestestR R-package. Extreme caution is needed for interpreting such hypothesis tests as the following models are purely exploratory.
+
+## Word Type by Task, Variety Exposure, and Continuous Effects of Vocabulary Test Performance
+
+We first explored whether mean vocabulary test performance (i.e. in terms of mean nLED) predicts testing performance, and whether or not this varies across Task, Variety Exposure condition, and Word Type. A plot of this relationship is shown below.
+
+```{r cov-task-variety-word-type-covariate}
+knitr::include_graphics(
+  plots_dir[str_detect(plots_dir, "testing_cov_etvw.png")]
+)
+```
+
+Observing the figure above, there is a clear effect in the Dialect and Dialect + Social conditions by which participants with high nLEDS (indicating poorer performance) on the vocabulary testing phase perform equally poorly when reading non-contrastive and contrastive words. However, participants with low nLEDs (indicating better performance) on the vocabulary testing phase perform better with non-contrative words relative to contrastive words in the dialect conditions. In the Dialect Literacy condition, while performance is consistently poorer on contrastive words relative to non-contrastive words, the effect is pronounced for those who performed better in the vocabulary testing phase when compared to those who performed worse in the vocabulary testing phase across both tasks. Crucially, in the no dialect condition even those with better performance in the vocabulary testing phase perform equally well with non-contrastive and contrastive words. 
+
+Comparing the effects across conditions, it is clear that performance is generally worse in the dialect conditions for contrastive words irelative to non-contrastive words. For these non-contrastive words perfomance is comparable to that in the no dialect condition. This indicates a localised cost to performance for contrastive words -- rather than a boost to performance for npn-contrastive words -- in the dialect conditions. Similar effects are shown in the Dialect Literacy condition in the spelling task, while performance is equivalent for each word type for the remaining three conditions.
+
+To better demonstrate this effect, we performed a median split based on the vocabulary test performance, and we categorised these into participants with high and low nLEDs in the vocabulary test relative to the median score.
+
+## Word Type by Task, Variety Exposure, and a Median Split of Vocabulary Test Performance
+
+We tested whether there are any differences in performance for participants who did poorly or well in the vocabulary testing phase relative to the median for contrastive and non-contrastive words split by task and variety exposure in the testing phase. 
+
+Posterior medians with 80% and 90% credible intervals are shown for those who did poorly and well in the vocabulary testing phase for each word type within each task and variety exposure condition in the testing phase below.
+
+```{r cov-task-variety-word-type-covariate-plot}
+knitr::include_graphics(
+  plots_dir[str_detect(plots_dir, "testing_cov_median_etvw.png")]
+)
+```
+
+Posterior means and credible intervals are provided in the table below.
+
+```{r cov-task-variety-word-type-covariate-ms}
+format_summary_table(
+  model_summaries$testing_cov_median_etvw, 
+  summary_oldnames, 
+  summary_newnames,
+  .drop = summary_drop
+  ) %>% 
+  filter(.Width == 0.90) %>% 
+  rename(`Exposure Test nLED Group` = `Exposure Test Nled Group`) %>% 
+  select(-.Width) %>% 
+  custom_kable()
+```
+
+Overall, performance is generally better in the testing phase for participants who did well in the vocabulary test when comapred to those who did poorly in the vocabulary test for each word type. 
+
+To explore whether vocabulary testing performance has any effect on peformance for non-contrastive and contrastive words within each task and variety exposure condition, we used a similar method as in previous analyses to compare draws from the posterior.
+
+```{r cov-task-variety-word-type-covariate-comparison-plot}
+knitr::include_graphics(
+  plots_dir[str_detect(plots_dir, "testing_cov_median_etvw_compare.png")]
+)
+```
+
+This plot shows a similar effect to that described for the continuous plot above. Namely, that reading performance is worse for contrastive words relative to non-contrastive words in the Dialect and Dialect + Social conditions for participants who performed well in the vocabulary testing phase. For the Dialect Literacy condition, there is clear evidence that performance is worse for contrastive relative to non-contrastive words in the both the reading and spelling tasks. However, this effect is both (a) larger in the reading task relative to the spelling task, and (b) larger for those who performed well in the vocabulry testing phase relative to those who performed poorly in the vocabulary testing phase for the reading task.
+
+A direct comparison of the differences in performance for contrastive words relative to non-contrastive words split by vocabulary testing performance, variety exposure, and word type is provided in the table below.
+
+```{r cov-task-variety-word-type-covariate-ms-compare}
+report_posteriors(
+  model_summaries$testing_cov_median_etvw_compare,
+  model_summaries$testing_cov_median_etvw_compare_rope,
+  0.9,
+  posterior_drop,
+  posterior_oldnames,
+  posterior_newnames
+) %>% 
+  rename(`Exposure Test nLED Group` = `Exposure Test Nled Group`) %>% 
+  arrange(Task) %>% 
+  select(Task, everything()) %>% 
+  custom_kable(., add_footer = TRUE, model_summaries$testing_cov_median_etvw_compare_rope)
+```
+
+The comparison for performance across both word types in the posterior summary corroborates the conclusions drawn from the plots above. It is likely that the strong effects shown in both tasks for those with poorer and better performance in the vocabulary testing phase in the Dialect Literacy condition likely reflects the fact that this condition interleaves the dialect form of the language with the standard form of the language during training (rather than front-loaded prior to the vocabulary test), which allows for sufficient entrenchment of the dialect form of the language, causing a great deal of local interference in both tasks.
+
+## Novel Words by Task, Variety Exposure, and Continuous Effects of Vocabulary Test Performance
+
+We next focussed on exploring whether decoding for novel words is affected by task, variety exposure condition, and performance ib the vocabulary testing phase. The following analyses summarise these effects in the covariate testing model.
+
+```{r cov-task-variety-novel-covariate-plot}
+knitr::include_graphics(
+  plots_dir[str_detect(plots_dir, "testing_cov_etv_n.png")]
+)
+```
+
+Similarly to the analysis by word type, we again performed a median split based on vocabulary testing performance to better highlight any effects of vocabulary testing performance on novel word decoding within each task and variety exposure condition.
+
+## Novel Words by Task, Variety Exposure, and a Median Split of Vocabulary Test Performance
+
+Posterior medians with 80% and 90% credible intervals are shown for those who did poorly and well in the vocabulary testing phase for novel words within each task and variety exposure condition in the testing phase below.
+
+```{r cov-task-variety-novel-covariate-ms-plot}
+knitr::include_graphics(
+  plots_dir[str_detect(plots_dir, "testing_cov_median_etv_n.png")]
+)
+```
+
+Posterior medians and credible intervals are provided in the table below.
+
+```{r novel-variety-task-cov-testing-cov}
+format_summary_table(
+  model_summaries$testing_cov_median_etv_n, 
+  summary_oldnames, 
+  summary_newnames,
+  .drop = summary_drop
+  ) %>% 
+  rename(`Exposure Test nLED Group` = `Exposure Test Nled Group`) %>%
+  arrange(Task) %>% 
+  select(Task, everything()) %>% 
+  filter(.Width == 0.90) %>% 
+  select(-.Width) %>% 
+  custom_kable()
+```
+
+While performance is generally worse in the testing phase for those with poorer vocabulary test performance when compared to those with better vocabulary test performance, we used the same methods as in previous analyses to establish whether there are any differences in novel word decoding across variety exposure conditions depending upon the task and vocabulary testing performance.
+
+Posterior medians with 80% and 90% credible intervals are shown below comparing performance for novel words across variety exposure conditions within each task and within those with poorer and better performance in the vocabulary testing phase.
+
+```{r cov-task-variety-novel-covariate-ms-compare-plot}
+knitr::include_graphics(
+  plots_dir[str_detect(plots_dir, "testing_cov_median_etv_n_compare.png")]
+)
+```
+
+Posterior medians and credible intervals for this comparison are provided in the table below.
+
+```{r novel-variety-task-cov-testing-cov-summary}
+report_posteriors(
+  model_summaries$testing_cov_median_etv_n_compare,
+  model_summaries$testing_cov_median_etv_n_compare_rope,
+  0.9,
+  posterior_drop,
+  posterior_oldnames,
+  posterior_newnames
+) %>% 
+  rename(`Exposure Test nLED Group` = `Exposure Test Nled Group`) %>% 
+  arrange(Task) %>% 
+  select(Task, everything()) %>% 
+  custom_kable(., add_footer = TRUE, model_summaries$testing_cov_median_etv_n_compare_rope)
+```
+
+From the plot and table, it is clear that in both those with poorer and better vocabulary testing performance decoding for novel words is equivalent across variety exposure conditions within each task. This suggests that regardless of how well entrenched the language may be, there are no substantial differences in novel word decoding within each variety exposure condition for each task.

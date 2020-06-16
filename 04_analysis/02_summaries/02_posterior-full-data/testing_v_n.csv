@@ -1,0 +1,13 @@
+variety_exposure,.value,.lower,.upper,.width,.point,.interval
+No Dialect,0.253,0.167,0.332,0.95,median,qi
+Dialect,0.25,0.168,0.405,0.95,median,qi
+Dialect & Social,0.245,0.156,0.37,0.95,median,qi
+Dialect Literacy,0.266,0.187,0.393,0.95,median,qi
+No Dialect,0.253,0.179,0.32,0.9,median,qi
+Dialect,0.25,0.179,0.373,0.9,median,qi
+Dialect & Social,0.245,0.167,0.344,0.9,median,qi
+Dialect Literacy,0.266,0.198,0.364,0.9,median,qi
+No Dialect,0.253,0.194,0.306,0.8,median,qi
+Dialect,0.25,0.192,0.34,0.8,median,qi
+Dialect & Social,0.245,0.182,0.319,0.8,median,qi
+Dialect Literacy,0.266,0.212,0.337,0.8,median,qi

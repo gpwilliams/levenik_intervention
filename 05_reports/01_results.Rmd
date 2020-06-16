@@ -205,7 +205,12 @@ Due to having more observations for analyses during the testing phase, both the 
 Posterior predictive checks were performed for all three models, comparing the observed posterior density against samples from the fitted model. Well fitting models show concordance between observed and sampled posterior densities. Plots for each model are displayed below. Grey lines indicate samples from the posterior, while black lines indicate the observed sample density.
 
 ```{r pp-check-plots}
-knitr::include_graphics(plots_dir[str_detect(plots_dir, "pp")])
+knitr::include_graphics(c(
+  plots_dir[str_detect(plots_dir, "pp_check_exposure.png")],
+  plots_dir[str_detect(plots_dir, "pp_check_testing.png")],
+  plots_dir[str_detect(plots_dir, "pp_check_testing_cov.png")]
+    
+))
 ```
 
 As can be seen from the plots, the posterior predictive checks indicate a generally good model fit in all instances, such that the model largely captures the shape of the data (i.e. especially capturing the 0 and 1 inflation in the testing model), but does not capture some discrepancies in the data which do not arise from any particular process (i.e. some larger densities in the testing model between the range of 0-1).
@@ -412,7 +417,7 @@ report_posteriors(
 
 A similar pattern appears for the novel words only as with all words.
 
-## Word Type by Variety Exposure
+## Word Type by Task and Variety Exposure
 
 We also looked at whether there are any differences in performance for different word types across conditions during the testing phase. There appears to be some differences in word types within groups, but are these differences reliable?
 
@@ -550,7 +555,7 @@ We next focussed on novel words to see whether any differences occur for novel w
 
 ```{r cov-variety-exposure-task-novel-median-plot-testing-cov}
 knitr::include_graphics(c(
-  plots_dir[str_detect(plots_dir, "testing_cov_median_etv_n.png")],
+  plots_dir[str_detect(plots_dir, "testing_cov_median_t_ev_n.png")],
   plots_dir[str_detect(plots_dir, "testing_cov_median_etv_n_compare.png")]
 ))
 ```
@@ -588,25 +593,12 @@ report_posteriors(
 Looking at differences split by task, the four variety conditions do not differ from one another in terms of differences in performance between participants with high and low mean nLEDs during the vocabulary testing phase. This suggests that there is no reliable difference in terms of novel word decoding between participants with high and low mean nLEDs in the vocabulary test across the variety exposure conditions.
 
 **TODO**: 
+    
+- check all plots and analyses are included, including:
 
-- add in task and variety exposure for novel words to testing phase to the report.
+    add in task and variety exposure for novel words to testing phase to the report.
+    add in variety exposure for novel words to the testing phase to the report.
 
-- ev_n summary needed: vocab test and variety for novel words.
-- etv_n summary needed: vocab test, task, and variety for novel words.
+Plots:
 
-- ev_n plots (regular and contrastive) needed
-- etv_n plots (regular and contrastive) needed
-
-- change current etv_n to t_ev_n.
-- change current etv_n to t_ev_n in the current document. This analysis is probably not needed.
-
-- regular variety exposure needed for novel words? Needs summary and plots.
-
-- work on renaming function for large tables of coefficients.
-- want it to split by mu, phi, zoi, and coi (as the greek letters)
-
-- Fix problem with "\times" not showing in tables. Probably to do with formatting of uppercase etc.
-
-- Plots for exploratory vocab testing need to go to nLED .80.
-- Fix names to be consistent in all plots and papers.
-- Remove titles from plots.
+- Update variety exposure names in all other plots (frequentist summaries)

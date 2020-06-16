@@ -20,8 +20,16 @@ draws$exposure_vw <-
   ) %>% 
   ungroup() %>% 
   mutate_if(is.factor, fct_relabel, ~str_to_title(gsub("_", " ", .x))) %>% 
-  mutate(word_type = fct_relabel(word_type, str_replace, " ", "-")) %>% 
-  mutate(word_type = fct_relevel(word_type, "Non-Contrastive")) %>% 
+  mutate(
+    word_type = fct_relabel(word_type, str_replace, " ", "-"),
+    word_type = fct_relevel(word_type, "Non-Contrastive"),
+    variety_exposure = fct_recode(
+      variety_exposure, 
+      "No Dialect" = "Variety Match", # new names for paper
+      "Dialect" = "Variety Mismatch",
+      "Dialect & Social" = "Variety Mismatch Social"
+    )
+  ) %>% 
   group_by(variety_exposure, word_type)
 
 # variety exposure
@@ -52,13 +60,18 @@ draws$testing_tvw_all <-
     ))
   ) %>% 
   mutate_if(is.factor, fct_relabel, ~str_to_title(gsub("_", " ", .x))) %>% 
-  mutate(word_type = fct_relabel(word_type, str_replace, " ", "-")) %>% 
   mutate(
+    word_type = fct_relabel(word_type, str_replace, " ", "-"),
     word_type = fct_relevel(word_type, "Non-Contrastive"),
-    word_familiarity = fct_relevel(word_familiarity, "Trained")) %>% 
+    word_familiarity = fct_relevel(word_familiarity, "Trained"),
+    variety_exposure = fct_recode(
+      variety_exposure, 
+      "No Dialect" = "Variety Match", # new names for paper
+      "Dialect" = "Variety Mismatch",
+      "Dialect & Social" = "Variety Mismatch Social"
+    )
+  ) %>% 
   group_by(task, variety_exposure, word_type)
-
-# change tv to tvw_all
 
 # task and variety exposure
 draws$testing_tv <- 
@@ -124,10 +137,16 @@ draws$testing_cov_tvw <-
     ))
   ) %>% 
   mutate_if(is.factor, fct_relabel, ~str_to_title(gsub("_", " ", .x))) %>% 
-  mutate(word_type = fct_relabel(word_type, str_replace, " ", "-")) %>% 
-  mutate(
+  mutate(word_type = fct_relabel(word_type, str_replace, " ", "-"),
     word_type = fct_relevel(word_type, "Non-Contrastive"),
-    word_familiarity = fct_relevel(word_familiarity, "Trained")) %>% 
+    word_familiarity = fct_relevel(word_familiarity, "Trained"),
+    variety_exposure = fct_recode(
+      variety_exposure, 
+      "No Dialect" = "Variety Match", # new names for paper
+      "Dialect" = "Variety Mismatch",
+      "Dialect & Social" = "Variety Mismatch Social"
+    )
+  ) %>% 
   group_by(task, variety_exposure, word_type)
 
 # testing phase with vocabulary test performance as a covariate (median split) ----
@@ -136,18 +155,31 @@ draws$testing_cov_median_etv <- draws$testing_cov_tvw %>%
   ungroup() %>% 
   mutate(exposure_test_nLED_group = case_when( # median split
     mean_exposure_test_nLED < 
-      median(all_data$testing$mean_exposure_test_nLED) ~ "Low",
+      median(all_data$testing$mean_exposure_test_nLED) ~ "Better Performance",
     mean_exposure_test_nLED > 
-      median(all_data$testing$mean_exposure_test_nLED) ~ "High"
+      median(all_data$testing$mean_exposure_test_nLED) ~ "Worse Performance"
     )
   ) %>% 
   mutate(
     exposure_test_nLED_group = fct_relevel(
       exposure_test_nLED_group, 
-      "Low"
+      "Better Performance"
   )) %>% 
   select(-c(mean_exposure_test_nLED)) %>% 
   group_by(exposure_test_nLED_group, task, variety_exposure, word_type)
+
+# testing cov (median split): task and variety for 
+# contrastive and non-contrastive words
+draws$testing_cov_median_etvw <- 
+  draws$testing_cov_median_etv %>% 
+  filter(word_familiarity != "Novel")
+
+# testing cov (median split): variety for novel words
+draws$testing_cov_median_ev_n <- 
+  draws$testing_cov_median_etv %>% 
+  filter(word_familiarity == "Novel") %>% 
+  ungroup() %>% 
+  group_by(exposure_test_nLED_group, variety_exposure)
 
 # testing cov (median split): task and variety for novel words
 draws$testing_cov_median_etv_n <- 
@@ -155,9 +187,3 @@ draws$testing_cov_median_etv_n <-
   filter(word_familiarity == "Novel") %>% 
   ungroup() %>% 
   group_by(exposure_test_nLED_group, task, variety_exposure)
-
-# testing cov (median split): task and variety for 
-# contrastive and non-contrastive words
-draws$testing_cov_median_etvw <- 
-  draws$testing_cov_median_etv %>% 
-  filter(word_familiarity != "Novel")

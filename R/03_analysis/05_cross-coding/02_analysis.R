@@ -16,6 +16,6 @@ saveRDS(
   file = here(
     "04_analysis", 
     "03_cross-coding", 
-    "irr-results.RData"
+    "irr-results.rds"
   )
 )

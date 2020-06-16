@@ -15,14 +15,20 @@ cleaned_data <-
         "Variety Mismatch",
         "Variety Mismatch Social",
         "Dialect Literacy"
-      )),
+      )), 
+    variety_exposure = fct_recode( # rename levels
+      variety_exposure,
+      `No Dialect` = "Variety Match",
+      `Dialect` = "Variety Mismatch",
+      `Dialect & Social` = "Variety Mismatch Social"
+    ),
     word_familiarity = factor(case_when(
       word_type %in% c("Contrastive", "Non-Contrastive") ~ "Trained",
       word_type == "Novel" ~ "Untrained"
       ), 
     levels = c("Trained", "Untrained")
     ),
-    word_type = fct_recode(word_type, Untrained = "Novel"),
+    word_type = fct_recode(word_type, Untrained = "Novel"), # rename levels
     word_type = factor( # reorder word_type
       word_type,
       levels = c(

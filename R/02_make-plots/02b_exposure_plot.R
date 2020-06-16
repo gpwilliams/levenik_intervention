@@ -1,4 +1,5 @@
 # plot exposure test data
+
 ggplot() + 
   geom_flat_violin(
     data = exposure_agg,
@@ -26,17 +27,21 @@ ggplot() +
       colour = word_type
     ),
     size = 1,
-    position = position_nudge(x = +0.08, y = 0)
+    position = position_nudge(x = 0.1, y = 0)
   ) +
-  scale_colour_manual(values = c("white", "white")) +
-  scale_fill_manual(values = c("black", "grey48")) +
+  scale_colour_manual(values = plotting_options$scale_colours) +
+  scale_fill_manual(values = plotting_options$scale_fills) +
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
   facet_grid(. ~ variety_exposure) +
-  labs(x = "Word Type", y = "Mean Normalised Levenshtein Edit Distance") +
+  labs(
+    x = "Word Type", 
+    y = "Mean Normalised Levenshtein Edit Distance", 
+    caption = plotting_options$error_caption
+  ) +
   two_panel_theme
 
 ggsave(
-  here("03_plots", "03_frequentist-style", "exposure_plot.png"), 
+  here("03_plots", "03_main-data-summary", "exposure_plot.png"), 
   last_plot(), 
   height = 8, 
   width = 14

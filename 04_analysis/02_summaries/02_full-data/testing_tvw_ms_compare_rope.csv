@@ -1,3 +1,0 @@
-task,word_type,variety_exposure,CI,ROPE_low,ROPE_high,ROPE_Percentage,ROPE_Equivalence,HDI_low,HDI_high,pd
-Reading,Contrastive - Non-Contrastive,Variety Mismatch Social - Variety Mismatch,90,-0.02,0.02,84.765,Undecided,-0.029,0.026,55.142
-Spelling,Contrastive - Non-Contrastive,Variety Mismatch Social - Variety Mismatch,90,-0.02,0.02,73.936,Undecided,-0.037,0.034,52.179

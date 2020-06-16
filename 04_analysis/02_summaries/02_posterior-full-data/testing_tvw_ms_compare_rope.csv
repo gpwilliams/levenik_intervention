@@ -1,0 +1,3 @@
+task,variety_exposure,word_type,CI,ROPE_low,ROPE_high,ROPE_Percentage,ROPE_Equivalence,HDI_low,HDI_high,pd
+Reading,Dialect & Social - Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.848,Undecided,-0.029,0.026,0.551
+Spelling,Dialect & Social - Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.739,Undecided,-0.037,0.034,0.522
