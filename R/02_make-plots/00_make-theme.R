@@ -3,7 +3,9 @@ plotting_options <- list(
   axis_y_size = 20,
   scale_colours = c("black", "white"),
   scale_fills = c("grey80", "grey30"),
-  error_caption = "Pointranges show the mean \u00B1 1 SE of the mean."
+  error_caption = "Pointranges show the mean \u00B1 1 SE of the mean.",
+  height = 8,
+  width = 14
 )
 
 theme_set(

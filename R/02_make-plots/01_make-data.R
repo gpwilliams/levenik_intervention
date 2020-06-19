@@ -47,3 +47,6 @@ exposure_data <- cleaned_data %>%
 
 testing_data <- cleaned_data %>% 
   filter(block == "test")
+
+# make a list to store plots
+plots <- list()

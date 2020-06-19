@@ -71,6 +71,7 @@ grand_proportions <- data_subset %>%
   )
 
 # save results ----
+
 write_csv(
   mean_proportions,
   here(

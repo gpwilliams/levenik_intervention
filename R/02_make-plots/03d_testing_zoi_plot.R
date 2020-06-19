@@ -2,7 +2,7 @@
 
 # word type ----
 
-zoi_word_type_plot <- ggplot(
+plots$testing_zoi_word_type <- ggplot(
   testing_word_type_zo_agg_summary, 
   aes(x = parameter, y = means, colour = word_type, fill = word_type)
   ) +
@@ -51,28 +51,28 @@ zoi_word_type_plot <- ggplot(
     legend.background = element_blank()
   )
 
-cowplot::ggdraw(
-  add_sub(
-    zoi_word_type_plot, 
-    "Percentages Conditional on Zero-One Inflation", 
-    vpadding = grid::unit(0, "lines"),
-    y = 62, 
-    x = 0.705, 
-    hjust = 0,
-    size = 12,
-    fontface = "italic"
-  ))
-
-ggsave(
-  here("03_plots", "03_main-data-summary", "testing_zoi_word_type_plot.png"), 
-  last_plot(), 
-  height = 8, 
-  width = 14
+# set up annotation info
+ann_text <- tibble(
+  parameter = 2.5, 
+  means = 92, 
+  task = "Spelling",
+  word_type = c("Contrastive", "Non-Contrastive"),
+  variety_exposure = "Dialect",
+  lab = "Percentages Conditional on Zero-One Inflation"
 )
+
+# apply annotation
+plots$testing_zoi_word_type + 
+  geom_text(
+    data = ann_text, 
+    label = ann_text$lab, 
+    fontface = "italic", 
+    show.legend = FALSE # removes letter from legend box
+  )
 
 # word familiarity ----
 
-testing_zoi_word_familiarity_plot <- ggplot(
+plots$testing_zoi_word_familiarity <- ggplot(
   testing_word_familiarity_zo_agg_summary, 
   aes(x = parameter, y = means, colour = word_familiarity, fill = word_familiarity)
 ) +
@@ -121,21 +121,21 @@ testing_zoi_word_familiarity_plot <- ggplot(
     legend.background = element_blank()
   )
 
-cowplot::ggdraw(
-  add_sub(
-    testing_zoi_word_familiarity_plot, 
-    "Percentages Conditional on Zero-One Inflation", 
-    vpadding = grid::unit(0, "lines"),
-    y = 62, 
-    x = 0.705, 
-    hjust = 0,
-    size = 12,
-    fontface = "italic"
-  ))
-
-ggsave(
-  here("03_plots", "03_main-data-summary", "testing_zoi_word_familiarity_plot.png"), 
-  last_plot(), 
-  height = 8, 
-  width = 14
+# make annotations
+ann_text <- tibble(
+  parameter = 2.5, 
+  means = 92, 
+  task = "Spelling",
+  word_familiarity = c("Untrained", "Trained"),
+  variety_exposure = "Dialect",
+  lab = "Percentages Conditional on Zero-One Inflation"
 )
+
+# apply annotation
+plots$testing_zoi_word_familiarity + 
+  geom_text(
+    data = ann_text, 
+    label = ann_text$lab, 
+    fontface = "italic", 
+    show.legend = FALSE # removes letter from legend box
+  )

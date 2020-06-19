@@ -1,6 +1,6 @@
 # plot testing test data
 
-ggplot() + 
+plots$testing_word_type <- ggplot() + 
   geom_flat_violin(
     data = testing_word_type_agg,
     aes(x = word_type, y = mean_nLED, fill = word_type),
@@ -40,10 +40,3 @@ ggplot() +
     caption = "Error bars represent \u00B1 1 SE of the mean."
   ) +
   four_panel_theme
-
-ggsave(
-  here("03_plots", "03_main-data-summary", "testing_word-type_plot.png"), 
-  last_plot(), 
-  height = 8, 
-  width = 14
-)

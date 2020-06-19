@@ -1,6 +1,6 @@
 # plot testing data ----
 
-ggplot() + 
+plots$testing_word_familiarity <- ggplot() + 
   geom_flat_violin(
     data = testing_word_familiarity_agg,
     aes(x = word_familiarity, y = mean_nLED, fill = word_familiarity),
@@ -40,10 +40,3 @@ ggplot() +
     caption = "Error bars represent \u00B1 1 SE of the mean."
   ) +
   four_panel_theme
-
-ggsave(
-  here("03_plots", "03_main-data-summary", "testing_word-familiarity_plot.png"), 
-  last_plot(), 
-  height = 8, 
-  width = 14
-)

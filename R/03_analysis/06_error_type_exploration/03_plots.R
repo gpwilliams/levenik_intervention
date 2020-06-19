@@ -1,7 +1,10 @@
 # plots ----
 
+# define plot holder
+plots <- list()
+
 # plot grand proportions of errors (i.e. stacked bars)
-grand_prop_plot <- ggplot(
+plots$grand_proportions_error_responses <- ggplot(
   grand_proportions,
   aes(x = word_type, y = proportion, fill = lenient_coder_error_types)
   ) +
@@ -13,7 +16,7 @@ grand_prop_plot <- ggplot(
   custom_theme
 
 # plot the average proportion of dialect errors vs. others (i.e. error bars)
-average_prop_plot <- ggplot(
+plots$mean_proportions_error_responses <- ggplot(
   mean_proportions, 
   aes(x = word_type, y = mean_prop, fill = lenient_coder_error_types)
   ) +
@@ -38,25 +41,3 @@ average_prop_plot <- ggplot(
   labs(errorbar_caption) +
   custom_theme +
   theme(plot.caption = element_text(size = 14))
-
-# save individual plots ----
-
-ggsave(
-  filename = here(
-    "03_plots", 
-    "04_exploratory", 
-    "grand-proportions-error-responses.png"
-  ),
-  plot = grand_prop_plot,
-  height = 14, width = 12
-)
-
-ggsave(
-  filename = here(
-    "03_plots", 
-    "04_exploratory", 
-    "mean-proportions-error-responses.png"
-  ),
-  plot = average_prop_plot,
-  height = 14, width = 12
-)

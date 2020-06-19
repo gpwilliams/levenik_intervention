@@ -1,7 +1,4 @@
 library(tidyverse)
-library(ggforce) # for facet_wrap_paginate
-library(ggrepel) # for direct labels
-library(cowplot) # for annotating single plots with faceting
 library(here)
 
 r_function_list <- list.files(

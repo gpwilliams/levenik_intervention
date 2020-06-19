@@ -1,6 +1,6 @@
 # by word type ----
 
-ggplot() + 
+plots$testing_word_type_beta <- ggplot() + 
   geom_flat_violin(
     data = testing_word_type_beta_agg,
     aes(x = word_type, y = mean_nLED, fill = word_type),
@@ -42,16 +42,9 @@ ggplot() +
   ) +
   two_panel_theme
 
-ggsave(
-  here("03_plots", "03_main-data-summary", "testing_word_type_beta_plot.png"), 
-  last_plot(), 
-  height = 8, 
-  width = 14
-)
-
 # by word familiarity ----
 
-ggplot() + 
+plots$testing_word_familiarity_beta <- ggplot() + 
   geom_flat_violin(
     data = testing_word_familiarity_beta_agg,
     aes(x = word_familiarity, y = mean_nLED, fill = word_familiarity),
@@ -92,10 +85,3 @@ ggplot() +
     caption = plotting_options$error_caption
   ) +
   two_panel_theme
-
-ggsave(
-  here("03_plots", "03_main-data-summary", "testing_word_familiarity_beta_plot.png"), 
-  last_plot(), 
-  height = 8, 
-  width = 14
-)
