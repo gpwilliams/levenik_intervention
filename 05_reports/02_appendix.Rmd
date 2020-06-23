@@ -4,6 +4,7 @@ author: "Glenn Williams"
 date: "14<sup>th</sup> August, 2019 (Last updated: `r format(Sys.time(), '%d<sup>th</sup> %B, %Y')`)"
 output: 
   html_document:
+    number_sections: true
     toc: true
     toc_float: true
     theme: united
@@ -48,14 +49,20 @@ fitted_models_dir <- list.files(
 ) %>% 
   str_subset("summary")
   
+
 model_summaries_dir <- list.files(
-  path = here("04_analysis", "02_summaries", "02_full-data"),
+  path = here("04_analysis", "02_summaries", "02_posterior-full-data"),
   pattern = "csv$",
   full.names = TRUE
 )
 
+plot_titles <- "01_with-titles" # can also be "02_without-titles"
 plots_dir <- list.files(
-  path = here("03_plots", "02_full-data"),
+  path = c(
+    here("03_plots", "02_posterior-full-data", plot_titles),
+    here("03_plots", "03_main-data-summary", plot_titles), 
+    here("03_plots", "04_exploratory", plot_titles)
+  ),
   pattern = "png$",
   full.names = TRUE
 )
@@ -77,16 +84,15 @@ summary_drop <- c(".point", ".interval")
 model_replacements = c(
   "word_type1" = "word_type",
   "word_type2" = "word_familiarity",
-  "language_variety1" = "language_variety_1", # figure out what these are
-  "language_variety2" = "language_variety_2",
-  "language_variety3" = "language_variety_3",
+  "variety_exposure1" = "dialect", # sum coding, first levels compared to grand mean
+  "variety_exposure2" = "dialect_&_social",
+  "variety_exposure3" = "dialect_literacy",
   "task1" = "task",
   "mean_exposure_test_nLED" = "mean_vocabulary_test_nLED"
 )
 ```
 
-
-# Appendix A. Gruffalo Index of Language Variation
+# Gruffalo Index of Language Variation
 
 ## The Gruffalo
 
@@ -103,7 +109,7 @@ model_replacements = c(
 
 Note: The Gruffalo's Child was not available in Glaswegian at the time of this corpus analysis.
 
-# Appendix A. Graphemes
+# Graphemes
 
 ```{r, echo = FALSE, out.width="10%", out.height = "20%", fig.cap = "Invented graphemes used to represent each phoneme in all experiments. The final two graphemes were created but not used in these experiments. To prevent participants from memorizing the novel graphemes based on resemblance to known graphemes we controlled for similarity to characters of extant writing systems by comparing each invented grapheme against the database of 11,817 characters (excluding Chinese, Korean, and Japanese) on the Shapecatcher website (Milde, 2011). If visual inspection indicated a resemblance, we modified the grapheme to minimize that resemblance.", fig.show = "hold", fig.align = "center", fig.pos = "htb", warning = FALSE, fig.env="figure*"}
 # note: chunk names don't work if you tag your headings, e.g. {#appendix-a}
@@ -116,15 +122,15 @@ knitr::include_graphics(
 )
 ```
 
-# Appendix B. Word List
+# Word List
 
 Content to follow.
 
-# Appendix C. Image Norms
+# Image Norms
 
 Content to follow.
 
-# Appendix D. Model Priors and Posterior Predictive Checks
+# Model Priors and Posterior Predictive Checks
 
 Priors for the fitted models are described first by their expected distribution, and the parameters that define that distribution. For example, a prior of $\mathcal{N}(0, 1)$ describes a normal distribution with a mean of 0 and a standard deviation of 1. Similarly, a prior of $\mathcal{logistic}(0, 1)$ describes a logistic distribution with a mean of 0 and a standard deviation of 1. Note, by default, `brms` restricts priors on the *SD* to be positive.
 
@@ -204,11 +210,30 @@ knitr::include_graphics(c(
 
 As can be seen from the plots, the posterior predictive checks indicate a generally good model fit in all instances, such that the model largely captures the shape of the data (i.e. especially capturing the 0 and 1 inflation in the testing model), but does not capture some discrepancies in the data which do not arise from any defined process (i.e. some larger densities in the testing model between the range of 0-1).
 
-# Appendix E. Fitted Model Summaries
+# Fitted Model Summaries
+
+In the tables of population level (fixed) effects, $\hat{R}$ is a measure of convergence for within- and between-chain estimates, with values closer to 1 being preferable. The bulk and tail effective sample sizes give diagnostics of the number of draws which contain the same amount of information as the dependent sample (Vehtari et al., 2019), with higher values being preferable. The tail effective sample size is determined at the 5% and 95% quantiles, while the bulk is determined at values in between these quantiles.
 
 ## Vocabulary Test Model
 
 A summary of the population-level (fixed) effects for the Vocabulary Test model is provided below. This can be used to determine model diagnostics, coefficients, and estimates around these coefficients using 95% credible intervals. 
+
+Note that models were fitted with the above priors and sum coded effects of variety exposure condition, word type, and task. As a result, the intercept represents the grand mean (i.e. the mean of the means of the dependent variable at each level of the categorical variables). The regression cofficients then represent the difference between the grand mean and the:
+
+- Variety Exposure: 
+  - No Dialect condition.
+  - Dialect condition.
+  - Dialect & Social condition.
+  
+  To get parameter estimates for the No Dialect, Dialect, and Dialect & Social conditions add their regression coefficients to the intercept. To get regression estimates for the Dialect Literacy condition, all three Variety Exposure coefficients must be subtracted from the intercept.
+  
+- Word Type: Contrastive words.
+
+  To get parameter estimates for contrastive words, add the coefficient to the intercept. To get the estimates for non-contrastive words, subtract the coefficient from the intercept.
+  
+- Task: Reading.
+
+  To get parameter estimates for the reading task, add the coefficient to the intercept. To get the estimates for the spelling task, subtract the coefficient from the intercept.
 
 ```{r exposure-model-summary, results = "asis"}
 fitted_models[["exposure_model_summary"]]$fixed %>%
@@ -230,6 +255,10 @@ fitted_models[["exposure_model_summary"]]$fixed %>%
 
 A summary of the Testing Phase model is provided below. This can be used to determine model diagnostics and coefficients. 
 
+The same coding was used here as in the Vocabulary Test model, with the exception that word type has three levels in this phase of the experiment. Words can be contrastive, non-contrastive, or untrained. Thus, word type was Helmert coded in R (R defaults to what is traditionally called  reverse Helmert coding) such that the first estimate (Word Type in the below table) represents half the difference in scores between trained non-contrastive words and trained contrastive words. The second estimate (Word Familiarity in the below table) represents the difference in scores between the mean of the trained (non-contrastive and contrastive words) and untrained, novel words and the mean of the trained words. Thus, this estimates the effect of words being untrained vs. trained.
+
+Thus, as before the intercept represents the grand mean. To get parameter estimates for contrastive words, subtract the parameter estimate for Word Type and the parameter estimate for Word Familiairty from the intercept. To get parameter estimates for non-contrastive words, add the parameter estimate for Word Type and subtract the parameter estimate for Word Familiarity from the intercept. To get parameter estimates for novel, unfamiliar words, subrtract both the parameter estimates for Word Type and Word Familiarity from the intercept.
+
 ```{r testing-model-summary}
 fitted_models[["testing_model_summary"]]$fixed %>% 
   as.data.frame() %>% 
@@ -248,7 +277,7 @@ fitted_models[["testing_model_summary"]]$fixed %>%
 
 ## Exploratory Covariate Testing Model
 
-A summary of the Testing Phase model incorporating the mean scores in the vocabulary test as a covariate is provided below. This can be used to determine model diagnostics and coefficients. 
+A summary of the Testing Phase model incorporating the mean scores in the vocabulary test as a covariate is provided below. This can be used to determine model diagnostics and coefficients. This model used the same coding scheme as in the Testing Phase model, but included a continuous numberical predictor of mean vocabulary test performance (ranging from 0-1).
 
 ```{r testing-cov-model-summary}
 fitted_models[["testing_cov_model_summary"]]$fixed %>%
@@ -266,20 +295,14 @@ fitted_models[["testing_cov_model_summary"]]$fixed %>%
   pack_rows(index = c("$\\mu$" = 48, "$\\phi$" = 48, "$\\alpha$" = 48, "$\\gamma$" = 48))
 ```
 
-# Appendix F. Visualisation of Response Types
+# Visualisation of Response Types
+
+We estimated the proportion of response types aggregated across participants.
 
 ```{r, echo = FALSE, fig.cap = "Mean proportion of response types. Response types are: correct (e.g. target: *kuble*--response: *kuble*); dialect word match: the dialect variant is produced in response to the corresponding standard contrastive word (e.g. target: *kuble*--response: *xuble*); dialect word misatch: a dialect variant is produced in response to another standard contrastive word (e.g. target: *skefi*--response: *xuble*); standard word mismatch: a standard word is produced in response to another standard word (e.g. target: *skefi*--response: *kuble*); other mismatch: any other error that was not part of the response set.", out.width="80%", fig.env="figure*", fig.align = "center"}
 # note: chunk names don't work if you tag your headings, e.g. {#appendix-a}
 # it then thinks chunk names are duplicates (even when they aren't)
 knitr::include_graphics(
-  here::here(
-    "03_plots", 
-    "04_exploratory", 
-    "mean-proportions-error-responses.png"
-  )
+  plots_dir[str_detect(plots_dir, "mean_proportions_error_responses.png")]
 )
 ```
-
-# TODO
-
-1. Change names on Variety Exposure 1, 2, 3 etc. these need to be properly defined.

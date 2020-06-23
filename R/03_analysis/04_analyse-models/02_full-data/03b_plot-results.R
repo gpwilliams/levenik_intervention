@@ -314,11 +314,6 @@ plots$testing_cov_etv_n <- ggplot(
   data = draws$testing_cov_tvw %>% 
     ungroup() %>% 
     filter(word_familiarity == "Novel"),
-  data = escape_character(
-    draws$testing_cov_median_etv_n, 
-    exposure_test_nLED_group, 
-    pattern = "P"
-  ), 
   aes(
     x = mean_exposure_test_nLED , 
     linetype = variety_exposure, 
