@@ -2,6 +2,9 @@
 
 # dpar = TRUE gets draws conditional on all distributional parameters
 #   i.e. for mu, phi, zoi, and coi with the zoib model
+# re_formula = ~0, allow_new_levels = TRUE allows new levels from those in the 
+# data that were used to fit the models. This includes removing factors
+# entirely or even adding new levels.
 
 draws <- list()
 
@@ -14,7 +17,7 @@ draws$exposure_vw <-
   data_grid(variety_exposure, word_type) %>% 
   add_fitted_draws(
     models$exposure, 
-    dpar = TRUE, 
+    dpar = TRUE,
     re_formula = ~0, 
     seed = analysis_options$rand_seed
   ) %>% 

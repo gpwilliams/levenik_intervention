@@ -23,7 +23,8 @@ packages <- c(
   "ggforce",
   "ggrepel",
   "ggridges",
-  "irr"
+  "irr",
+  "papaja" # install with devtools::install_github("crsh/papaja")
 )
 
 # load packages
@@ -95,5 +96,25 @@ posterior_drop <- c(
 )
 ```
 
-`r version$version.string` and the R-packages `r cite_packages(packages)` were used for data preparation, analysis, and presentation.
+```{r get-citations}
+my_citations <- papaja::cite_r(
+  file = here("05_reports", "r-references.bib"), 
+  pkgs = packages, 
+  withhold = FALSE
+)
+```
+
+`r my_citations` were used for data preparation, analysis, and presentation.
+
+# Testing Phase Model
+
+## Simple Effect of Variety Exposure within Each Task
+
+
+
+Effect of language variety within each task in Supplemental (pre-reg predictions):
+
+-	Overall performance is better in the dialect vs. no dialect condition. (dialect benefit)
+-	Overall performance is better in the social than dialect condition. (less cognitive load and confusion between varieties).
+-	Overall performance is better in dialect literacy than social due to training in multiple varieties highlighting the alphabetic principle, pushing people to the best strategy earlier on in learning.
 

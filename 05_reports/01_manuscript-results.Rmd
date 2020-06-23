@@ -2,7 +2,7 @@
 title: "Results"
 author: "Glenn Williams"
 date: "14<sup>th</sup> August, 2019 (Last updated: `r format(Sys.time(), '%d<sup>th</sup> %B, %Y')`)"
-bibliography: references.bib
+bibliography: [r-references.bib]
 output: 
   html_document:
     toc: true
@@ -25,7 +25,9 @@ packages <- c(
   "ggrepel",
   "ggridges",
   "irr",
-  "kableExtra"
+  "kableExtra",
+  "english", # numbers to words and back
+  "papaja" # install with devtools::install_github("crsh/papaja")
 )
 
 # load packages
@@ -104,12 +106,19 @@ posterior_drop <- c(
   "ROPE_high",
   "ROPE_Equivalence"
 )
-
 # note, to get plots side by side, add this to the chunk header:
 # fig.show = "hold", out.width = "50%"
 ```
 
-`r version$version.string` and the R-packages `r cite_packages(packages)` were used for data preparation, analysis, and presentation.
+```{r get-citations}
+my_citations <- papaja::cite_r(
+  file = here("05_reports", "r-references.bib"), 
+  pkgs = packages, 
+  withhold = FALSE
+)
+```
+
+`r my_citations` were used for data preparation, analysis, and presentation.
 
 # Coding
 
