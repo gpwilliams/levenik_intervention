@@ -96,26 +96,7 @@ model_replacements = c(
 )
 ```
 
-# A. Gruffalo Index of Language Variation
-
-We used the Gruffalo and the Gruffalo's child [@Donaldsn1999; @Donaldson2005], translated into various Scots dialects as a baseline for the amount of phonological and lexical variation between language varieties.
-
-## The Gruffalo
-
-- The Doric Gruffalo (translated by Sheena Blackhall)
-- Thi Dundee Gruffalo (translated by Matthew Fitt)
-- The Glasgow Gruffalo (translated by Elaine C. Smith)
-- The Gruffalo in Scots (translated by James Robertson)
-
-## The Gruffalo's Child
-
-- The Doric Gruffalo's Bairn (translated by Sheena Blackhall)
-- Thi Dundee Gruffalo's Bairn (translated by Matthew Fitt)
-- The Gruffalo's Wean (Scots; translated by James Robertson)
-
-Note: The Gruffalo's Child was not available in Glaswegian at the time of this corpus analysis.
-
-# B. Graphemes
+# A. Graphemes
 
 ```{r, echo = FALSE, out.width="10%", out.height = "20%", fig.cap = "Invented graphemes used to represent each phoneme in all experiments. The final two graphemes were created but not used in these experiments. To prevent participants from memorizing the novel graphemes based on resemblance to known graphemes we controlled for similarity to characters of extant writing systems by comparing each invented grapheme against the database of 11,817 characters (excluding Chinese, Korean, and Japanese) on the Shapecatcher website (Milde, 2011). If visual inspection indicated a resemblance, we modified the grapheme to minimize that resemblance.", fig.show = "hold", fig.align = "center", fig.pos = "htb", warning = FALSE, fig.env="figure*"}
 # note: chunk names don't work if you tag your headings, e.g. {#appendix-a}
@@ -128,7 +109,7 @@ knitr::include_graphics(
 )
 ```
 
-# C. Word List
+# B. Word List
 
 ```{r word-list}
 word_list_data <- readr::read_csv(
@@ -173,6 +154,24 @@ kable(
   add_indent(c(1:42))
 ```
 
+# C. Gruffalo Index of Language Variation
+
+We used the Gruffalo and the Gruffalo's child [@Donaldsn1999; @Donaldson2005], translated into various Scots dialects as a baseline for the amount of phonological and lexical variation between language varieties.
+
+## The Gruffalo
+
+- The Doric Gruffalo (translated by Sheena Blackhall)
+- Thi Dundee Gruffalo (translated by Matthew Fitt)
+- The Glasgow Gruffalo (translated by Elaine C. Smith)
+- The Gruffalo in Scots (translated by James Robertson)
+
+## The Gruffalo's Child
+
+- The Doric Gruffalo's Bairn (translated by Sheena Blackhall)
+- Thi Dundee Gruffalo's Bairn (translated by Matthew Fitt)
+- The Gruffalo's Wean (Scots; translated by James Robertson)
+
+Note: The Gruffalo's Child was not available in Glaswegian at the time of this corpus analysis.
 
 # D. Image Norms
 
@@ -280,7 +279,6 @@ In the tables of population level (fixed) effects, $\hat{R}$ is a measure of con
 ## Vocabulary Test Model
 
 A summary of the population-level (fixed) effects for the Vocabulary Test model is provided below. This can be used to determine model diagnostics, coefficients, and estimates around these coefficients using 95% credible intervals. 
-
 Note that models were fitted with the above priors and sum coded effects of exposure condition, word type, and task. As a result, the intercept represents the grand mean (i.e. the mean of the means of the dependent variable at each level of the categorical variables). The regression cofficients then represent the difference between the grand mean and the:
 
 - Exposure Condition: 
@@ -356,18 +354,6 @@ fitted_models[["testing_cov_model_summary"]]$fixed %>%
   select(-Distribution) %>% 
   custom_kable() %>% 
   pack_rows(index = c("$\\mu$" = 48, "$\\phi$" = 48, "$\\alpha$" = 48, "$\\gamma$" = 48))
-```
-
-# G. Visualisation of Response Types
-
-We estimated the proportion of response types aggregated across participants.
-
-```{r, echo = FALSE, fig.cap = "Mean proportion of response types. Response types are: correct (e.g. target: *kuble*--response: *kuble*); dialect word match: the dialect variant is produced in response to the corresponding standard contrastive word (e.g. target: *kuble*--response: *xuble*); dialect word misatch: a dialect variant is produced in response to another standard contrastive word (e.g. target: *skefi*--response: *xuble*); standard word mismatch: a standard word is produced in response to another standard word (e.g. target: *skefi*--response: *kuble*); other mismatch: any other error that was not part of the response set.", out.width="80%", fig.env="figure*", fig.align = "center"}
-# note: chunk names don't work if you tag your headings, e.g. {#appendix-a}
-# it then thinks chunk names are duplicates (even when they aren't)
-knitr::include_graphics(
-  plots_dir[str_detect(plots_dir, "mean_proportions_error_responses.png")]
-)
 ```
 
 # References
