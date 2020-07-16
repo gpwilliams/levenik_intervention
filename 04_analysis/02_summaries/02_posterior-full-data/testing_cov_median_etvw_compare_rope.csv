@@ -1,17 +1,17 @@
-exposure_test_nLED_group,task,variety_exposure,word_type,CI,ROPE_low,ROPE_high,ROPE_Percentage,ROPE_Equivalence,HDI_low,HDI_high,pd
-Better Performance,Reading,No Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.627,Undecided,-0.033,0.043,0.597
-Better Performance,Reading,Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.009,Undecided,0.019,0.104,0.992
-Better Performance,Reading,Dialect & Social,Contrastive - Non-Contrastive,90,-0.02,0.02,0.079,Undecided,0.005,0.097,0.974
-Better Performance,Reading,Dialect Literacy,Contrastive - Non-Contrastive,90,-0.02,0.02,0,Rejected,0.069,0.158,1
-Better Performance,Spelling,No Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.317,Undecided,-0.022,0.087,0.847
-Better Performance,Spelling,Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.535,Undecided,-0.058,0.039,0.595
-Better Performance,Spelling,Dialect & Social,Contrastive - Non-Contrastive,90,-0.02,0.02,0.431,Undecided,-0.049,0.067,0.593
-Better Performance,Spelling,Dialect Literacy,Contrastive - Non-Contrastive,90,-0.02,0.02,0.104,Undecided,-0.003,0.125,0.936
-Worse Performance,Reading,No Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.507,Undecided,-0.039,0.059,0.66
-Worse Performance,Reading,Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.475,Undecided,-0.041,0.063,0.664
-Worse Performance,Reading,Dialect & Social,Contrastive - Non-Contrastive,90,-0.02,0.02,0.373,Undecided,-0.026,0.087,0.773
-Worse Performance,Reading,Dialect Literacy,Contrastive - Non-Contrastive,90,-0.02,0.02,0,Rejected,0.023,0.138,0.99
-Worse Performance,Spelling,No Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.519,Undecided,-0.043,0.06,0.574
-Worse Performance,Spelling,Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.436,Undecided,-0.052,0.07,0.571
-Worse Performance,Spelling,Dialect & Social,Contrastive - Non-Contrastive,90,-0.02,0.02,0.45,Undecided,-0.059,0.064,0.504
-Worse Performance,Spelling,Dialect Literacy,Contrastive - Non-Contrastive,90,-0.02,0.02,0.131,Undecided,-0.005,0.133,0.955
+exposure_test_nLED_group,task,variety_exposure,word_type,CI,ROPE_low,ROPE_high,ROPE_Percentage,ROPE_Equivalence,HDI_low,HDI_high
+Better Performance,Reading,No Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.627,Undecided,-0.033,0.043
+Better Performance,Reading,Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.009,Undecided,0.019,0.104
+Better Performance,Reading,Dialect & Social,Contrastive - Non-Contrastive,90,-0.02,0.02,0.079,Undecided,0.005,0.097
+Better Performance,Reading,Dialect Literacy,Contrastive - Non-Contrastive,90,-0.02,0.02,0,Rejected,0.069,0.158
+Better Performance,Spelling,No Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.317,Undecided,-0.022,0.087
+Better Performance,Spelling,Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.535,Undecided,-0.058,0.039
+Better Performance,Spelling,Dialect & Social,Contrastive - Non-Contrastive,90,-0.02,0.02,0.431,Undecided,-0.049,0.067
+Better Performance,Spelling,Dialect Literacy,Contrastive - Non-Contrastive,90,-0.02,0.02,0.104,Undecided,-0.003,0.125
+Worse Performance,Reading,No Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.507,Undecided,-0.039,0.059
+Worse Performance,Reading,Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.475,Undecided,-0.041,0.063
+Worse Performance,Reading,Dialect & Social,Contrastive - Non-Contrastive,90,-0.02,0.02,0.373,Undecided,-0.026,0.087
+Worse Performance,Reading,Dialect Literacy,Contrastive - Non-Contrastive,90,-0.02,0.02,0,Rejected,0.023,0.138
+Worse Performance,Spelling,No Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.519,Undecided,-0.043,0.06
+Worse Performance,Spelling,Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.436,Undecided,-0.052,0.07
+Worse Performance,Spelling,Dialect & Social,Contrastive - Non-Contrastive,90,-0.02,0.02,0.45,Undecided,-0.059,0.064
+Worse Performance,Spelling,Dialect Literacy,Contrastive - Non-Contrastive,90,-0.02,0.02,0.131,Undecided,-0.005,0.133

@@ -1,13 +1,13 @@
-task,variety_exposure,CI,ROPE_low,ROPE_high,ROPE_Percentage,ROPE_Equivalence,HDI_low,HDI_high,pd
-Reading,Dialect - No Dialect,90,-0.035,0.035,0.742,Undecided,-0.053,0.067,0.563
-Reading,Dialect & Social - No Dialect,90,-0.035,0.035,0.624,Undecided,-0.053,0.084,0.671
-Reading,Dialect Literacy - No Dialect,90,-0.035,0.035,0.514,Undecided,-0.053,0.106,0.658
-Reading,Dialect & Social - Dialect,90,-0.035,0.035,0.732,Undecided,-0.048,0.067,0.635
-Reading,Dialect Literacy - Dialect,90,-0.035,0.035,0.622,Undecided,-0.044,0.086,0.685
-Reading,Dialect Literacy - Dialect & Social,90,-0.035,0.035,0.599,Undecided,-0.062,0.081,0.584
-Spelling,Dialect - No Dialect,90,-0.035,0.035,0.704,Undecided,-0.065,0.074,0.549
-Spelling,Dialect & Social - No Dialect,90,-0.035,0.035,0.654,Undecided,-0.05,0.08,0.677
-Spelling,Dialect Literacy - No Dialect,90,-0.035,0.035,0.606,Undecided,-0.053,0.098,0.672
-Spelling,Dialect & Social - Dialect,90,-0.035,0.035,0.616,Undecided,-0.069,0.086,0.632
-Spelling,Dialect Literacy - Dialect,90,-0.035,0.035,0.537,Undecided,-0.07,0.112,0.605
-Spelling,Dialect Literacy - Dialect & Social,90,-0.035,0.035,0.554,Undecided,-0.08,0.093,0.516
+task,variety_exposure,CI,ROPE_low,ROPE_high,ROPE_Percentage,ROPE_Equivalence,HDI_low,HDI_high
+Reading,Dialect - No Dialect,90,-0.035,0.035,0.742,Undecided,-0.053,0.067
+Reading,Dialect & Social - No Dialect,90,-0.035,0.035,0.624,Undecided,-0.053,0.084
+Reading,Dialect Literacy - No Dialect,90,-0.035,0.035,0.514,Undecided,-0.053,0.106
+Reading,Dialect & Social - Dialect,90,-0.035,0.035,0.732,Undecided,-0.048,0.067
+Reading,Dialect Literacy - Dialect,90,-0.035,0.035,0.622,Undecided,-0.044,0.086
+Reading,Dialect Literacy - Dialect & Social,90,-0.035,0.035,0.599,Undecided,-0.062,0.081
+Spelling,Dialect - No Dialect,90,-0.035,0.035,0.704,Undecided,-0.065,0.074
+Spelling,Dialect & Social - No Dialect,90,-0.035,0.035,0.654,Undecided,-0.05,0.08
+Spelling,Dialect Literacy - No Dialect,90,-0.035,0.035,0.606,Undecided,-0.053,0.098
+Spelling,Dialect & Social - Dialect,90,-0.035,0.035,0.616,Undecided,-0.069,0.086
+Spelling,Dialect Literacy - Dialect,90,-0.035,0.035,0.537,Undecided,-0.07,0.112
+Spelling,Dialect Literacy - Dialect & Social,90,-0.035,0.035,0.554,Undecided,-0.08,0.093

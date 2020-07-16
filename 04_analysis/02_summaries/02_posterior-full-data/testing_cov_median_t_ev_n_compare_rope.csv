@@ -1,13 +1,13 @@
-task,exposure_test_nLED_group,variety_exposure,CI,ROPE_low,ROPE_high,ROPE_Percentage,ROPE_Equivalence,HDI_low,HDI_high,pd
-Reading,Worse Performance - Better Performance,Dialect - No Dialect,90,-0.02,0.02,0.32,Undecided,-0.086,0.115,0.579
-Reading,Worse Performance - Better Performance,Dialect & Social - No Dialect,90,-0.02,0.02,0.244,Undecided,-0.135,0.075,0.644
-Reading,Worse Performance - Better Performance,Dialect Literacy - No Dialect,90,-0.02,0.02,0.246,Undecided,-0.128,0.118,0.532
-Reading,Worse Performance - Better Performance,Dialect & Social - Dialect,90,-0.02,0.02,0.235,Undecided,-0.143,0.057,0.729
-Reading,Worse Performance - Better Performance,Dialect Literacy - Dialect,90,-0.02,0.02,0.243,Undecided,-0.144,0.094,0.591
-Reading,Worse Performance - Better Performance,Dialect Literacy - Dialect & Social,90,-0.02,0.02,0.223,Undecided,-0.109,0.136,0.587
-Spelling,Worse Performance - Better Performance,Dialect - No Dialect,90,-0.02,0.02,0.244,Undecided,-0.095,0.156,0.613
-Spelling,Worse Performance - Better Performance,Dialect & Social - No Dialect,90,-0.02,0.02,0.145,Undecided,-0.041,0.172,0.883
-Spelling,Worse Performance - Better Performance,Dialect Literacy - No Dialect,90,-0.02,0.02,0.184,Undecided,-0.145,0.133,0.574
-Spelling,Worse Performance - Better Performance,Dialect & Social - Dialect,90,-0.02,0.02,0.186,Undecided,-0.084,0.193,0.728
-Spelling,Worse Performance - Better Performance,Dialect Literacy - Dialect,90,-0.02,0.02,0.18,Undecided,-0.211,0.131,0.642
-Spelling,Worse Performance - Better Performance,Dialect Literacy - Dialect & Social,90,-0.02,0.02,0.119,Undecided,-0.238,0.085,0.785
+task,exposure_test_nLED_group,variety_exposure,CI,ROPE_low,ROPE_high,ROPE_Percentage,ROPE_Equivalence,HDI_low,HDI_high
+Reading,Worse Performance - Better Performance,Dialect - No Dialect,90,-0.02,0.02,0.32,Undecided,-0.086,0.115
+Reading,Worse Performance - Better Performance,Dialect & Social - No Dialect,90,-0.02,0.02,0.244,Undecided,-0.135,0.075
+Reading,Worse Performance - Better Performance,Dialect Literacy - No Dialect,90,-0.02,0.02,0.246,Undecided,-0.128,0.118
+Reading,Worse Performance - Better Performance,Dialect & Social - Dialect,90,-0.02,0.02,0.235,Undecided,-0.143,0.057
+Reading,Worse Performance - Better Performance,Dialect Literacy - Dialect,90,-0.02,0.02,0.243,Undecided,-0.144,0.094
+Reading,Worse Performance - Better Performance,Dialect Literacy - Dialect & Social,90,-0.02,0.02,0.223,Undecided,-0.109,0.136
+Spelling,Worse Performance - Better Performance,Dialect - No Dialect,90,-0.02,0.02,0.244,Undecided,-0.095,0.156
+Spelling,Worse Performance - Better Performance,Dialect & Social - No Dialect,90,-0.02,0.02,0.145,Undecided,-0.041,0.172
+Spelling,Worse Performance - Better Performance,Dialect Literacy - No Dialect,90,-0.02,0.02,0.184,Undecided,-0.145,0.133
+Spelling,Worse Performance - Better Performance,Dialect & Social - Dialect,90,-0.02,0.02,0.186,Undecided,-0.084,0.193
+Spelling,Worse Performance - Better Performance,Dialect Literacy - Dialect,90,-0.02,0.02,0.18,Undecided,-0.211,0.131
+Spelling,Worse Performance - Better Performance,Dialect Literacy - Dialect & Social,90,-0.02,0.02,0.119,Undecided,-0.238,0.085
