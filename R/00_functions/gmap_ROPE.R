@@ -38,7 +38,7 @@ gmap_rope <- function(data, draws, ..., ci = .90, bounds = c(-0.1, 0.1), include
   
   pd <- data %>% 
     group_by(!!!enquos(...)) %>% 
-    summarise(pd = p_direction(.value))
+    summarise(pd = as.numeric(bayestestR::p_direction(.value)))
   
   if(include_pd == TRUE) {
     left_join(rope, pd)
