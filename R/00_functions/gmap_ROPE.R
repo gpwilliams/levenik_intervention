@@ -41,7 +41,7 @@ gmap_rope <- function(data, draws, ..., ci = .90, bounds = c(-0.1, 0.1), include
     summarise(pd = as.numeric(bayestestR::p_direction(.value)))
   
   if(include_pd == TRUE) {
-    left_join(rope, pd)
+    dplyr::left_join(rope, pd)
   } else{
     rope
   }

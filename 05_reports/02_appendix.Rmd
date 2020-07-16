@@ -4,10 +4,14 @@ author: "Glenn Williams"
 date: "14<sup>th</sup> August, 2019 (Last updated: `r format(Sys.time(), '%d<sup>th</sup> %B, %Y')`)"
 output: 
   html_document:
-    number_sections: true
+    number_sections: false
     toc: true
     toc_float: true
     theme: united
+bibliography: main-references.bib
+csl: apa6.csl
+nocite: | 
+  @Milde2011
 ---
 
 ```{r setup, include = FALSE}
@@ -92,7 +96,9 @@ model_replacements = c(
 )
 ```
 
-# Gruffalo Index of Language Variation
+# A. Gruffalo Index of Language Variation
+
+We used the Gruffalo and the Gruffalo's child [@Donaldsn1999; @Donaldson2005], translated into various Scots dialects as a baseline for the amount of phonological and lexical variation between language varieties.
 
 ## The Gruffalo
 
@@ -109,7 +115,7 @@ model_replacements = c(
 
 Note: The Gruffalo's Child was not available in Glaswegian at the time of this corpus analysis.
 
-# Graphemes
+# B. Graphemes
 
 ```{r, echo = FALSE, out.width="10%", out.height = "20%", fig.cap = "Invented graphemes used to represent each phoneme in all experiments. The final two graphemes were created but not used in these experiments. To prevent participants from memorizing the novel graphemes based on resemblance to known graphemes we controlled for similarity to characters of extant writing systems by comparing each invented grapheme against the database of 11,817 characters (excluding Chinese, Korean, and Japanese) on the Shapecatcher website (Milde, 2011). If visual inspection indicated a resemblance, we modified the grapheme to minimize that resemblance.", fig.show = "hold", fig.align = "center", fig.pos = "htb", warning = FALSE, fig.env="figure*"}
 # note: chunk names don't work if you tag your headings, e.g. {#appendix-a}
@@ -122,19 +128,76 @@ knitr::include_graphics(
 )
 ```
 
-# Word List
+# C. Word List
 
-Content to follow.
+```{r word-list}
+word_list_data <- readr::read_csv(
+  here::here(
+    "01_materials", 
+    "spelling_and_pronunciations.csv"
+  )
+) %>%
+  replace_na(list(contrastive_pronunciation = "")) %>% 
+  arrange(testing_word, desc(contrastive_pronunciation)) %>% 
+  select(transparent_spelling:contrastive_pronunciation)
 
-# Image Norms
+kable(
+  word_list_data,
+  caption = "Word list used in all conditions.", 
+  col.names = c("Base Word", "Inconsistent Spelling", "Noncontrastive", "Contrastive"),
+  linesep = "", # avoids spacing every 5 rows
+  ) %>%
+  kable_styling(
+    latex_options = c("repeat_header"), 
+    full_width = FALSE,
+    font_size = 10
+  ) %>%
+  add_header_above(c("Spelling" = 2, "Pronunciation" = 2)) %>% 
+  footnote(
+    general = c(
+      paste(
+        "All conditions used the Inconsistent spelling. The standard condition used the",
+        "noncontrastive pronunciations in exposure, training, and testing phases."
+      ),
+      paste(
+        "The dialect condition used contrastive pronunciations during exposure and",
+        "non-contrastive pronunciations during training and testing, with the exception of the",
+        "Dialect Literacy condition, where words were pronounced in training using",
+        "noncontrastive and contrastive pronunciations separately."
+      ),
+      "Words are presented according to the CPSAMPA coding convention for simplified IPA characters."),
+    general_title = "Note."
+  ) %>% 
+  pack_rows("Training Words", 1, 30) %>% 
+  pack_rows("Testing Words", 31, 42) %>% 
+  add_indent(c(1:42))
+```
 
-Content to follow.
 
-# Model Priors and Posterior Predictive Checks
+# D. Image Norms
+
+Images used from the [@Rossion2004] colourised Vanderwart picture set and their related norming results.
+
+Our subset of items are as follows:
+
+- Body part: Finger, foot, eye, hand, nose, arm, ear.
+
+- Furniture and kitchen utensils: Chair, glass, bed, fork, spoon, pot, desk.
+
+- Household objects, tools, and instruments: Television, toothbrush, book, pen, refrigerator, watch, pencil.
+
+- Food and clothing: Pants, socks, shirt, sweater, apple, tomato, potato.
+
+- Buildings, building features, and vehicles: Door, house, window, car, doorknob, truck, bicycle.
+Animals and plants: Tree, dog, cat, flower, rabbit, duck, chicken.
+
+The subset of pictures and their associated norms are provided in the supplemental material in @williams2020does at: [https://osf.io/5mtdj/](https://osf.io/5mtdj/).
+
+# E. Model Priors and Posterior Predictive Checks
 
 Priors for the fitted models are described first by their expected distribution, and the parameters that define that distribution. For example, a prior of $\mathcal{N}(0, 1)$ describes a normal distribution with a mean of 0 and a standard deviation of 1. Similarly, a prior of $\mathcal{logistic}(0, 1)$ describes a logistic distribution with a mean of 0 and a standard deviation of 1. Note, by default, `brms` restricts priors on the *SD* to be positive.
 
-Weakly informative regularising priors were used for all terms. All priors were centred on 0, with standard deviations ranging from 0.5 to 10, thus allowing for a range of values with less prior probability places on extreme responses. For the slope terms, the priors assume no effect to small effects for each parameter in either direction. Weakly informative regularising priors were also used for all standard deviation terms. Finally, an $LKJ(2)$ prior was used for the correlation between terms, which acts to down-weight perfect correlations (Vasishth et al., 2018). These priors are in some cases more informative than initially planned following our pre-registration (which used very weakly informative priors) to improve model fit (i.e. accounting for divergences during fitting). For example, the mu intercept and slope and gamma slope have standard deviations half as large as planned, while the standard deviation for the phi intercept is three times as large as planned. Additionally, 8000 iterations were used instead of 1000 and 6 chains were used rather than 4 chains to improve estimates in response to warnings about bulk and tail effective sample size, totalling 48,000 samples rather than the planned 4000.
+Weakly informative regularising priors were used for all terms. All priors were centred on 0, with standard deviations ranging from 0.5 to 10, thus allowing for a range of values with less prior probability places on extreme responses. For the slope terms, the priors assume no effect to small effects for each parameter in either direction. Weakly informative regularising priors were also used for all standard deviation terms. Finally, an $LKJ(2)$ prior was used for the correlation between terms, which acts to down-weight perfect correlations [@Vasishth2018]. These priors are in some cases more informative than initially planned following our pre-registration (which used very weakly informative priors) to improve model fit (i.e. accounting for divergences during fitting). For example, the mu intercept and slope and gamma slope have standard deviations half as large as planned, while the standard deviation for the phi intercept is three times as large as planned. Additionally, 8000 iterations were used instead of 1000 and 6 chains were used rather than 4 chains to improve estimates in response to warnings about bulk and tail effective sample size, totalling 48,000 samples rather than the planned 4000.
 
 The following priors were used for the exposure model:
 
@@ -210,22 +273,22 @@ knitr::include_graphics(c(
 
 As can be seen from the plots, the posterior predictive checks indicate a generally good model fit in all instances, such that the model largely captures the shape of the data (i.e. especially capturing the 0 and 1 inflation in the testing model), but does not capture some discrepancies in the data which do not arise from any defined process (i.e. some larger densities in the testing model between the range of 0-1).
 
-# Fitted Model Summaries
+# F. Fitted Model Summaries
 
-In the tables of population level (fixed) effects, $\hat{R}$ is a measure of convergence for within- and between-chain estimates, with values closer to 1 being preferable. The bulk and tail effective sample sizes give diagnostics of the number of draws which contain the same amount of information as the dependent sample (Vehtari et al., 2019), with higher values being preferable. The tail effective sample size is determined at the 5% and 95% quantiles, while the bulk is determined at values in between these quantiles.
+In the tables of population level (fixed) effects, $\hat{R}$ is a measure of convergence for within- and between-chain estimates, with values closer to 1 being preferable. The bulk and tail effective sample sizes give diagnostics of the number of draws which contain the same amount of information as the dependent sample [@vehtari2020rank], with higher values being preferable. The tail effective sample size is determined at the 5% and 95% quantiles, while the bulk is determined at values in between these quantiles.
 
 ## Vocabulary Test Model
 
 A summary of the population-level (fixed) effects for the Vocabulary Test model is provided below. This can be used to determine model diagnostics, coefficients, and estimates around these coefficients using 95% credible intervals. 
 
-Note that models were fitted with the above priors and sum coded effects of variety exposure condition, word type, and task. As a result, the intercept represents the grand mean (i.e. the mean of the means of the dependent variable at each level of the categorical variables). The regression cofficients then represent the difference between the grand mean and the:
+Note that models were fitted with the above priors and sum coded effects of exposure condition, word type, and task. As a result, the intercept represents the grand mean (i.e. the mean of the means of the dependent variable at each level of the categorical variables). The regression cofficients then represent the difference between the grand mean and the:
 
-- Variety Exposure: 
+- Exposure Condition: 
   - No Dialect condition.
   - Dialect condition.
   - Dialect & Social condition.
   
-  To get parameter estimates for the No Dialect, Dialect, and Dialect & Social conditions add their regression coefficients to the intercept. To get regression estimates for the Dialect Literacy condition, all three Variety Exposure coefficients must be subtracted from the intercept.
+  To get parameter estimates for the No Dialect, Dialect, and Dialect & Social conditions add their regression coefficients to the intercept. To get regression estimates for the Dialect Literacy condition, all three Exposure condition coefficients must be subtracted from the intercept.
   
 - Word Type: Contrastive words.
 
@@ -295,7 +358,7 @@ fitted_models[["testing_cov_model_summary"]]$fixed %>%
   pack_rows(index = c("$\\mu$" = 48, "$\\phi$" = 48, "$\\alpha$" = 48, "$\\gamma$" = 48))
 ```
 
-# Visualisation of Response Types
+# G. Visualisation of Response Types
 
 We estimated the proportion of response types aggregated across participants.
 
@@ -306,3 +369,6 @@ knitr::include_graphics(
   plots_dir[str_detect(plots_dir, "mean_proportions_error_responses.png")]
 )
 ```
+
+# References
+

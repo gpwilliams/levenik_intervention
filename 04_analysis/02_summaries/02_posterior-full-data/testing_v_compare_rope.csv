@@ -1,7 +1,7 @@
-variety_exposure,CI,ROPE_low,ROPE_high,ROPE_Percentage,ROPE_Equivalence,HDI_low,HDI_high
-No Dialect - Dialect,90,-0.035,0.035,0.723,Undecided,-0.068,0.06
-No Dialect - Dialect & Social,90,-0.035,0.035,0.639,Undecided,-0.083,0.05
-No Dialect - Dialect Literacy,90,-0.035,0.035,0.56,Undecided,-0.104,0.052
-Dialect - Dialect & Social,90,-0.035,0.035,0.674,Undecided,-0.077,0.057
-Dialect - Dialect Literacy,90,-0.035,0.035,0.58,Undecided,-0.099,0.057
-Dialect & Social - Dialect Literacy,90,-0.035,0.035,0.576,Undecided,-0.086,0.072
+variety_exposure,CI,ROPE_low,ROPE_high,ROPE_Percentage,ROPE_Equivalence,HDI_low,HDI_high,pd
+No Dialect - Dialect,90,-0.035,0.035,0.723,Undecided,-0.068,0.06,0.556
+No Dialect - Dialect & Social,90,-0.035,0.035,0.639,Undecided,-0.083,0.05,0.674
+No Dialect - Dialect Literacy,90,-0.035,0.035,0.56,Undecided,-0.104,0.052,0.665
+Dialect - Dialect & Social,90,-0.035,0.035,0.674,Undecided,-0.077,0.057,0.633
+Dialect - Dialect Literacy,90,-0.035,0.035,0.58,Undecided,-0.099,0.057,0.645
+Dialect & Social - Dialect Literacy,90,-0.035,0.035,0.576,Undecided,-0.086,0.072,0.55

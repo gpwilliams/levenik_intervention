@@ -1,9 +1,9 @@
-task,variety_exposure,word_type,CI,ROPE_low,ROPE_high,ROPE_Percentage,ROPE_Equivalence,HDI_low,HDI_high
-Reading,No Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.555,Undecided,-0.034,0.057
-Reading,Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.194,Undecided,-0.004,0.087
-Reading,Dialect & Social,Contrastive - Non-Contrastive,90,-0.02,0.02,0.226,Undecided,-0.007,0.087
-Reading,Dialect Literacy,Contrastive - Non-Contrastive,90,-0.02,0.02,0,Rejected,0.05,0.143
-Spelling,No Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.499,Undecided,-0.032,0.063
-Spelling,Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.57,Undecided,-0.045,0.05
-Spelling,Dialect & Social,Contrastive - Non-Contrastive,90,-0.02,0.02,0.533,Undecided,-0.05,0.054
-Spelling,Dialect Literacy,Contrastive - Non-Contrastive,90,-0.02,0.02,0.07,Undecided,0.005,0.116
+task,variety_exposure,word_type,CI,ROPE_low,ROPE_high,ROPE_Percentage,ROPE_Equivalence,HDI_low,HDI_high,pd
+Reading,No Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.555,Undecided,-0.034,0.057,0.648
+Reading,Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.194,Undecided,-0.004,0.087,0.931
+Reading,Dialect & Social,Contrastive - Non-Contrastive,90,-0.02,0.02,0.226,Undecided,-0.007,0.087,0.914
+Reading,Dialect Literacy,Contrastive - Non-Contrastive,90,-0.02,0.02,0,Rejected,0.05,0.143,0.999
+Spelling,No Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.499,Undecided,-0.032,0.063,0.714
+Spelling,Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.57,Undecided,-0.045,0.05,0.512
+Spelling,Dialect & Social,Contrastive - Non-Contrastive,90,-0.02,0.02,0.533,Undecided,-0.05,0.054,0.502
+Spelling,Dialect Literacy,Contrastive - Non-Contrastive,90,-0.02,0.02,0.07,Undecided,0.005,0.116,0.972

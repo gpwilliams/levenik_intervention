@@ -1,4 +1,4 @@
-custom_kable <- function(data, caption = NULL, add_footer = FALSE, ...) {
+custom_kable <- function(.data, caption = NULL, add_footer = FALSE, ...) {
   #' Custom styling and presentation applied to kable tables.
   #' @param data A data.frame to be displayed in kable.
   #' @param caption optional string to include as a caption.
@@ -11,21 +11,19 @@ custom_kable <- function(data, caption = NULL, add_footer = FALSE, ...) {
   #' data %>% custom_kable(.)
   
   if(add_footer == FALSE) {
-    data %>% 
+    .data %>% 
       kableExtra::kable(digits = 3, escape = FALSE, caption = caption) %>%
       kableExtra::kable_styling(
         bootstrap_options = c("striped", "hover"), 
         full_width = TRUE
       )
   } else {
-    data %>% 
+    .data %>% 
       kableExtra::kable(digits = 3, escape = FALSE, caption = caption) %>%
       kableExtra::kable_styling(
         bootstrap_options = c("striped", "hover"), 
         full_width = TRUE
       ) %>% 
-      kableExtra::footnote(
-        general = make_rope_footer(...)
-      )
+      kableExtra::footnote(general = make_rope_footer(...))
   }
 }

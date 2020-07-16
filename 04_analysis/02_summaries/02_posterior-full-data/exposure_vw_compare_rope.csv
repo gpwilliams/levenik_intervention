@@ -1,5 +1,5 @@
-variety_exposure,word_type,CI,ROPE_low,ROPE_high,ROPE_Percentage,ROPE_Equivalence,HDI_low,HDI_high
-No Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.387,Undecided,-0.03,0.084
-Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.351,Undecided,-0.03,0.09
-Dialect & Social,Contrastive - Non-Contrastive,90,-0.02,0.02,0.229,Undecided,-0.011,0.091
-Dialect Literacy,Contrastive - Non-Contrastive,90,-0.02,0.02,0.161,Undecided,-0.01,0.121
+variety_exposure,word_type,CI,ROPE_low,ROPE_high,ROPE_Percentage,ROPE_Equivalence,HDI_low,HDI_high,pd
+No Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.387,Undecided,-0.03,0.084,0.774
+Dialect,Contrastive - Non-Contrastive,90,-0.02,0.02,0.351,Undecided,-0.03,0.09,0.794
+Dialect & Social,Contrastive - Non-Contrastive,90,-0.02,0.02,0.229,Undecided,-0.011,0.091,0.911
+Dialect Literacy,Contrastive - Non-Contrastive,90,-0.02,0.02,0.161,Undecided,-0.01,0.121,0.92
