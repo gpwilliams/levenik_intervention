@@ -36,7 +36,7 @@ plots$exposure_v_compare <- base_plot +
     x = plotting_options$diff_nLED_title, 
     y = NULL, 
     title = paste(
-      "Median Difference in nLEDs by Variety Exposure during",
+      "Median Difference in nLEDs by Exposure Condition during",
       "the Vocabulary Test."
       ),
     caption = plotting_options$caption
@@ -66,7 +66,7 @@ plots$testing_v_compare <- base_plot %+%
     x = plotting_options$diff_nLED_title, 
     y = NULL,
     title = paste(
-      "Median Difference in nLEDs by Variety Exposure",
+      "Median Difference in nLEDs by Exposure Condition",
       "during the Testing Phase."
       ),
     caption = plotting_options$caption
@@ -82,7 +82,7 @@ plots$testing_tv_compare <- base_plot %+%
     x = plotting_options$diff_nLED_title, 
     y = NULL,
     title = paste(
-      "Median Difference in nLEDs by Task and Variety Exposure",
+      "Median Difference in nLEDs by Task and Exposure Condition",
       "during the Testing Phase."
     ),
     caption = plotting_options$caption
@@ -97,7 +97,7 @@ plots$testing_tv_n_compare <- base_plot %+%
     x = plotting_options$diff_nLED_title, 
     y = NULL,
     title = paste(
-      "Median Difference in nLEDs by Task and Variety Exposure",
+      "Median Difference in nLEDs by Task and Exposure Condition",
       "for Novel Words during the Testing Phase."
     ),
     caption = plotting_options$caption
@@ -111,7 +111,7 @@ plots$testing_v_n_compare <- base_plot %+%
     x = plotting_options$diff_nLED_title, 
     y = NULL,
     title = paste(
-      "Median Difference in nLEDs by Variety Exposure",
+      "Median Difference in nLEDs by Exposure Condition",
       "for Novel Words during the Testing Phase."
       ),
     caption = plotting_options$caption
@@ -126,8 +126,8 @@ plots$testing_tvw_compare <- base_plot %+%
     x = plotting_options$diff_nLED_title, 
     y = NULL,
     title = paste(
-      "Median Difference in nLEDs by Task and Variety Exposure",
-      "Testing Phase (Contrastive Words \u2212 Non-Contrastive Words)."
+      "Median Difference in nLEDs by Task and Exposure Condition during",
+      "the Testing Phase (Contrastive Words \u2212 Non-Contrastive Words)."
       ),
     caption = plotting_options$caption
   )
@@ -181,8 +181,8 @@ plots$testing_cov_median_etv_compare <- ggplot(
     x = plotting_options$diff_nLED_title, 
     y = NULL,
     title = paste0(
-      "Median Difference in Testing Phase nLEDs between Variety Exposure ",
-      "conditions with Better and Worse ",
+      "Median Difference in Testing Phase nLEDs between Exposure ",
+      "Conditions with Better and Worse ",
       "\nVocabulary Test Performance."
     ),
     caption = plotting_options$caption
@@ -252,7 +252,7 @@ plots$testing_cov_median_etv_n_compare <- ggplot(
     y = NULL,
     title = paste0(
       "Median Difference in Testing Phase nLEDs for Novel Words ",
-      "between Variety Exposure conditions for those with",
+      "between Exposure Conditions for those with",
       "\nBetter and Worse Vocabulary Testing Performance."
     ),
     caption = plotting_options$caption
@@ -286,7 +286,7 @@ plots$testing_cov_median_t_ev_n_compare <- ggplot(
       "Median Difference in Testing Phase nLEDs for Novel Words ",
       "between those with Better and Worse Vocabulary Testing\n",
       "Performance (Worse Performance \u2212 Better Performance) ",
-      "in the Vocabulary Test compared across Variety Exposure conditions."
+      "in the Vocabulary Test compared across Exposure Conditions."
     ),
     caption = plotting_options$caption
   ) +

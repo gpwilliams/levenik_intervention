@@ -9,7 +9,6 @@ custom_theme <- theme_bw() +
   theme(
     panel.grid.major.x = element_blank(),
     panel.grid.minor.x = element_blank(),
-    strip.background = element_blank(),
     panel.border = element_rect(colour = "black"),
     axis.title = element_text(size = axis_y_size),
     axis.text.y = element_text(size = axis_y_size),

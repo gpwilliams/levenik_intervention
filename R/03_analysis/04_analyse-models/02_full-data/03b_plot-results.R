@@ -22,7 +22,7 @@ plots$exposure_vw <- ggplot(
     x = plotting_options$nLED_title, 
     y = "Word Type",
     title = paste(
-      "Median Lenient nLEDs by Variety Exposure and Word Type",
+      "Median Lenient nLEDs by Exposure Condition and Word Type",
       "in the Vocabulary Test."
     ),
     caption = plotting_options$caption
@@ -47,8 +47,8 @@ plots$exposure_v <- ggplot(
   ) +
   labs(
     x = plotting_options$nLED_title, 
-    y = "Variety Exposure",
-    title = "Median Lenient nLEDs by Variety Exposure in the Vocabulary Test.",
+    y = "Exposure Condition",
+    title = "Median Lenient nLEDs by Exposure Condition in the Vocabulary Test.",
     caption = plotting_options$caption
   ) +
   scale_x_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.2)) +
@@ -73,9 +73,9 @@ plots$testing_tv <- ggplot(
   facet_grid(.~task) +
   labs(
     x = plotting_options$nLED_title, 
-    y = "Variety Exposure",
+    y = "Exposure Condition",
     title = paste(
-      "Median Lenient nLEDs by Task and Variety Exposure",
+      "Median Lenient nLEDs by Task and Exposure Condition",
       "in the Testing Phase."
     ),
     caption = plotting_options$caption
@@ -99,7 +99,7 @@ plots$testing_tvw <- ggplot(
     x = plotting_options$nLED_title, 
     y = "Word Type",
     title = paste(
-      "Median Lenient nLEDs by Task, Variety Exposure,",
+      "Median Lenient nLEDs by Task, Exposure Condition,",
       "and Word Type in the Testing Phase."
       ),
     caption = plotting_options$caption
@@ -124,9 +124,9 @@ plots$testing_tv_n <- ggplot(
   facet_grid(.~task) +
   labs(
     x = plotting_options$nLED_title, 
-    y = "Variety Exposure",
+    y = "Exposure Condition",
     title = paste(
-      "Median Lenient nLEDs by Task and Variety Exposure",
+      "Median Lenient nLEDs by Task and Exposure Condition",
       "for Novel Words Only in the Testing Phase."
     ),
     caption = plotting_options$caption
@@ -149,9 +149,9 @@ plots$testing_v_n <- ggplot(
   ) +
   labs(
     x = plotting_options$nLED_title, 
-    y = "Variety Exposure",
+    y = "Exposure Condition",
     title = paste(
-      "Median Lenient nLEDs by Task and Variety Exposure",
+      "Median Lenient nLEDs by Task and Exposure Condition",
       "for Novel Words Only in the Testing Phase."
     ),
     caption = plotting_options$caption
@@ -174,9 +174,9 @@ plots$testing_v <- ggplot(
   ) +
   labs(
     x = plotting_options$nLED_title, 
-    y = "Variety Exposure",
+    y = "Exposure Condition",
     title = paste(
-      "Median Lenient nLEDs by Variety Exposure",
+      "Median Lenient nLEDs by Exposure Condition",
       "in the Testing Phase."
     ),
     caption = plotting_options$caption
@@ -213,7 +213,7 @@ plots$testing_cov_etvw <- ggplot(
     y = "Median nLED during Testing",
     title = paste(
       "Median Lenient nLEDs by Word Type in the Testing Phase ",
-      "by Task and Variety Exposure condition relative to Mean Performance",
+      "by Task and Exposure Condition relative to Mean Performance",
       "\non the Vocabulary Test."
     ),
     caption = paste0(
@@ -263,7 +263,7 @@ plots$testing_cov_median_etvw <- ggplot(
     y = "Word Type",
     title = paste0(
       "Median Lenient nLEDs by Word Type in the Testing Phase by ",
-      "Task, Variety Exposure Condition, and Vocabulary ",
+      "Task, Exposure Condition, and Vocabulary ",
       "Test Performance."
     ),
     caption = plotting_options$caption
@@ -300,7 +300,7 @@ plots$testing_cov_median_ev_n <- ggplot(
     y = "Vocabulary Test Performance",
     title = paste(
       "Median Lenient nLEDs for Novel Words in the Testing Phase by",
-      "Variety Exposure Condition and Vocabulary Test Performance."
+      "Exposure Condition and Vocabulary Test Performance."
     ),
     caption = plotting_options$caption
   ) +
@@ -336,7 +336,7 @@ plots$testing_cov_etv_n <- ggplot(
     y = "Median nLED during Testing",
     title = paste(
       "Median Lenient nLEDs by Word Type in the Testing Phase",
-      "by Task and Variety Exposure relative to Vocabulary Test Performance."
+      "by Task and Exposure Condition relative to Vocabulary Test Performance."
     ),
     caption = paste0(
       "Lines and ribbons show posterior median and \u00B1",
@@ -384,7 +384,7 @@ plots$testing_cov_median_etv_n <- ggplot(
     y = "Vocabulary Test Performance",
     title = paste(
       "Median Lenient nLEDs for Novel Words in the Testing Phase by",
-      "Task, Variety Exposure Condition, and Vocabulary Test Performance."
+      "Task, Exposure Condition, and Vocabulary Test Performance."
     ),
     caption = plotting_options$caption
   ) +
