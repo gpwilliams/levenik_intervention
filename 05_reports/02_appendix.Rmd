@@ -167,7 +167,7 @@ kable(
 
 # C. Gruffalo Index of Language Variation
 
-We used the Gruffalo and the Gruffalo's child [@Donaldsn1999; @Donaldson2005], translated into various Scots dialects as a baseline for the amount of phonological and lexical variation between language varieties.
+We used the Gruffalo and the Gruffalo's child [@Donaldson1999; @Donaldson2005], translated into various Scots dialects as a baseline for the amount of phonological and lexical variation between language varieties.
 
 ## The Gruffalo
 
