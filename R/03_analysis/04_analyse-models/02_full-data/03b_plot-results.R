@@ -232,7 +232,7 @@ plots$testing_cov_etvw <- ggplot(
   theme(
     legend.title = element_text(size = 10),
     legend.text = element_text(size = 8),
-    legend.position = c(.054, .93),
+    legend.position = c(.0535, .935),
     legend.background = element_blank(),
     legend.box.background = element_rect(colour = "black"),
     plot.title = element_text(size = plotting_options$title_size - 1)
@@ -355,7 +355,7 @@ plots$testing_cov_etv_n <- ggplot(
   theme(
     legend.title = element_text(size = 10),
     legend.text = element_text(size = 8),
-    legend.position = c(.0518, .893),
+    legend.position = c(.0518, .8935),
     legend.background = element_blank(),
     legend.box.background = element_rect(colour = "black"),
     plot.title = element_text(size = plotting_options$title_size - 1)

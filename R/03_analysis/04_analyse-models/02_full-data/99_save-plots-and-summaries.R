@@ -19,6 +19,13 @@ for(i in seq_along(plots)){
 
 # save plots without titles or captions (for publication)
 
+# minor tweaks to legend position on the covariate plots
+plots$testing_cov_etvw <- plots$testing_cov_etvw +
+  theme(legend.position = c(.0535, .94))
+  
+plots$testing_cov_etv_n <- plots$testing_cov_etv_n +
+  theme(legend.position = c(.05175, .906))
+
 for(i in seq_along(plots)) {
   # remove titles and captions
   plots[[i]] <- plots[[i]] + 
