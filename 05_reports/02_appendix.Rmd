@@ -88,9 +88,9 @@ summary_drop <- c(".point", ".interval")
 model_replacements = c(
   "word_type1" = "word_type",
   "word_type2" = "word_familiarity",
-  "variety_exposure1" = "dialect", # sum coding, first levels compared to grand mean
-  "variety_exposure2" = "dialect_&_social",
-  "variety_exposure3" = "dialect_literacy",
+  "variety_exposure1" = "no_dialect", # sum coding, first level compared to grand mean
+  "variety_exposure2" = "dialect", # second level to grand mean
+  "variety_exposure3" = "dialect_&_social", # third level to grand mean
   "task1" = "task",
   "mean_exposure_test_nLED" = "mean_vocabulary_test_nLED"
 )
@@ -329,7 +329,7 @@ A summary of the Testing Phase model is provided below. This can be used to dete
 
 The same coding was used here as in the Vocabulary Test model, with the exception that word type has three levels in this phase of the experiment. Words can be contrastive, non-contrastive, or untrained. Thus, word type was Helmert coded in R (R defaults to what is traditionally called  reverse Helmert coding) such that the first estimate (Word Type in the below table) represents half the difference in scores between trained non-contrastive words and trained contrastive words. The second estimate (Word Familiarity in the below table) represents the difference in scores between the mean of the trained (non-contrastive and contrastive words) and untrained, novel words and the mean of the trained words. Thus, this estimates the effect of words being untrained vs. trained.
 
-Thus, as before the intercept represents the grand mean. To get parameter estimates for contrastive words, subtract the parameter estimate for Word Type and the parameter estimate for Word Familiairty from the intercept. To get parameter estimates for non-contrastive words, add the parameter estimate for Word Type and subtract the parameter estimate for Word Familiarity from the intercept. To get parameter estimates for novel, unfamiliar words, subrtract both the parameter estimates for Word Type and Word Familiarity from the intercept.
+Thus, as before the intercept represents the grand mean. To get parameter estimates for contrastive words, subtract the parameter estimate for Word Type and the parameter estimate for Word Familiairty from the intercept. To get parameter estimates for non-contrastive words, add the parameter estimate for Word Type and subtract the parameter estimate for Word Familiarity from the intercept. To get parameter estimates for novel, unfamiliar words, add both the parameter estimates for Word Type and Word Familiarity to the intercept.
 
 ```{r testing-model-summary}
 fitted_models[["testing_model_summary"]]$fixed %>% 
