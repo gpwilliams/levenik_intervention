@@ -118,14 +118,24 @@ word_list_data <- readr::read_csv(
     "spelling_and_pronunciations.csv"
   )
 ) %>%
-  replace_na(list(contrastive_pronunciation = "")) %>% 
-  arrange(testing_word, desc(contrastive_pronunciation)) %>% 
-  select(transparent_spelling:contrastive_pronunciation)
+  replace_na(
+    list(
+      contrastive_pronunciation = "",
+      opaque_dialect_spelling = ""
+    )
+  ) %>% 
+  arrange(desc(testing_word), desc(contrastive_pronunciation)) %>% 
+  select(
+    opaque_spelling, 
+    `non-contrastive_pronunciation`,
+    opaque_dialect_spelling,
+    contrastive_pronunciation
+  )
 
 kable(
   word_list_data,
   caption = "Word list used in all conditions.", 
-  col.names = c("Base Word", "Inconsistent Spelling", "Noncontrastive", "Contrastive"),
+  col.names = c("Spelling", "Pronunciation", "Spelling", "Pronunciation"),
   linesep = "", # avoids spacing every 5 rows
   ) %>%
   kable_styling(
@@ -133,7 +143,7 @@ kable(
     full_width = FALSE,
     font_size = 10
   ) %>%
-  add_header_above(c("Spelling" = 2, "Pronunciation" = 2)) %>% 
+  add_header_above(c("Standard Variety" = 2, "Dialect Variants" = 2)) %>% 
   footnote(
     general = c(
       paste(
@@ -149,8 +159,9 @@ kable(
       "Words are presented according to the CPSAMPA coding convention for simplified IPA characters."),
     general_title = "Note."
   ) %>% 
-  pack_rows("Training Words", 1, 30) %>% 
-  pack_rows("Testing Words", 31, 42) %>% 
+  pack_rows("Untrained Words", 1, 12) %>% 
+  pack_rows("Contrastive Words", 13, 27) %>% 
+  pack_rows("Non-Contrastive Words", 28, 42) %>% 
   add_indent(c(1:42))
 ```
 
