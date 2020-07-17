@@ -1,7 +1,7 @@
 # Prepare Data for Error Explorations ----
 
 # Complex analysis with a join. Lookup table needs dialect spelling, 
-# dialect spelling again(but with primary or secondary input label) and a target word column. 
+# dialect spelling again (but with primary or secondary input label) and a target word column. 
 # Joining will give you two new columns, dialect spelling and correct target spelling. 
 # See if target and target and dialect with transcription match in table. If so, give 1. If not, give 0.
 
@@ -22,31 +22,35 @@ word_list_reading <- word_list_data %>%
 
 # targets selected relating to the opaque spelling
 word_list_spelling <- word_list_data %>% 
-  select(target = opaque_spelling) %>% 
+  select(
+    dialect_contrastive_transcription = opaque_dialect_spelling,
+    target = opaque_spelling
+  ) %>% 
   mutate(task = "spelling")
+
+# make key dictionary for first three conditions (excluding dialect literacy)
 
 keydict <- full_join(
   word_list_reading, 
   word_list_spelling, 
-  by = c("target", "task")
+  by = c("target", "task", "dialect_contrastive_transcription")
   ) %>% 
   mutate(key_target = target)
 
 # filter to only testing data
 # and generate an ID for dialect pronunciation or not
-
-# logic:
+# Logic:
 # if the key target matches the actual target
 # AND if the item was incorrect
-# AND if the dialect contrastive pronunciation matches the primary coder response
-# then give it the label "dialect word match",
+# AND if the dialect contrastive spelling or pronunciation matches 
+# the primary coder response, give it the label "dialect word match",
 # otherwise assign to other label
 
 data_subset <- read_rds(here("02_data", "02_cleaned", "learning_data.RDS")) %>%
   drop_na(lenient_nLED) %>% 
   filter(block == "test") %>% 
   arrange(participant_number, task_trial_id) %>%
-  left_join(., keydict, by = c("task", "target")) %>% 
+  left_join(., keydict, by = c("task", "target")) %>%
   mutate(
     primary_coder_error_types = case_when(
       key_target == target & 
