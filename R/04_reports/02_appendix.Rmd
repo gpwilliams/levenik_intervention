@@ -1,0 +1,447 @@
+---
+title: "Appendix"
+author: "Glenn Williams"
+date: "14<sup>th</sup> August, 2019 (Last updated: `r format(Sys.time(), '%d<sup>th</sup> %B, %Y')`)"
+output: 
+  html_document:
+    number_sections: false
+    toc: true
+    toc_float: true
+    theme: united
+bibliography: main-references.bib
+csl: apa6.csl
+nocite: | 
+  @Milde2011
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE)
+
+packages <- c(
+  "tidyverse",
+  "rlang",
+  "here",
+  "brms",
+  "tidybayes",
+  "bayestestR",
+  "modelr",
+  "ggforce",
+  "ggrepel",
+  "ggridges",
+  "irr",
+  "kableExtra"
+)
+
+# load packages
+lapply(packages, library, character.only = TRUE)
+
+# load functions
+r_function_list <- list.files(
+  path = here("R", "00_functions"), 
+  pattern = "R$",
+  full.names = TRUE
+)
+purrr::walk(r_function_list, source)
+
+# get file paths ----
+
+# get model summaries only for easy loading
+fitted_models_dir <- list.files(
+  path = here("04_analysis", "01_models"),
+  pattern = "rds$",
+  full.names = TRUE
+) %>% 
+  str_subset("summary")
+  
+
+model_summaries_dir <- list.files(
+  path = here("04_analysis", "02_summaries", "02_posterior-full-data"),
+  pattern = "csv$",
+  full.names = TRUE
+)
+
+plot_titles <- "01_with-titles" # can also be "02_without-titles"
+plots_dir <- list.files(
+  path = c(
+    here("03_plots", "02_posterior-full-data", plot_titles),
+    here("03_plots", "03_main-data-summary", plot_titles), 
+    here("03_plots", "04_exploratory", plot_titles)
+  ),
+  pattern = "png$",
+  full.names = TRUE
+)
+
+# load data ----
+
+fitted_models <- purrr::map(fitted_models_dir, read_rds)
+
+names(fitted_models) <- fitted_models_dir %>% 
+  sub(".*/", "", .) %>% 
+  substr(., 1, nchar(.)-4)
+```
+
+```{r define-renaming-variables}
+summary_oldnames <- c(".value", "interval")
+summary_newnames <- c("median", "percentile interval")
+summary_drop <- c(".point", ".interval")
+
+model_replacements = c(
+  "word_type1" = "word_type",
+  "word_type2" = "word_familiarity",
+  "variety_exposure1" = "no_dialect", # sum coding, first level compared to grand mean
+  "variety_exposure2" = "dialect", # second level to grand mean
+  "variety_exposure3" = "dialect_&_social", # third level to grand mean
+  "task1" = "task",
+  "mean_exposure_test_nLED" = "mean_vocabulary_test_nLED"
+)
+```
+
+# A. Graphemes
+
+```{r, echo = FALSE, out.width="10%", out.height = "20%", fig.cap = "Invented graphemes used to represent each phoneme in all experiments. The final two graphemes were created but not used in these experiments. To prevent participants from memorizing the novel graphemes based on resemblance to known graphemes we controlled for similarity to characters of extant writing systems by comparing each invented grapheme against the database of 11,817 characters (excluding Chinese, Korean, and Japanese) on the Shapecatcher website (Milde, 2011). If visual inspection indicated a resemblance, we modified the grapheme to minimize that resemblance.", fig.show = "hold", fig.align = "center", fig.pos = "htb", warning = FALSE, fig.env="figure*"}
+# note: chunk names don't work if you tag your headings, e.g. {#appendix-a}
+# it then thinks chunk names are duplicates (even when they aren't)
+knitr::include_graphics(
+  here::here(
+    "01_materials", "script", 
+    c(paste0(1:15, ".png"))
+  )
+)
+```
+
+# B. Word List
+
+```{r word-list}
+word_list_data <- readr::read_csv(
+  here::here(
+    "01_materials", 
+    "spelling_and_pronunciations.csv"
+  )
+) %>%
+  replace_na(
+    list(
+      contrastive_pronunciation = "",
+      opaque_dialect_spelling = ""
+    )
+  ) %>% 
+  arrange(desc(testing_word), desc(contrastive_pronunciation)) %>% 
+  select(
+    opaque_spelling, 
+    `non-contrastive_pronunciation`,
+    opaque_dialect_spelling,
+    contrastive_pronunciation
+  )
+
+kable(
+  word_list_data,
+  caption = "Word list used in all conditions.", 
+  col.names = c("Spelling", "Pronunciation", "Spelling", "Pronunciation"),
+  linesep = "", # avoids spacing every 5 rows
+  ) %>%
+  kable_styling(
+    latex_options = c("repeat_header"), 
+    full_width = FALSE,
+    font_size = 10
+  ) %>%
+  add_header_above(c("Standard Variety" = 2, "Dialect Variants" = 2)) %>% 
+  footnote(
+    general = c(
+      paste(
+        "All conditions used the Inconsistent spelling. The standard condition used the",
+        "noncontrastive pronunciations in exposure, training, and testing phases."
+      ),
+      paste(
+        "The dialect condition used contrastive pronunciations during exposure and",
+        "non-contrastive pronunciations during training and testing, with the exception of the",
+        "Dialect Literacy condition, where words were pronounced in training using",
+        "noncontrastive and contrastive pronunciations separately."
+      ),
+      "Words are presented according to the CPSAMPA coding convention for simplified IPA characters."),
+    general_title = "Note."
+  ) %>% 
+  pack_rows("Untrained Words", 1, 12) %>% 
+  pack_rows("Contrastive Words", 13, 27) %>% 
+  pack_rows("Non-Contrastive Words", 28, 42) %>% 
+  add_indent(c(1:42))
+```
+
+# C. Gruffalo Index of Language Variation
+
+We used the Gruffalo and the Gruffalo's child [@Donaldson1999; @Donaldson2005], translated into various Scots dialects as a baseline for the amount of phonological and lexical variation between language varieties.
+
+## The Gruffalo
+
+- The Doric Gruffalo (translated by Sheena Blackhall)
+- Thi Dundee Gruffalo (translated by Matthew Fitt)
+- The Glasgow Gruffalo (translated by Elaine C. Smith)
+- The Gruffalo in Scots (translated by James Robertson)
+
+## The Gruffalo's Child
+
+- The Doric Gruffalo's Bairn (translated by Sheena Blackhall)
+- Thi Dundee Gruffalo's Bairn (translated by Matthew Fitt)
+- The Gruffalo's Wean (Scots; translated by James Robertson)
+
+Note: The Gruffalo's Child was not available in Glaswegian at the time of this corpus analysis.
+
+# D. Image Norms
+
+Images used from the [@Rossion2004] colourised Vanderwart picture set and their related norming results.
+
+Our subset of items are as follows:
+
+- Body part: Finger, foot, eye, hand, nose, arm, ear.
+
+- Furniture and kitchen utensils: Chair, glass, bed, fork, spoon, pot, desk.
+
+- Household objects, tools, and instruments: Television, toothbrush, book, pen, refrigerator, watch, pencil.
+
+- Food and clothing: Pants, socks, shirt, sweater, apple, tomato, potato.
+
+- Buildings, building features, and vehicles: Door, house, window, car, doorknob, truck, bicycle.
+Animals and plants: Tree, dog, cat, flower, rabbit, duck, chicken.
+
+The subset of pictures and their associated norms are provided in the supplemental material in @williams2020does at: [https://osf.io/5mtdj/](https://osf.io/5mtdj/).
+
+# E. Model Priors and Posterior Predictive Checks
+
+Priors for the fitted models are described first by their expected distribution, and the parameters that define that distribution. For example, a prior of $\mathcal{N}(0, 1)$ describes a normal distribution with a mean of 0 and a standard deviation of 1. Similarly, a prior of $\mathcal{logistic}(0, 1)$ describes a logistic distribution with a mean of 0 and a standard deviation of 1. Note, by default, `brms` restricts priors on the *SD* to be positive.
+
+Weakly informative regularising priors were used for all terms. All priors were centred on 0, with standard deviations ranging from 0.5 to 10, thus allowing for a range of values with less prior probability places on extreme responses. For the slope terms, the priors assume no effect to small effects for each parameter in either direction. Weakly informative regularising priors were also used for all standard deviation terms. Finally, an $LKJ(2)$ prior was used for the correlation between terms, which acts to down-weight perfect correlations [@Vasishth2018]. These priors are in some cases more informative than initially planned following our pre-registration (which used very weakly informative priors) to improve model fit (i.e. accounting for divergences during fitting). For example, the mu intercept and slope and gamma slope have standard deviations half as large as planned, while the standard deviation for the phi intercept is three times as large as planned. Additionally, 8000 iterations were used instead of 1000 and 6 chains were used rather than 4 chains to improve estimates in response to warnings about bulk and tail effective sample size, totalling 48,000 samples rather than the planned 4000.
+
+The following priors were used for the exposure model:
+
+- Intercept
+  - $\mu$: $\mathcal{N}(0, 5)$
+  - $\phi$: $\mathcal{N}(0, 3)$
+  - $\alpha$: $\mathcal{logistic}(0, 1)$
+  - $\gamma$: $\mathcal{logistic}(0, 1)$
+- Slope
+  - $\mu$: $\mathcal{N}(0, 0.5)$
+  - $\phi$: $\mathcal{N}(0, 1)$
+  - $\alpha$: $\mathcal{N}(0, 5)$
+  - $\gamma$: $\mathcal{N}(0, 0.5)$
+- *SD*
+  - $\mu$: $\mathcal{N}(0, 1)$
+  - $\phi$: $\mathcal{N}(0, 1)$
+  - $\alpha$: $\mathcal{N}(0, 5)$
+  - $\gamma$: $\mathcal{N}(0, 5)$
+- *SD* by Participant Number
+  - $\mu$: $\mathcal{N}(0, 1)$
+  - $\phi$: $\mathcal{N}(0, 5)$
+  - $\alpha$: $\mathcal{N}(0, 10)$
+  - $\gamma$: $\mathcal{N}(0, 10)$
+- *SD* by Item
+  - $\mu$: $\mathcal{N}(0, 1)$
+  - $\phi$: $\mathcal{N}(0, 5)$
+  - $\alpha$: $\mathcal{N}(0, 10)$
+  - $\gamma$: $\mathcal{N}(0, 10)$
+- Correlation
+  - $LKJ(2)$
+
+For both testing models, the following priors were used:
+
+- Intercept
+  - $\mu$: $\mathcal{N}(0, 5)$
+  - $\phi$: $\mathcal{N}(0, 3)$
+  - $\alpha$: $\mathcal{logistic}(0, 1)$
+  - $\gamma$: $\mathcal{logistic}(0, 1)$
+- Slope
+  - $\mu$: $\mathcal{N}(0, 1)$
+  - $\phi$: $\mathcal{N}(0, 1)$
+  - $\alpha$: $\mathcal{N}(0, 5)$
+  - $\gamma$: $\mathcal{N}(0, 1)$
+- *SD*
+  - $\mu$: $\mathcal{N}(0, 1)$
+  - $\phi$: $\mathcal{N}(0, 1)$
+  - $\alpha$: $\mathcal{N}(0, 5)$
+  - $\gamma$: $\mathcal{N}(0, 5)$
+- *SD* by Participant Number
+  - $\mu$: $\mathcal{N}(0, 1)$
+  - $\phi$: $\mathcal{N}(0, 5)$
+  - $\alpha$: $\mathcal{N}(0, 10)$
+  - $\gamma$: $\mathcal{N}(0, 10)$
+- *SD* by Item
+  - $\mu$: $\mathcal{N}(0, 1)$
+  - $\phi$: $\mathcal{N}(0, 5)$
+  - $\alpha$: $\mathcal{N}(0, 10)$
+  - $\gamma$: $\mathcal{N}(0, 10)$
+- Correlation
+  - $LKJ(2)$
+  
+Due to having more observations for analyses during the testing phase, both the $\mu$ and $\gamma$ slope terms use more weakly informative priors than the exposure model. This allows the data to have a larger impact on parameter estimates while having no impact on model convergence. 
+
+Posterior predictive checks were performed for all three models, comparing the observed posterior density against samples from the fitted model. Well fitting models show concordance between observed and sampled posterior densities. Plots for each model are displayed below. Grey lines indicate samples from the posterior, while black lines indicate the observed sample density.
+
+```{r pp-check-plots}
+knitr::include_graphics(c(
+  plots_dir[str_detect(plots_dir, "pp_check_exposure.png")],
+  plots_dir[str_detect(plots_dir, "pp_check_testing.png")],
+  plots_dir[str_detect(plots_dir, "pp_check_testing_cov.png")]
+))
+```
+
+As can be seen from the plots, the posterior predictive checks indicate a generally good model fit in all instances, such that the model largely captures the shape of the data (i.e. especially capturing the 0 and 1 inflation in the testing model), but does not capture some discrepancies in the data which do not arise from any defined process (i.e. some larger densities in the testing model between the range of 0-1).
+
+# F. Fitted Model Summaries
+
+In the tables of population level (fixed) effects, $\hat{R}$ is a measure of convergence for within- and between-chain estimates, with values closer to 1 being preferable. The bulk and tail effective sample sizes give diagnostics of the number of draws which contain the same amount of information as the dependent sample [@vehtari2020rank], with higher values being preferable. The tail effective sample size is determined at the 5% and 95% quantiles, while the bulk is determined at values in between these quantiles.
+
+## Vocabulary Test Model
+
+A summary of the population-level (fixed) effects for the Vocabulary Test model is provided below. This can be used to determine model diagnostics, coefficients, and estimates around these coefficients using 95% credible intervals. 
+Note that models were fitted with the above priors and sum coded effects of exposure condition, word type, and task. As a result, the intercept represents the grand mean (i.e. the mean of the means of the dependent variable at each level of the categorical variables). The regression cofficients then represent the difference between the grand mean and the:
+
+- Exposure Condition: 
+  - No Dialect condition.
+  - Dialect condition.
+  - Dialect & Social condition.
+  
+  To get parameter estimates for the No Dialect, Dialect, and Dialect & Social conditions add their regression coefficients to the intercept. To get regression estimates for the Dialect Literacy condition, all three Exposure condition coefficients must be subtracted from the intercept.
+  
+- Word Type: Contrastive words.
+
+  To get parameter estimates for contrastive words, add the coefficient to the intercept. To get the estimates for non-contrastive words, subtract the coefficient from the intercept.
+  
+- Task: Reading.
+
+  To get parameter estimates for the reading task, add the coefficient to the intercept. To get the estimates for the spelling task, subtract the coefficient from the intercept.
+
+```{r exposure-model-summary-csv, include = FALSE}
+exposure_mod <- fitted_models[["exposure_model_summary"]]$fixed %>%
+  as.data.frame() %>% 
+  rownames_to_column(., var = "Parameter") %>% 
+  merge_CI_limits(., `l-95% CI`, `u-95% CI`, decimals = 2) %>%
+  select(Parameter:Est.Error, interval, everything()) %>% 
+  split_dists() %>% 
+  mutate(distribution = factor(distribution, levels = c("mu", "phi", "zoi", "coi"))) %>% 
+  arrange(distribution) %>%
+  rename_parameters(replacements = model_replacements) %>% 
+  mutate(
+    Parameter = str_replace_all(Parameter, "\\$\\\\times\\$", "x"),
+    Estimate = round_pad(Estimate, 2),
+    Est.Error = round_pad(Est.Error, 2),
+    Rhat = round_pad(Rhat, 2),
+    Bulk_ESS = round(Bulk_ESS, 0),
+    Tail_ESS = round(Tail_ESS, 0)
+  )
+  
+write_csv(
+  exposure_mod,
+  here("05_reports", "01_model-coefficients", "exposure_model.csv")
+)
+```
+ 
+
+```{r exposure-model-summary}
+fitted_models[["exposure_model_summary"]]$fixed %>%
+  as.data.frame() %>% 
+  rownames_to_column(., var = "Parameter") %>% 
+  merge_CI_limits(., `l-95% CI`, `u-95% CI`, decimals = 3) %>%
+  select(Parameter:Est.Error, interval, everything()) %>% 
+  split_dists() %>% 
+  mutate(distribution = factor(distribution, levels = c("mu", "phi", "zoi", "coi"))) %>% 
+  arrange(distribution) %>%
+  rename_parameters(replacements = model_replacements) %>%
+  table_cols_to_title(.) %>% 
+  select(-Distribution) %>% 
+  custom_kable() %>% 
+  pack_rows(index = c("$\\mu$" = 8, "$\\phi$" = 8, "$\\alpha$" = 8, "$\\gamma$" = 8))
+```
+
+## Testing Phase Model
+
+A summary of the Testing Phase model is provided below. This can be used to determine model diagnostics and coefficients. 
+
+The same coding was used here as in the Vocabulary Test model, with the exception that word type has three levels in this phase of the experiment. Words can be contrastive, non-contrastive, or untrained. Thus, word type was Helmert coded in R (R defaults to what is traditionally called  reverse Helmert coding) such that the first estimate (Word Type in the below table) represents half the difference in scores between trained non-contrastive words and trained contrastive words. The second estimate (Word Familiarity in the below table) represents the difference in scores between the mean of the trained (non-contrastive and contrastive words) and untrained, novel words and the mean of the trained words. Thus, this estimates the effect of words being untrained vs. trained.
+
+Thus, as before the intercept represents the grand mean. To get parameter estimates for contrastive words, subtract the parameter estimate for Word Type and the parameter estimate for Word Familiairty from the intercept. To get parameter estimates for non-contrastive words, add the parameter estimate for Word Type and subtract the parameter estimate for Word Familiarity from the intercept. To get parameter estimates for novel, unfamiliar words, add both the parameter estimates for Word Type and Word Familiarity to the intercept.
+
+```{r testing-model-summary-csv, include = FALSE}
+testing_mod <- fitted_models[["testing_model_summary"]]$fixed %>%
+  as.data.frame() %>% 
+  rownames_to_column(., var = "Parameter") %>% 
+  merge_CI_limits(., `l-95% CI`, `u-95% CI`, decimals = 2) %>%
+  select(Parameter:Est.Error, interval, everything()) %>% 
+  split_dists() %>% 
+  mutate(distribution = factor(distribution, levels = c("mu", "phi", "zoi", "coi"))) %>% 
+  arrange(distribution) %>%
+  rename_parameters(replacements = model_replacements) %>% 
+  mutate(
+    Parameter = str_replace_all(Parameter, "\\$\\\\times\\$", "x"),
+    Estimate = round_pad(Estimate, 2),
+    Est.Error = round_pad(Est.Error, 2),
+    Rhat = round_pad(Rhat, 2),
+    Bulk_ESS = round(Bulk_ESS, 0),
+    Tail_ESS = round(Tail_ESS, 0)
+  )
+  
+write_csv(
+  testing_mod,
+  here("05_reports", "01_model-coefficients", "testing_model.csv")
+)
+```
+
+```{r testing-model-summary}
+fitted_models[["testing_model_summary"]]$fixed %>% 
+  as.data.frame() %>% 
+  rownames_to_column(., var = "Parameter") %>% 
+  merge_CI_limits(., `l-95% CI`, `u-95% CI`, decimals = 3) %>%
+  select(Parameter:Est.Error, interval, everything()) %>% 
+  split_dists() %>% 
+  mutate(distribution = factor(distribution, levels = c("mu", "phi", "zoi", "coi"))) %>% 
+  arrange(distribution) %>%
+  rename_parameters(replacements = model_replacements) %>%
+  table_cols_to_title(.) %>% 
+  select(-Distribution) %>% 
+  custom_kable() %>% 
+  pack_rows(index = c("$\\mu$" = 24, "$\\phi$" = 24, "$\\alpha$" = 24, "$\\gamma$" = 24))
+```
+
+## Exploratory Covariate Testing Model
+
+A summary of the Testing Phase model incorporating the mean scores in the vocabulary test as a covariate is provided below. This can be used to determine model diagnostics and coefficients. This model used the same coding scheme as in the Testing Phase model, but included a continuous numberical predictor of mean vocabulary test performance (ranging from 0-1).
+
+```{r testing-cov-model-summary-csv, include = FALSE}
+testing_cov_mod <- fitted_models[["testing_cov_model_summary"]]$fixed %>%
+  as.data.frame() %>% 
+  rownames_to_column(., var = "Parameter") %>% 
+  merge_CI_limits(., `l-95% CI`, `u-95% CI`, decimals = 2) %>%
+  select(Parameter:Est.Error, interval, everything()) %>% 
+  split_dists() %>% 
+  mutate(distribution = factor(distribution, levels = c("mu", "phi", "zoi", "coi"))) %>% 
+  arrange(distribution) %>%
+  rename_parameters(replacements = model_replacements) %>% 
+  mutate(
+    Parameter = str_replace_all(Parameter, "\\$\\\\times\\$", "x"),
+    Estimate = round_pad(Estimate, 2),
+    Est.Error = round_pad(Est.Error, 2),
+    Rhat = round_pad(Rhat, 2),
+    Bulk_ESS = round(Bulk_ESS, 0),
+    Tail_ESS = round(Tail_ESS, 0)
+  )
+  
+write_csv(
+  testing_cov_mod,
+  here("05_reports", "01_model-coefficients", "testing_cov_model.csv")
+)
+```
+
+```{r testing-cov-model-summary}
+fitted_models[["testing_cov_model_summary"]]$fixed %>%
+  as.data.frame() %>% 
+  rownames_to_column(., var = "Parameter") %>% 
+  merge_CI_limits(., `l-95% CI`, `u-95% CI`, decimals = 3) %>%
+  select(Parameter:Est.Error, interval, everything()) %>% 
+  split_dists() %>% 
+  mutate(distribution = factor(distribution, levels = c("mu", "phi", "zoi", "coi"))) %>% 
+  arrange(distribution) %>%
+  rename_parameters(replacements = model_replacements) %>%
+  table_cols_to_title(.) %>% 
+  select(-Distribution) %>% 
+  custom_kable() %>% 
+  pack_rows(index = c("$\\mu$" = 48, "$\\phi$" = 48, "$\\alpha$" = 48, "$\\gamma$" = 48))
+```
+
+# References
+

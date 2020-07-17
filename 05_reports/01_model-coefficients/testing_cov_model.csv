@@ -1,0 +1,193 @@
+distribution,Parameter,Estimate,Est.Error,interval,Rhat,Bulk_ESS,Tail_ESS
+mu,Intercept,-0.69,0.09,"[-0.86, -0.52]",1.00,1916,3997
+mu,Mean Vocabulary Test nLED,0.48,0.12,"[0.24, 0.72]",1.00,2498,5228
+mu,Task,-0.10,0.03,"[-0.16, -0.04]",1.00,6745,11373
+mu,No Dialect,-0.08,0.10,"[-0.28, 0.12]",1.00,2563,5344
+mu,Dialect,-0.06,0.10,"[-0.26, 0.14]",1.00,2621,5524
+mu,Dialect & Social,-0.03,0.11,"[-0.24, 0.18]",1.00,3048,6633
+mu,Word Type,0.05,0.04,"[-0.03, 0.13]",1.00,6909,11300
+mu,Word Familiarity,0.04,0.03,"[-0.02, 0.10]",1.00,5576,9887
+mu,Mean Vocabulary Test nLED x Task,0.06,0.05,"[-0.03, 0.16]",1.00,6841,11173
+mu,Mean Vocabulary Test nLED x No Dialect,0.04,0.15,"[-0.25, 0.33]",1.00,2947,6340
+mu,Mean Vocabulary Test nLED x Dialect,0.09,0.15,"[-0.21, 0.39]",1.00,3080,6242
+mu,Mean Vocabulary Test nLED x Dialect & Social,0.09,0.16,"[-0.22, 0.39]",1.00,3756,6996
+mu,Task x No Dialect,-0.01,0.05,"[-0.11, 0.09]",1.00,7520,12366
+mu,Task x Dialect,0.13,0.05,"[0.04, 0.22]",1.00,7490,12189
+mu,Task x Dialect & Social,-0.02,0.05,"[-0.12, 0.09]",1.00,7289,11955
+mu,Mean Vocabulary Test nLED x Word Type,-0.07,0.05,"[-0.17, 0.03]",1.00,8413,13230
+mu,Mean Vocabulary Test nLED x Word Familiarity,-0.07,0.04,"[-0.14, 0.00]",1.00,6391,11737
+mu,Task x Word Type,0.03,0.02,"[-0.02, 0.07]",1.00,13711,16671
+mu,Task x Word Familiarity,0.03,0.01,"[-0.00, 0.05]",1.00,13588,16217
+mu,No Dialect x Word Type,0.04,0.04,"[-0.04, 0.13]",1.00,8974,14041
+mu,Dialect x Word Type,0.01,0.04,"[-0.06, 0.08]",1.00,9970,13728
+mu,Dialect & Social x Word Type,0.06,0.04,"[-0.03, 0.14]",1.00,10027,15117
+mu,No Dialect x Word Familiarity,-0.01,0.03,"[-0.07, 0.05]",1.00,6754,12410
+mu,Dialect x Word Familiarity,-0.02,0.03,"[-0.08, 0.03]",1.00,7171,12105
+mu,Dialect & Social x Word Familiarity,0.03,0.03,"[-0.03, 0.09]",1.00,7252,13006
+mu,Mean Vocabulary Test nLED x Task x No Dialect,0.03,0.07,"[-0.11, 0.18]",1.00,7556,12263
+mu,Mean Vocabulary Test nLED x Task x Dialect,-0.17,0.07,"[-0.31, -0.03]",1.00,7498,12616
+mu,Mean Vocabulary Test nLED x Task x Dialect & Social,0.01,0.08,"[-0.15, 0.17]",1.00,7221,11443
+mu,Mean Vocabulary Test nLED x Task x Word Type,-0.05,0.04,"[-0.12, 0.02]",1.00,14242,16701
+mu,Mean Vocabulary Test nLED x Task x Word Familiarity,-0.02,0.02,"[-0.06, 0.02]",1.00,14006,16024
+mu,Mean Vocabulary Test nLED x No Dialect x Word Type,-0.05,0.06,"[-0.17, 0.07]",1.00,9228,14135
+mu,Mean Vocabulary Test nLED x Dialect x Word Type,0.01,0.06,"[-0.10, 0.13]",1.00,10637,14973
+mu,Mean Vocabulary Test nLED x Dialect & Social x Word Type,-0.10,0.07,"[-0.23, 0.03]",1.00,10299,15074
+mu,Mean Vocabulary Test nLED x No Dialect x Word Familiarity,0.01,0.04,"[-0.08, 0.09]",1.00,7328,12247
+mu,Mean Vocabulary Test nLED x Dialect x Word Familiarity,0.04,0.04,"[-0.05, 0.12]",1.00,7262,12548
+mu,Mean Vocabulary Test nLED x Dialect & Social x Word Familiarity,-0.05,0.05,"[-0.15, 0.04]",1.00,7571,13132
+mu,Task x No Dialect x Word Type,0.06,0.04,"[-0.02, 0.15]",1.00,8799,13967
+mu,Task x Dialect x Word Type,0.02,0.04,"[-0.06, 0.09]",1.00,9765,14421
+mu,Task x Dialect & Social x Word Type,-0.06,0.04,"[-0.15, 0.02]",1.00,10159,14892
+mu,Task x No Dialect x Word Familiarity,-0.02,0.02,"[-0.06, 0.03]",1.00,9589,13660
+mu,Task x Dialect x Word Familiarity,-0.01,0.02,"[-0.06, 0.03]",1.00,10556,14908
+mu,Task x Dialect & Social x Word Familiarity,-0.01,0.03,"[-0.06, 0.04]",1.00,10195,15080
+mu,Mean Vocabulary Test nLED x Task x No Dialect x Word Type,-0.09,0.06,"[-0.21, 0.04]",1.00,9137,13855
+mu,Mean Vocabulary Test nLED x Task x Dialect x Word Type,-0.02,0.06,"[-0.13, 0.09]",1.00,10359,14624
+mu,Mean Vocabulary Test nLED x Task x Dialect & Social x Word Type,0.08,0.06,"[-0.05, 0.20]",1.00,10506,15284
+mu,Mean Vocabulary Test nLED x Task x No Dialect x Word Familiarity,0.02,0.03,"[-0.05, 0.09]",1.00,9598,14866
+mu,Mean Vocabulary Test nLED x Task x Dialect x Word Familiarity,0.02,0.03,"[-0.05, 0.08]",1.00,10972,15294
+mu,Mean Vocabulary Test nLED x Task x Dialect & Social x Word Familiarity,0.01,0.04,"[-0.07, 0.09]",1.00,10233,14349
+phi,Intercept,2.88,0.11,"[2.66, 3.11]",1.00,5142,9843
+phi,Mean Vocabulary Test nLED,-0.36,0.16,"[-0.68, -0.04]",1.00,5370,10626
+phi,Task,-0.32,0.07,"[-0.45, -0.18]",1.00,8696,13997
+phi,No Dialect,0.04,0.15,"[-0.25, 0.32]",1.00,5402,9940
+phi,Dialect,0.10,0.14,"[-0.18, 0.38]",1.00,6107,10795
+phi,Dialect & Social,-0.18,0.15,"[-0.48, 0.12]",1.00,5305,9197
+phi,Word Type,-0.02,0.06,"[-0.14, 0.11]",1.00,12885,15759
+phi,Word Familiarity,0.13,0.05,"[0.04, 0.23]",1.00,9741,14882
+phi,Mean Vocabulary Test nLED x Task,0.21,0.10,"[0.00, 0.41]",1.00,8274,13721
+phi,Mean Vocabulary Test nLED x No Dialect,0.06,0.22,"[-0.36, 0.49]",1.00,5342,10110
+phi,Mean Vocabulary Test nLED x Dialect,-0.23,0.21,"[-0.65, 0.19]",1.00,6385,10913
+phi,Mean Vocabulary Test nLED x Dialect & Social,0.31,0.23,"[-0.15, 0.75]",1.00,5711,9797
+phi,Task x No Dialect,-0.01,0.11,"[-0.22, 0.19]",1.00,7508,13845
+phi,Task x Dialect,-0.20,0.10,"[-0.40, 0.00]",1.00,8000,13761
+phi,Task x Dialect & Social,0.06,0.11,"[-0.15, 0.28]",1.00,7938,13728
+phi,Mean Vocabulary Test nLED x Word Type,0.01,0.08,"[-0.16, 0.17]",1.00,15805,17652
+phi,Mean Vocabulary Test nLED x Word Familiarity,-0.05,0.07,"[-0.18, 0.07]",1.00,10730,14473
+phi,Task x Word Type,-0.04,0.06,"[-0.15, 0.08]",1.00,14295,16702
+phi,Task x Word Familiarity,0.00,0.04,"[-0.07, 0.07]",1.00,13503,15904
+phi,No Dialect x Word Type,0.07,0.09,"[-0.11, 0.25]",1.00,12546,15671
+phi,Dialect x Word Type,-0.05,0.09,"[-0.23, 0.13]",1.00,11664,14006
+phi,Dialect & Social x Word Type,-0.18,0.10,"[-0.37, 0.01]",1.00,12025,15427
+phi,No Dialect x Word Familiarity,-0.00,0.07,"[-0.14, 0.13]",1.00,8795,14221
+phi,Dialect x Word Familiarity,-0.09,0.07,"[-0.22, 0.05]",1.00,9496,13632
+phi,Dialect & Social x Word Familiarity,-0.00,0.08,"[-0.15, 0.15]",1.00,9006,14427
+phi,Mean Vocabulary Test nLED x Task x No Dialect,0.04,0.15,"[-0.26, 0.35]",1.00,7454,13363
+phi,Mean Vocabulary Test nLED x Task x Dialect,0.33,0.15,"[0.03, 0.63]",1.00,8094,14049
+phi,Mean Vocabulary Test nLED x Task x Dialect & Social,-0.16,0.16,"[-0.48, 0.15]",1.00,7950,13077
+phi,Mean Vocabulary Test nLED x Task x Word Type,0.03,0.08,"[-0.14, 0.19]",1.00,14613,16737
+phi,Mean Vocabulary Test nLED x Task x Word Familiarity,0.01,0.05,"[-0.09, 0.12]",1.00,13943,16692
+phi,Mean Vocabulary Test nLED x No Dialect x Word Type,-0.07,0.13,"[-0.34, 0.19]",1.00,12628,16385
+phi,Mean Vocabulary Test nLED x Dialect x Word Type,0.04,0.13,"[-0.22, 0.30]",1.00,11930,15432
+phi,Mean Vocabulary Test nLED x Dialect & Social x Word Type,0.23,0.14,"[-0.04, 0.51]",1.00,12148,15760
+phi,Mean Vocabulary Test nLED x No Dialect x Word Familiarity,0.03,0.10,"[-0.17, 0.23]",1.00,8819,14203
+phi,Mean Vocabulary Test nLED x Dialect x Word Familiarity,0.10,0.10,"[-0.11, 0.30]",1.00,9577,14850
+phi,Mean Vocabulary Test nLED x Dialect & Social x Word Familiarity,0.00,0.11,"[-0.21, 0.22]",1.00,8931,14479
+phi,Task x No Dialect x Word Type,-0.02,0.09,"[-0.19, 0.17]",1.00,10766,14940
+phi,Task x Dialect x Word Type,-0.07,0.09,"[-0.24, 0.11]",1.00,11973,15099
+phi,Task x Dialect & Social x Word Type,0.15,0.10,"[-0.03, 0.34]",1.00,10897,15422
+phi,Task x No Dialect x Word Familiarity,0.03,0.06,"[-0.09, 0.15]",1.00,11580,15050
+phi,Task x Dialect x Word Familiarity,-0.05,0.06,"[-0.17, 0.07]",1.00,10879,15650
+phi,Task x Dialect & Social x Word Familiarity,0.11,0.06,"[-0.02, 0.23]",1.00,11116,15296
+phi,Mean Vocabulary Test nLED x Task x No Dialect x Word Type,0.09,0.13,"[-0.18, 0.34]",1.00,10823,15344
+phi,Mean Vocabulary Test nLED x Task x Dialect x Word Type,0.10,0.13,"[-0.16, 0.36]",1.00,12272,15436
+phi,Mean Vocabulary Test nLED x Task x Dialect & Social x Word Type,-0.24,0.14,"[-0.51, 0.04]",1.00,11041,15011
+phi,Mean Vocabulary Test nLED x Task x No Dialect x Word Familiarity,-0.04,0.09,"[-0.21, 0.13]",1.00,11680,15176
+phi,Mean Vocabulary Test nLED x Task x Dialect x Word Familiarity,0.08,0.09,"[-0.10, 0.25]",1.00,11182,15369
+phi,Mean Vocabulary Test nLED x Task x Dialect & Social x Word Familiarity,-0.18,0.09,"[-0.36, 0.01]",1.00,11092,15198
+zoi,Intercept,0.58,0.24,"[0.12, 1.04]",1.00,6207,11122
+zoi,Mean Vocabulary Test nLED,-1.40,0.31,"[-2.00, -0.79]",1.00,6445,11522
+zoi,Task,0.48,0.09,"[0.29, 0.66]",1.00,8022,13257
+zoi,No Dialect,0.16,0.27,"[-0.37, 0.70]",1.00,5973,9887
+zoi,Dialect,0.04,0.26,"[-0.48, 0.55]",1.00,6309,10686
+zoi,Dialect & Social,0.12,0.29,"[-0.44, 0.68]",1.00,5831,8551
+zoi,Word Type,0.40,0.17,"[0.07, 0.73]",1.00,10057,13912
+zoi,Word Familiarity,-0.08,0.11,"[-0.30, 0.14]",1.00,8832,12986
+zoi,Mean Vocabulary Test nLED x Task,-0.32,0.14,"[-0.60, -0.03]",1.00,8085,13079
+zoi,Mean Vocabulary Test nLED x No Dialect,-0.14,0.40,"[-0.93, 0.64]",1.00,6133,11371
+zoi,Mean Vocabulary Test nLED x Dialect,-0.09,0.41,"[-0.88, 0.72]",1.00,6540,11330
+zoi,Mean Vocabulary Test nLED x Dialect & Social,-0.17,0.43,"[-1.03, 0.67]",1.00,5886,10085
+zoi,Task x No Dialect,0.23,0.15,"[-0.06, 0.52]",1.00,7808,13332
+zoi,Task x Dialect,0.08,0.14,"[-0.20, 0.35]",1.00,7830,13202
+zoi,Task x Dialect & Social,-0.17,0.16,"[-0.48, 0.13]",1.00,8239,12882
+zoi,Mean Vocabulary Test nLED x Word Type,-0.44,0.14,"[-0.71, -0.17]",1.00,13598,16988
+zoi,Mean Vocabulary Test nLED x Word Familiarity,0.10,0.10,"[-0.10, 0.30]",1.00,9506,14408
+zoi,Task x Word Type,0.21,0.06,"[0.08, 0.33]",1.00,16890,18011
+zoi,Task x Word Familiarity,-0.13,0.04,"[-0.21, -0.06]",1.00,16488,17445
+zoi,No Dialect x Word Type,-0.17,0.12,"[-0.40, 0.06]",1.00,12073,15275
+zoi,Dialect x Word Type,-0.11,0.11,"[-0.33, 0.11]",1.00,12304,15479
+zoi,Dialect & Social x Word Type,0.06,0.12,"[-0.18, 0.31]",1.00,11352,15705
+zoi,No Dialect x Word Familiarity,-0.07,0.09,"[-0.25, 0.11]",1.00,8382,13367
+zoi,Dialect x Word Familiarity,-0.07,0.09,"[-0.24, 0.10]",1.00,9191,13857
+zoi,Dialect & Social x Word Familiarity,0.12,0.10,"[-0.07, 0.32]",1.00,9004,13690
+zoi,Mean Vocabulary Test nLED x Task x No Dialect,-0.23,0.22,"[-0.66, 0.20]",1.00,7853,12887
+zoi,Mean Vocabulary Test nLED x Task x Dialect,-0.14,0.22,"[-0.57, 0.29]",1.00,8249,13657
+zoi,Mean Vocabulary Test nLED x Task x Dialect & Social,0.28,0.24,"[-0.19, 0.75]",1.00,8353,13431
+zoi,Mean Vocabulary Test nLED x Task x Word Type,-0.21,0.09,"[-0.39, -0.02]",1.00,16241,17929
+zoi,Mean Vocabulary Test nLED x Task x Word Familiarity,0.16,0.06,"[0.05, 0.28]",1.00,16659,17691
+zoi,Mean Vocabulary Test nLED x No Dialect x Word Type,0.17,0.18,"[-0.18, 0.51]",1.00,11821,15283
+zoi,Mean Vocabulary Test nLED x Dialect x Word Type,0.15,0.17,"[-0.19, 0.49]",1.00,12112,15809
+zoi,Mean Vocabulary Test nLED x Dialect & Social x Word Type,-0.23,0.19,"[-0.61, 0.13]",1.00,11389,16455
+zoi,Mean Vocabulary Test nLED x No Dialect x Word Familiarity,0.04,0.14,"[-0.24, 0.31]",1.00,8574,14145
+zoi,Mean Vocabulary Test nLED x Dialect x Word Familiarity,0.09,0.14,"[-0.18, 0.36]",1.00,9181,13600
+zoi,Mean Vocabulary Test nLED x Dialect & Social x Word Familiarity,-0.09,0.15,"[-0.40, 0.20]",1.00,8822,13551
+zoi,Task x No Dialect x Word Type,-0.22,0.10,"[-0.43, -0.02]",1.00,12942,15620
+zoi,Task x Dialect x Word Type,0.19,0.10,"[-0.00, 0.39]",1.00,13698,17378
+zoi,Task x Dialect & Social x Word Type,-0.03,0.11,"[-0.25, 0.18]",1.00,12826,16411
+zoi,Task x No Dialect x Word Familiarity,-0.04,0.07,"[-0.17, 0.09]",1.00,13930,16447
+zoi,Task x Dialect x Word Familiarity,0.07,0.06,"[-0.06, 0.19]",1.00,13637,16390
+zoi,Task x Dialect & Social x Word Familiarity,-0.14,0.07,"[-0.29, -0.00]",1.00,12290,15462
+zoi,Mean Vocabulary Test nLED x Task x No Dialect x Word Type,0.23,0.16,"[-0.07, 0.54]",1.00,12904,15165
+zoi,Mean Vocabulary Test nLED x Task x Dialect x Word Type,-0.26,0.15,"[-0.56, 0.04]",1.00,13840,17030
+zoi,Mean Vocabulary Test nLED x Task x Dialect & Social x Word Type,0.07,0.17,"[-0.26, 0.41]",1.00,12847,16596
+zoi,Mean Vocabulary Test nLED x Task x No Dialect x Word Familiarity,0.09,0.10,"[-0.11, 0.28]",1.00,13951,15637
+zoi,Mean Vocabulary Test nLED x Task x Dialect x Word Familiarity,-0.15,0.10,"[-0.34, 0.04]",1.00,13658,16651
+zoi,Mean Vocabulary Test nLED x Task x Dialect & Social x Word Familiarity,0.27,0.11,"[0.05, 0.48]",1.00,12338,15805
+coi,Intercept,-5.89,0.64,"[-7.16, -4.66]",1.00,2657,6409
+coi,Mean Vocabulary Test nLED,3.15,0.84,"[1.49, 4.81]",1.00,4206,9626
+coi,Task,-0.51,0.39,"[-1.28, 0.27]",1.00,10075,14987
+coi,No Dialect,-0.24,0.61,"[-1.44, 0.94]",1.00,3262,7838
+coi,Dialect,0.05,0.61,"[-1.14, 1.24]",1.00,3262,7675
+coi,Dialect & Social,0.13,0.62,"[-1.10, 1.33]",1.00,3126,7861
+coi,Word Type,-0.42,0.36,"[-1.13, 0.30]",1.00,14415,16572
+coi,Word Familiarity,0.37,0.32,"[-0.28, 0.98]",1.00,10289,15030
+coi,Mean Vocabulary Test nLED x Task,0.25,0.54,"[-0.81, 1.32]",1.00,12258,15498
+coi,Mean Vocabulary Test nLED x No Dialect,-0.66,0.80,"[-2.22, 0.90]",1.00,5961,11940
+coi,Mean Vocabulary Test nLED x Dialect,0.37,0.81,"[-1.23, 1.97]",1.00,5441,11479
+coi,Mean Vocabulary Test nLED x Dialect & Social,0.11,0.81,"[-1.48, 1.69]",1.00,6310,12317
+coi,Task x No Dialect,0.29,0.47,"[-0.63, 1.20]",1.00,12681,16437
+coi,Task x Dialect,-0.05,0.47,"[-0.97, 0.85]",1.00,13472,17028
+coi,Task x Dialect & Social,0.18,0.46,"[-0.73, 1.09]",1.00,12095,16536
+coi,Mean Vocabulary Test nLED x Word Type,-0.04,0.51,"[-1.07, 0.96]",1.00,14472,16650
+coi,Mean Vocabulary Test nLED x Word Familiarity,-0.50,0.47,"[-1.43, 0.42]",1.00,12431,15540
+coi,Task x Word Type,-0.16,0.30,"[-0.74, 0.43]",1.00,15499,17441
+coi,Task x Word Familiarity,0.61,0.26,"[0.10, 1.12]",1.00,13680,16359
+coi,No Dialect x Word Type,0.12,0.43,"[-0.73, 0.96]",1.00,14184,15990
+coi,Dialect x Word Type,-0.24,0.43,"[-1.08, 0.60]",1.00,14480,16847
+coi,Dialect & Social x Word Type,0.15,0.44,"[-0.71, 1.01]",1.00,14962,16635
+coi,No Dialect x Word Familiarity,-0.38,0.41,"[-1.18, 0.42]",1.00,11711,16109
+coi,Dialect x Word Familiarity,0.49,0.40,"[-0.29, 1.27]",1.00,12021,14108
+coi,Dialect & Social x Word Familiarity,0.12,0.41,"[-0.68, 0.92]",1.00,12684,15885
+coi,Mean Vocabulary Test nLED x Task x No Dialect,0.31,0.66,"[-0.96, 1.60]",1.00,14261,17238
+coi,Mean Vocabulary Test nLED x Task x Dialect,-0.47,0.67,"[-1.79, 0.84]",1.00,14551,16737
+coi,Mean Vocabulary Test nLED x Task x Dialect & Social,-0.22,0.67,"[-1.54, 1.08]",1.00,14374,17169
+coi,Mean Vocabulary Test nLED x Task x Word Type,0.24,0.43,"[-0.60, 1.09]",1.00,15568,17338
+coi,Mean Vocabulary Test nLED x Task x Word Familiarity,-0.75,0.39,"[-1.54, 0.01]",1.00,13804,16781
+coi,Mean Vocabulary Test nLED x No Dialect x Word Type,0.04,0.60,"[-1.15, 1.22]",1.00,14573,15758
+coi,Mean Vocabulary Test nLED x Dialect x Word Type,0.70,0.61,"[-0.49, 1.90]",1.00,14716,16716
+coi,Mean Vocabulary Test nLED x Dialect & Social x Word Type,-0.20,0.63,"[-1.43, 1.03]",1.00,15105,16416
+coi,Mean Vocabulary Test nLED x No Dialect x Word Familiarity,0.40,0.59,"[-0.76, 1.55]",1.00,13039,15757
+coi,Mean Vocabulary Test nLED x Dialect x Word Familiarity,-0.67,0.58,"[-1.81, 0.46]",1.00,13289,15567
+coi,Mean Vocabulary Test nLED x Dialect & Social x Word Familiarity,-0.12,0.60,"[-1.31, 1.05]",1.00,13911,16592
+coi,Task x No Dialect x Word Type,0.50,0.41,"[-0.30, 1.30]",1.00,14738,17135
+coi,Task x Dialect x Word Type,0.01,0.39,"[-0.75, 0.77]",1.00,14793,16713
+coi,Task x Dialect & Social x Word Type,0.33,0.41,"[-0.47, 1.13]",1.00,14522,17347
+coi,Task x No Dialect x Word Familiarity,0.78,0.37,"[0.07, 1.52]",1.00,12302,15574
+coi,Task x Dialect x Word Familiarity,-0.68,0.37,"[-1.40, 0.03]",1.00,13911,16526
+coi,Task x Dialect & Social x Word Familiarity,-0.10,0.35,"[-0.79, 0.59]",1.00,14012,16597
+coi,Mean Vocabulary Test nLED x Task x No Dialect x Word Type,-0.44,0.56,"[-1.55, 0.67]",1.00,14690,16983
+coi,Mean Vocabulary Test nLED x Task x Dialect x Word Type,-0.06,0.57,"[-1.17, 1.05]",1.00,14979,17154
+coi,Mean Vocabulary Test nLED x Task x Dialect & Social x Word Type,-0.56,0.59,"[-1.72, 0.59]",1.00,14644,17017
+coi,Mean Vocabulary Test nLED x Task x No Dialect x Word Familiarity,-0.39,0.54,"[-1.44, 0.66]",1.00,12744,16179
+coi,Mean Vocabulary Test nLED x Task x Dialect x Word Familiarity,0.44,0.55,"[-0.63, 1.50]",1.00,14418,17411
+coi,Mean Vocabulary Test nLED x Task x Dialect & Social x Word Familiarity,0.06,0.54,"[-1.00, 1.12]",1.00,14104,17489
