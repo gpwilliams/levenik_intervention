@@ -10,5 +10,5 @@ r_file_list <- list.files(
 purrr::walk(
   r_file_list, 
   rmarkdown::render, 
-  output_dir = here("05_reports", "02_html")
+  output_dir = here("05_reports")
 )

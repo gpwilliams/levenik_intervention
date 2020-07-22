@@ -1,7 +1,8 @@
 ---
 title: "Results"
-author: "Glenn Williams"
-date: "14<sup>th</sup> August, 2019 (Last updated: `r format(Sys.time(), '%d<sup>th</sup> %B, %Y')`)"
+subtitle: "Dialect exposure impairs reading of words with competing variants but does not affect decoding skills in adult artificial literacy learning"
+author: "Williams, G. P., Panayotov, N., & Kempe, V."
+date: "22<sup>nd</sup> July, 2020 (Last updated: `r format(Sys.time(), '%d<sup>th</sup> %B, %Y')`)"
 bibliography: [r-references.bib, main-references.bib]
 output: 
   html_document:
@@ -111,7 +112,7 @@ posterior_drop <- c(
 
 ```{r get-citations}
 my_citations <- papaja::cite_r(
-  file = here("05_reports", "r-references.bib"), 
+  file = here("R", "04_reports", "r-references.bib"), 
   pkgs = packages, 
   withhold = FALSE
 )

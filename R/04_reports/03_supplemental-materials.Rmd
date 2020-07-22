@@ -1,0 +1,370 @@
+---
+title: "Supplemental Material"
+subtitle: "Dialect exposure impairs reading of words with competing variants but does not affect decoding skills in adult artificial literacy learning"
+author: "Williams, G. P., Panayotov, N., & Kempe, V."
+date: "22<sup>nd</sup> July, 2020 (Last updated: `r format(Sys.time(), '%d<sup>th</sup> %B, %Y')`)"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: united
+bibliography: [r-references.bib, main-references.bib]
+csl: apa6.csl
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE)
+
+packages <- c(
+  "tidyverse",
+  "rlang",
+  "here",
+  "brms",
+  "tidybayes",
+  "bayestestR",
+  "modelr",
+  "ggforce",
+  "ggrepel",
+  "ggridges",
+  "irr",
+  "papaja" # install with devtools::install_github("crsh/papaja")
+)
+
+# load packages
+lapply(packages, library, character.only = TRUE)
+
+# load functions
+r_function_list <- list.files(
+  path = here("R", "00_functions"), 
+  pattern = "R$",
+  full.names = TRUE
+)
+purrr::walk(r_function_list, source)
+
+# get citations
+citations <- purrr::map(packages, citation)
+
+# get file paths ----
+
+# get model summaries only for easy loading
+fitted_models_dir <- list.files(
+  path = here("04_analysis", "01_models"),
+  pattern = "rds$",
+  full.names = TRUE
+) %>% 
+  str_subset("summary")
+  
+
+model_summaries_dir <- list.files(
+  path = here("04_analysis", "02_summaries", "02_posterior-full-data"),
+  pattern = "csv$",
+  full.names = TRUE
+)
+
+plot_titles <- "01_with-titles" # can also be "02_without-titles"
+plots_dir <- list.files(
+  path = c(
+    here("03_plots", "02_posterior-full-data", plot_titles),
+    here("03_plots", "03_main-data-summary", plot_titles), 
+    here("03_plots", "04_exploratory", plot_titles)
+  ),
+  pattern = "png$",
+  full.names = TRUE
+)
+
+# load data ----
+
+fitted_models <- purrr::map(fitted_models_dir, read_rds)
+
+names(fitted_models) <- fitted_models_dir %>% 
+  sub(".*/", "", .) %>% 
+  substr(., 1, nchar(.)-4)
+
+model_summaries <- purrr::map(model_summaries_dir, read_csv)
+names(model_summaries) <- model_summaries_dir %>% 
+  sub(".*/", "", .) %>% 
+  substr(., 1, nchar(.)-4)
+```
+
+```{r define-renaming-variables}
+summary_oldnames <- c(".value", "interval")
+summary_newnames <- c("median", "credible interval")
+summary_drop <- c(".point", ".interval")
+
+posterior_oldnames <- c("Ci Interval", "Pd")
+posterior_newnames <- c("Credible Interval", "P(Direction)")
+posterior_drop <- c(
+  ".width",
+  ".point",
+  ".interval",
+  "CI",
+  "ROPE_low", 
+  "ROPE_high"
+)
+```
+
+```{r get-citations}
+my_citations <- papaja::cite_r(
+  file = here("R", "04_reports", "r-references.bib"), 
+  pkgs = packages, 
+  withhold = FALSE
+)
+```
+
+`r my_citations` were used for data preparation, analysis, and presentation.
+
+# Additional Statistics for Reported Analyses
+
+This section outlines additional statistics to accompany the results reported in the main body of the manuscript. 
+
+For the vocabulary test models and the testing phase models, the manuscript provides both plots and tables summarising the joint posterior for the differences between conditions, but for brevity only provides plots of the joint posterior of the marginal effects for each analysis (i.e. the best estimate for nLEDs between conditions). For completeness, we report the estimates of the joint posterior of the marginal effects for each analysis in tabular format. 
+
+For the exploratory testing phase model with mean vocabulary test performance as a covariate, only plots are reported in the manuscript. For completeness, we report the estimates for both the joint posterior of the marginal effects and the joint posterior for the differences between conditions for both analyses.
+
+Parameter estimates are summarised in the same as in the manuscript for the joint posterior for the differences between conditions.
+
+## Vocabulary Testing Phase Model
+
+### Word Type by Exposure Condition
+
+Posterior medians and credible intervals summaries of the depicted effects are provided in the table below.
+
+```{r variety-word-type-exposure}
+format_summary_table(
+    .data = model_summaries$exposure_vw,
+    .oldnames = summary_oldnames,
+    .newnames = summary_newnames,
+    .drop = summary_drop
+) %>% 
+  filter(.Width == 0.90) %>% 
+  select(-c(.Width, contains("ROPE"))) %>% 
+  custom_kable(
+    ., 
+    caption = "Joint posterior median nLEDs and 90% credible intervals for the effect of word type within exposure condition in the vocabulary test.",
+    add_footer = FALSE
+  )
+```
+
+## Testing Phase Model
+
+### Word Type by Task and Exposure Condition
+
+Posterior medians and credible interval summaries of the depicted effects are provided in the table below.
+
+```{r task-variety-word-type-testing}
+format_summary_table(
+    .data = model_summaries$testing_tvw,
+    .oldnames = summary_oldnames,
+    .newnames = summary_newnames,
+    .drop = summary_drop
+) %>% 
+  filter(.Width == 0.90) %>% 
+  select(-c(.Width, contains("ROPE"))) %>% 
+  custom_kable(
+    ., 
+    caption = "Joint posterior median nLEDs and 90% credible intervals for the effect of word type within each task and exposure condition in the testing phase.",
+    add_footer = FALSE
+  )
+```
+
+### Novel Words by Task and Exposure Condition
+
+Posterior medians and credible interval summaries of the depicted effects are provided in the table below.
+
+```{r task-variety-novel-testing}
+format_summary_table(
+    .data = model_summaries$testing_tv_n,
+    .oldnames = summary_oldnames,
+    .newnames = summary_newnames,
+    .drop = summary_drop
+) %>% 
+  filter(.Width == 0.90) %>% 
+  select(-c(.Width, contains("ROPE"))) %>% 
+  custom_kable(
+    ., 
+    caption = "Joint posterior median nLEDs and 90% credible intervals for the effect of task and exposure condition for novel words only in the testing phase.",
+    add_footer = FALSE
+  )
+```
+
+## Exploratory Covariate Testing Model
+
+### Word Type by Task, Exposure Condition, and a Median Split of Vocabulary Test Performance
+
+Posterior medians and credible interval summaries of the depicted effects are provided in the table below.
+
+```{r cov-task-variety-word-type-covariate}
+format_summary_table(
+    .data = model_summaries$testing_cov_median_etvw,
+    .oldnames = summary_oldnames,
+    .newnames = summary_newnames,
+    .drop = summary_drop
+) %>% 
+  filter(.Width == 0.90) %>% 
+  rename(`Exposure Test nLED Group` = `Exposure Test Nled Group`) %>% 
+  select(-c(.Width, contains("ROPE"))) %>% 
+  custom_kable(
+    ., 
+    caption = "Joint posterior median nLEDs and 90% credible intervals for each word type within each vocabulary test performance group, task, and exposure condition in the testing phase.",
+    add_footer = FALSE
+  )
+```
+
+We also report the differences between word types within each vocabulary test performance group, task, and exposure condition below. This table reflects a tabular format of the summary in Figure 12 in the manuscript.
+
+```{r cov-task-variety-word-type-covariate-compare}
+report_posteriors(
+  model_summaries$testing_cov_median_etvw_compare,
+  model_summaries$testing_cov_median_etvw_compare_rope,
+  .width = .90,
+  .drop = posterior_drop,
+  .oldnames = posterior_oldnames,
+  .newnames = posterior_newnames
+) %>% 
+  select(-contains("ROPE")) %>% 
+  custom_kable(
+    ., 
+    caption = "Joint posterior median nLEDs and 90% credible intervals for the effect of word type within each vocabulary test performance group, task, and exposure condition in the testing phase",
+    add_footer = FALSE
+  )
+```
+
+### Novel Words by Task, Exposure Condition, and a Median Split of Vocabulary Test Performance
+
+Posterior medians and credible interval summaries of the depicted effects are provided in the table below.
+
+```{r novel-variety-task-cov-testing-cov}
+format_summary_table(
+    .data = model_summaries$testing_cov_median_etv_n,
+    .oldnames = summary_oldnames,
+    .newnames = summary_newnames,
+    .drop = summary_drop
+) %>% 
+  filter(.Width == 0.90) %>% 
+  rename(`Exposure Test nLED Group` = `Exposure Test Nled Group`) %>% 
+  select(-c(.Width, contains("ROPE"))) %>% 
+  custom_kable(
+    ., 
+    caption = "Joint posterior median nLEDs and 90% credible intervals for the effect of exposure condition within each vocabulary test performance group and task for novel words only in the testing phase.",
+    add_footer = FALSE
+  )
+```
+
+We also report the differences between exposure conditions within each vocabulary test performance group and task for novel words only below. This table reflects a tabular format of the summary in Figure 15 in the manuscript.
+
+```{r cov-task-exposure-variety-novel-compare}
+report_posteriors(
+  model_summaries$testing_cov_median_t_ev_n_compare,
+  model_summaries$testing_cov_median_t_ev_n_compare_rope,
+  .width = .90,
+  .drop = posterior_drop,
+  .oldnames = posterior_oldnames,
+  .newnames = posterior_newnames
+) %>% 
+  select(-contains("ROPE")) %>% 
+  custom_kable(
+    ., 
+    caption = "Joint posterior median nLEDs and 90% credible intervals for the effect of exposure condition within each vocabulary test performance group and task for novel words only in the testing phase",
+    add_footer = FALSE
+  )
+```
+
+# Pre-registered but Unreported Analyses
+
+This section outlines additional analyses that were pre-registered but not reported in the main body of the manuscript in the interest of brevity. 
+
+## Testing Phase
+
+### Simple Effect of Exposure Condition within Each Task (i.e. Collapsing across all Word Types)
+
+This analysis were not included in the manuscript because it largely echo the results of the (also pre-registered) effects of Exposure condition within Task for novel words only. Essentially, this analysis (collapsing across all word types) and the analysis for novel words ask whether there are any effects of dialect exposure on general literacy.
+
+We predicted:
+
+- Overall performance will be better in the Dialect condition relative to the No Dialect condition as exposure to a dialect will push learners towards grapheme-phoneme conversion rather than suboptimal strategies such as whole word reading.
+
+- Overall performance will be better in the Dialect & Social condition relative to the Dialect condition due to the social cue allowing learners to suppress irrelevant language varieties; i.e. the dialect variety when doing the literacy test in the no dialect variety. This should lead to less cognitive load and confusion between varieties.
+
+- Overall performance will be better in the Dialect Literacy condition relative to the Dialect & Social condition due to training in multiple varieties highlighting the alphabetic principle, pushing people to the best strategy earlier on in learning. Additionally, having dialect literacy training may act similar to a cognate effect in bilingual learners in which literacy learning is improved when participants learn two alphabetic languages (e.g. Van Assche, Duyck, Hartsuiker, & Diependaele, 2009).
+
+Posterior medians with 80% and 90% credible intervals are shown collapsing across all words within each task and exposure condition below.
+
+```{r task-variety-testing-plot}
+knitr::include_graphics(plots_dir[str_detect(plots_dir, "testing_tv.png")])
+```
+
+For completeness, these results are also presented in tabular format below.
+
+```{r task-variety-testing}
+format_summary_table(
+    .data = model_summaries$testing_tv,
+    .oldnames = summary_oldnames,
+    .newnames = summary_newnames,
+    .drop = summary_drop
+) %>% 
+  filter(.Width == 0.90) %>% 
+  select(-c(.Width, contains("ROPE"))) %>% 
+  custom_kable(
+    ., 
+    caption = "Joint posterior median nLEDs and 90% credible intervals for the effect of exposure condition within each task in the testing phase.",
+    add_footer = FALSE
+  )
+```
+
+The most consistent effect is that performance is generally worse on the spelling task relative to the reading task. 
+
+Posterior medians with 80% and 90% credible intervals are shown for the comparison between each Exposure condition within each Task across all word types below.
+
+```{r task-variety-testing-compare-plot}
+knitr::include_graphics(plots_dir[str_detect(plots_dir, "testing_tv_compare.png")])
+```
+
+For completeness, these results are also presented in tabular format below.
+
+```{r task-variety-testing-compare}
+report_posteriors(
+  model_summaries$testing_tv_compare,
+  model_summaries$testing_tv_compare_rope,
+  .width = .90,
+  .drop = posterior_drop,
+  .oldnames = posterior_oldnames,
+  .newnames = posterior_newnames
+) %>% 
+  select(-contains("ROPE")) %>% 
+  custom_kable(
+    ., 
+    caption = "Joint posterior nLEDs for the effect of exposure condition within each task in the testing phase.",
+    add_footer = FALSE
+  )
+```
+
+There are no differences across conditions in reading or spelling performance collapsng across all word types. Thus, as with the analysis for novel words only, our pre-registered predictions were not supported. Supporting the findings from novel words only, exposure to a dialect in any form has no overall negative impact on literacy acquisition. 
+
+### Comparing the Effect of Word Type (i.e. difference scores between Contrastive and Non-Contrastive Words) within each Task across Exposure conditions
+
+We predicted that the contrastive deficit should be attenuated in the Variety Mismatch With Social Cue (i.e. Dialect & Social) condition (Condition 3) compared to the simple Variety Mismatch (i.e. Dialect) condition (Condition 2). This analysis was omitted because it does not test a main hypothesis and shows no effect.
+
+```{r contrastive-deficit-comparison-plot}
+knitr::include_graphics(plots_dir[str_detect(plots_dir, "testing_tvw_ms_compare.png")])
+```
+
+There is no difference between the Dialect and the Dialect & Social conditions in the magnitude of the contrastive deficit in either the Spelling or Reading tasks. For completeness, we also report these results in tabular format.
+
+```{r contrastive-deficit-comparison-compare}
+report_posteriors(
+  model_summaries$testing_tvw_ms_compare,
+  model_summaries$testing_tvw_ms_compare_rope,
+  .width = .90,
+  .drop = posterior_drop,
+  .oldnames = posterior_oldnames,
+  .newnames = posterior_newnames
+) %>% 
+  select(-contains("ROPE")) %>% 
+  custom_kable(
+    ., 
+    caption = "Joint posterior nLEDs for the effect of exposure condition on the magnitude of the contrastive deficit in the testing phase.",
+    add_footer = FALSE
+  )
+```
+
+# References

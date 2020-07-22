@@ -58,3 +58,16 @@ for(i in seq_along(model_summaries)) {
     )
   )
 }
+
+# fixed effects ----
+
+for(i in seq_along(fixed_eff)) {
+  write_csv(
+    x = fixed_eff[[i]],
+    path = here(
+      "04_analysis", 
+      "01_models",
+      paste0(names(fixed_eff)[[i]], "_fixed_effects.csv")
+    )
+  )
+}
