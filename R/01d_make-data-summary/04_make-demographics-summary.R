@@ -14,10 +14,12 @@ demographics_gender <- demographics %>%
   group_by(variety_exposure) %>% 
   count(participant_gender) %>% 
   spread(key = participant_gender, value = n) %>% 
-  rename(female_count = f, male_count = m, other_count = o)
+  rename(female_count = f, male_count = m, other_count = o) %>% 
+  mutate(other_count = replace_na(other_count, 0))
 
-# get age and english proficiency summaries
+# get age and English proficiency summaries
 demographics_age_language_proficiency <- demographics %>% 
+  filter(additional_languages == "english") %>% 
   group_by(variety_exposure) %>% 
   summarise(
     N = length(unique(participant_number)),
