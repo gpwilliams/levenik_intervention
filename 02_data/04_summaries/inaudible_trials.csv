@@ -1,0 +1,9 @@
+variety_exposure,block,n_inaudible,n,percent_inaudible
+variety_match,exposure_test,219,2400,9.125
+variety_match,test,56,6720,0.8333333333333334
+variety_mismatch,exposure_test,256,2400,10.666666666666668
+variety_mismatch,test,57,6719,0.8483405268641167
+variety_mismatch_social,exposure_test,246,2400,10.25
+variety_mismatch_social,test,110,6720,1.636904761904762
+dialect_literacy,exposure_test,220,2400,9.166666666666666
+dialect_literacy,test,25,6719,0.372079178449174

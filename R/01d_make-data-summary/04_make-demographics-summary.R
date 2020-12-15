@@ -20,6 +20,9 @@ demographics_gender <- demographics %>%
 # get age and English proficiency summaries
 demographics_age_language_proficiency <- demographics %>% 
   filter(additional_languages == "english") %>% 
+  group_by(participant_number) %>% # remove any duplicates with slice
+  slice(1) %>% 
+  ungroup() %>% 
   group_by(variety_exposure) %>% 
   summarise(
     N = length(unique(participant_number)),
@@ -33,15 +36,31 @@ demographics_age_language_proficiency <- demographics %>%
     max_age = max(age[age >= 18])
   )
 
+# get count of multilingual participants per study
+multilingual_count <- additional_languages %>% 
+  group_by(variety_exposure) %>% 
+  summarise(
+    multilingual_count = length(unique(participant_number)),
+    multilingual_proficiency_mean = mean(language_proficiency),
+    multilingual_proficiency_sd = sd(language_proficiency),
+    multilingual_proficiency_min = min(language_proficiency),
+    multilingual_proficiency_max = max(language_proficiency)
+  )
+
 # merge demographics information
 demographics_summaries$summary_demographics <- left_join(
   demographics_age_language_proficiency, 
   demographics_gender, 
   by = "variety_exposure"
-)
+) %>% 
+  left_join(., multilingual_count, by = "variety_exposure")
 
 # count of ages below Prolific's ts and cs per experiment
 demographics_summaries$unexpected_ages <- demographics %>%
+  filter(additional_languages == "english") %>% 
+  group_by(participant_number) %>% # remove any duplicates with slice
+  slice(1) %>% 
+  ungroup() %>% 
   group_by(participant_number, variety_exposure) %>% 
   summarise(age = unique(age)) %>% 
   filter(age < 18) %>% 

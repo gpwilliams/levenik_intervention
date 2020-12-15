@@ -1,7 +1,6 @@
-participant_number,total_trials
-40,323
-117,323
-216,323
-324,323
-469,325
-527,323
+participant_number,variety_exposure,total_trials
+40,variety_match,323
+117,variety_match,323
+216,variety_mismatch_social,323
+324,variety_mismatch,323
+527,dialect_literacy,323

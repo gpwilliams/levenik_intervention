@@ -3,6 +3,7 @@ library(ggforce) # for facet_wrap_paginate
 library(ggrepel) # for direct labels
 library(here)
 library(ggridges)
+library(tidytext) # for reordering plots within facets by count
 
 r_file_list <- list.files(
   path = c(
