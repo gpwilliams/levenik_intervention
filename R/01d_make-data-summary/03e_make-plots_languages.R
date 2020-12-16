@@ -52,7 +52,11 @@ languages_plot <- ggplot(
 
 # save plot
 ggsave(
-  filename = here("02_data", "04_summaries", "additional_languages_plot.pdf"),
+  filename = here(
+    "02_data", 
+    "04_summaries", 
+    "additional_languages_plot.png"
+  ),
   plot = languages_plot, 
   height = 8, 
   width = 12

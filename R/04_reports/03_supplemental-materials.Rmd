@@ -113,6 +113,22 @@ my_citations <- papaja::cite_r(
 
 `r my_citations` were used for data preparation, analysis, and presentation.
 
+# Additional Details on the Number of Languages Known by Participants in Each Condition
+
+This section outlines additional details to accompany the report on the number of multilingual participants and their average proficiency in their additional languages reported in the main body of the manuscript. Please note that here the term 'additional languages' is used as prociciency in English only was a prerequisite for participants to take part in the study.
+
+The below graph shows the total number of additional languages known by participants in each condition along with a count of the number of participants who know each language.
+
+```{r additional-languages-plot}
+knitr::include_graphics(here(
+  "02_data", 
+  "04_summaries", 
+  "additional_languages_plot.png"
+))
+```
+
+In all conditions a range of languages are known by participants, with the most common languages known being German, Spanish, and French. Given that the most common languages taught in schools in the UK and German, Spanish, and French and that on the whole participants reported low levels of proficiency in their additional languages, this likely indicates that on the whole participants were primarily fluent in English but had relatively low levels of proficiency in additional languages.
+
 # Additional Statistics for Reported Analyses
 
 This section outlines additional statistics to accompany the results reported in the main body of the manuscript. 

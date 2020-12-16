@@ -33,6 +33,8 @@ check_trials$lag_strategy_summary <- learning_data %>%
   ) %>%
   filter(target != target_lag)
 
+# inaudible trials ----
+
 # get number of missing trials per block
 check_trials$missing_data_count <- learning_data %>% 
   filter(block %in% c("exposure_test", "test")) %>% 
@@ -61,6 +63,15 @@ check_trials$inaudible_trials$percent_inaudible <-
   check_trials$inaudible_trials$n_inaudible/
   check_trials$inaudible_trials$n*100
 
+# get inaudible trials ignoring variety exposure grouping
+check_trials$overall_inaudible_trials <- check_trials$inaudible_trials %>% 
+  group_by(block) %>% 
+  summarise(
+    n_inaudible = sum(n_inaudible),
+    n = sum(n),
+    percent_inaudible = n_inaudible/n*100
+  )
+  
 # save output ----
 names(check_trials) %>%
   map(~ write_csv(
