@@ -290,7 +290,7 @@ knitr::include_graphics(c(
 ))
 ```
 
-As can be seen from the plots, the posterior predictive checks indicate a generally good model fit in all instances, such that the model largely captures the shape of the data (i.e. especially capturing the 0 and 1 inflation in the testing model), but does not capture some discrepancies in the data which do not arise from any defined process (i.e. some larger densities in the testing model between the range of 0-1).
+As can be seen from the plots, the posterior predictive checks indicate a generally good model fit in all instances, such that the model largely captures the shape of the data.
 
 # F. Fitted Model Summaries
 
