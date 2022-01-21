@@ -18,7 +18,7 @@ draws$exposure_vw <-
   add_fitted_draws(
     models$exposure, 
     dpar = TRUE,
-    re_formula = ~0, 
+    re_formula = ~0, # equivalent to re_formula = NA
     seed = analysis_options$rand_seed
   ) %>% 
   ungroup() %>% 
